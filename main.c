@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 10:08:34 by lpollini          #+#    #+#             */
-/*   Updated: 2023/07/27 19:18:11 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/07/27 22:00:51 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,22 @@ t_list	*ft_lstnew_dup(const void *a, int size)
 		((char *)temp)[i] = ((char *)a)[i];
 	return (ft_lstnew(temp));
 }
+/************************************************
 
+
+ * questa e` roba tua!!
+
+
+************************************************/
 int	rft_load_scene(t_window *w)
 {
 	w->scene = ft_lstnew(NULL);
 	w->lights = ft_lstnew(NULL);
 	w->obj_num = 0;
 
-	static t_sphere const SP[] = {{{0, 2, 9}, 1, {{0, 0, 0}, {0, 0, 0}, 0}}, {{-2, 2, 9}, 1, {{0, 0, 0}, {0, 0, 0}, 0}}, {{1, -2, 4}, 0.2, {{0, 0, 0}, {0, 0, 0}, 0}},
+	t_sphere const SP[] = {{{0, 2, 9}, 1, {{0, 0, 0}, {0, 0, 0}, 0}}, {{-2, 2, 9}, 1, {{0, 0, 0}, {0, 0, 0}, 0}}, {{1, -2, 4}, 0.2, {{0, 0, 0}, {0, 0, 0}, 0}},
 						{{1.4182, 1.4182, 10}, 2, {{0, 0, 0}, {0, 0, 0}, 0}}};
-	static t_lantern const LG[] = {{{100, 0 ,0}, {255, 255, 255}, 1}};
+	t_lantern const LG[] = {{{100, 0 ,0}, {255, 255, 255}, 1}};
 
 	ft_lstadd_front(&w->scene, ft_lstnew_dup(SP, sizeof(t_sphere)));
 	ft_lstadd_front(&w->scene, ft_lstnew_dup(SP + 1, sizeof(t_sphere)));
@@ -136,11 +142,11 @@ int main(int argn, char *args[])
 	w.skybox.img = mlx_xpm_file_to_image(w.mlx, "skybox/universe.xpm", &w.skybox_size.x, &w.skybox_size.y);
 	w.skybox.addr = mlx_get_data_addr(w.skybox.img, &w.skybox.bps, &w.skybox.ll, &w.skybox.en);
 	
-	v3d_out(v3d_cross(new_v3_d(1, 1, 0), new_v3_d(0, 1, 1)));
-
 	w.img.img = mlx_new_image(w.mlx, w.size.x, w.size.y);
 	w.img.addr = mlx_get_data_addr(w.img.img, &w.img.bps, &w.img.ll, &w.img.en);
+
 	my_image_creator(&w);
+	
 	mlx_put_image_to_window(w.mlx, w.win, w.img.img, 0, 0);
 	mlx_hook(w.win, 17, 1L << 0, win_close, &w);
 	mlx_hook(w.win, 2, 1L << 0, manage_keys, &w);

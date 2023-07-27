@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:37:06 by lpollini          #+#    #+#             */
-/*   Updated: 2023/07/27 21:19:25 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/07/27 21:59:17 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ t_vec3_d skybox_calc(t_ray r, t_window *w)
 	d = v3_normalize(v3_d_sum(2, r.direction, v3d_anti(r.source)));
 	on_pg.x = (0.5 + atan2(d.z, d.x) / (2 * M_PI)) * w->skybox_size.x;
 	on_pg.y = (0.5 - asin(d.y) / (M_PI)) * w->skybox_size.y;
-	// printf("`````````````\n%f, %f\n", on_pg.x, on_pg.y);
 	found_col = *(unsigned int *)(w->skybox.addr + ((int)on_pg.y * w->skybox.ll + (int)on_pg.x * (w->skybox.bps / 8)));
 	return (create_argb((found_col >> 16) & 0xff, (found_col >> 8) & 0xff, found_col & 0xff));
 }
