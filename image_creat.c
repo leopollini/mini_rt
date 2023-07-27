@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:37:06 by lpollini          #+#    #+#             */
-/*   Updated: 2023/07/27 21:59:17 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/07/28 00:14:01 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,17 +70,17 @@ t_vec3_d skybox_calc(t_ray r, t_window *w)
 	return (create_argb((found_col >> 16) & 0xff, (found_col >> 8) & 0xff, found_col & 0xff));
 }
 
-int hit_sphere(const t_sphere s, t_ray *r, t_tracing_mode mode)
+int hit_sphere(const t_gameobject sphere, t_ray *r, t_tracing_mode mode)
 {
 	t_vec3_d oc;
 	t_vec3_d vars;
 	double d;
 	t_vec2_d temp;
 
-	oc = v3_d_sum(2, r->source, v3d_anti(s.center));
+	oc = v3_d_sum(2, r->source, v3d_anti(sphere.transform.position));
 	vars.x = v3_d_dot(r->direction, r->direction);
 	vars.y = v3_d_dot(oc, r->direction);
-	vars.z = v3_d_dot(oc, oc) - s.radius * s.radius;
+	vars.z = v3_d_dot(oc, oc) - sphere.transform.scale.x * sphere.transform.scale.x;
 	d = vars.y * vars.y - vars.x * vars.z;
 	if (d < 0)
 	{
@@ -95,13 +95,13 @@ int hit_sphere(const t_sphere s, t_ray *r, t_tracing_mode mode)
 	if (temp.x > temp.y)
 		temp.x = temp.y;
 	r->data.hit_point = ray_at(*r, temp.x);
-	r->data.point_normal = v3_normalize(v3_d_sum(2, r->data.hit_point, v3d_anti(s.center)));
+	r->data.point_normal = v3_normalize(v3_d_sum(2, r->data.hit_point, v3d_anti(sphere.transform.position)));
 	r->data.sqr_distance = v3_d_sqr_mod(v3_d_sum(2, r->data.hit_point, v3d_anti(r->source)));
 	r->data.color = create_argb_s(r->data.point_normal.x, r->data.point_normal.y, r->data.point_normal.z);
 	return (1);
 }
 
-char rft_hitter(t_list *scene, t_ray *r, int lim, t_tracing_mode mode)
+char rft_hitter(t_list *scene, t_ray *r, t_tracing_mode mode)
 {
 	char did_hit;
 	t_ray best;
@@ -111,9 +111,9 @@ char rft_hitter(t_list *scene, t_ray *r, int lim, t_tracing_mode mode)
 	i = 0;
 	best = *r;
 	r->data.sqr_distance = INFINITY;
-	while (i++ < lim)
+	while (scene->content)
 	{
-		if (scene->content && hit_sphere(*(const t_sphere *)scene->content, &best, mode))
+		if (scene->content && hit_sphere(*(const t_gameobject *)scene->content, &best, mode))
 		{
 			if (mode == OCCLUSION)
 				return (1);
@@ -134,7 +134,7 @@ t_vec3_d rft_search_light(t_window *w, t_ray *r, t_tracing_mode mode)
 	lray.direction = v3_normalize(v3_d_sum(2, ((t_lantern *)w->lights->content)->pos, v3d_anti(lray.source)));
 	lray.data.hit_something = 0;
 	rft_cast(w, &lray, OCCLUSION);
-	//if (lray.data.hit_something)
+	if (lray.data.hit_something)
 		return (r->data.color);
 	return (new_v3_d(0, 0, 0));
 }
@@ -143,16 +143,16 @@ t_vec3_d rft_cast(t_window *w, t_ray *r, t_tracing_mode mode)
 {
 	if (mode == OCCLUSION)
 	{
-		if (rft_hitter(w->scene, r, w->obj_num, mode))
+		if (rft_hitter(w->scene, r, mode))
 			r->data.hit_something = 1;
 		return (r->data.color);
 	}
-	if (rft_hitter(w->scene, r, w->obj_num, mode))
+	if (rft_hitter(w->scene, r, mode))
 		return (rft_search_light(w, r, mode));
 	return (skybox_calc(*r, w));
 }
 
-int	rft_anti_aliasing(const t_vec2_i c, const t_vec3_d div_temp, t_ray *r, const t_window *w)
+int	rft_anti_aliasing(const t_vec2_i c, const t_vec3_d div_temp, t_ray *r, t_window *w)
 {
 	int			div = 0;
 	int			a = 0;
@@ -185,7 +185,8 @@ void rft_window_cast(t_window *w)
 		div_temp.z = w->anti_aliasing;
 	for (int i = -w->size.x / 2; i < w->size.x / 2; i++)
 		for (int j = -w->size.y / 2; j < w->size.y / 2; j++)
-			my_mlx_pixel_put(&w->img, i + w->size.x / 2, w->size.x / 2 - j, rft_anti_aliasing((t_vec2_i){i, j}, div_temp, &ray, w));
+			my_mlx_pixel_put(&w->img, i + w->size.x / 2, w->size.x / 2 - j - 1, rft_anti_aliasing((t_vec2_i){i, j}, div_temp, &ray, w));
+	//																     /| |\ watch out for this - 1!!!!
 }
 
 void my_image_creator(t_window *w)

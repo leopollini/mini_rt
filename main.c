@@ -6,33 +6,39 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 10:08:34 by lpollini          #+#    #+#             */
-/*   Updated: 2023/07/27 22:00:51 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/07/27 23:54:43 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
 
-void	*new_object1(t_sceneobject *res, t_vec2_d size)
+t_gameobject new_object1(t_transform tr, t_color_3 cl, t_objtype type)	// return NON malloc'd gameobject
 {
-	res->size = size;
-	if (res->type == SPHERE)
-		res->sqr_rad = size.x;
-	return ((void *)res);
+	t_gameobject	res;
+
+	res.transform = tr;
+	res.color = cl;
+	res.type = type;
+	return (res);
 }
 
-void	*new_object(t_vec3_d center, t_vec2_d rotation, t_color color, t_objtype type)
+t_gameobject	*new_gameobject(t_transform tr, t_color_3 cl, t_objtype type)	// return malloc'd gameobject
 {
-	t_sceneobject	*res;
+	t_gameobject	*res;
 
-	res = malloc(sizeof(t_sceneobject));
-	res->obj_cen = center;
-	res->obj_rot = rotation;
-	res->color = color;
+	res = malloc(sizeof(t_gameobject));
+	res->transform = tr;
+	res->color = cl;
 	res->type = type;
 	return (res);
 }
 
-t_list	*ft_lstnew_dup(const void *a, int size)
+t_transform	new_transform(t_vec3_d p, t_vec3_d r, t_vec3_d s)
+{
+	return ((t_transform){p, r, s});
+}
+
+t_list	*ft_lstnew_dup(const void *a, int size)		// duplicates adding to list (a can be stack'd)
 {
 	void	*temp;
 	int		i;
@@ -43,32 +49,46 @@ t_list	*ft_lstnew_dup(const void *a, int size)
 		((char *)temp)[i] = ((char *)a)[i];
 	return (ft_lstnew(temp));
 }
+
 /************************************************
 
 
  * questa e` roba tua!!
 
+--	prototipo inizializzatore:
+new_gameobject(new_transform((t_vec3_d){PUNTO CENTRO}, (t_vec3_d){VERSORE ROTAZIONE}, (t_vec3_d){VETTORE SCALA}), (t_color_3){COLORE RGB}, TIPO)));
+
+
+int alternativa a (t_vec3_d){x, y, z} esiste gia' new_v3_d(x, y, z), pero' il primo metodo e' piu' leggero :P
 
 ************************************************/
+
+void	rft_add_gameobject_to_scene(t_window *w, t_gameobject *elem)	// requires elem to be malloc'd
+{
+	ft_lstadd_front(&w->scene, ft_lstnew(elem));
+	w->obj_num++;
+}
+
 int	rft_load_scene(t_window *w)
 {
 	w->scene = ft_lstnew(NULL);
 	w->lights = ft_lstnew(NULL);
 	w->obj_num = 0;
 
-	t_sphere const SP[] = {{{0, 2, 9}, 1, {{0, 0, 0}, {0, 0, 0}, 0}}, {{-2, 2, 9}, 1, {{0, 0, 0}, {0, 0, 0}, 0}}, {{1, -2, 4}, 0.2, {{0, 0, 0}, {0, 0, 0}, 0}},
-						{{1.4182, 1.4182, 10}, 2, {{0, 0, 0}, {0, 0, 0}, 0}}};
 	t_lantern const LG[] = {{{100, 0 ,0}, {255, 255, 255}, 1}};
 
-	ft_lstadd_front(&w->scene, ft_lstnew_dup(SP, sizeof(t_sphere)));
-	ft_lstadd_front(&w->scene, ft_lstnew_dup(SP + 1, sizeof(t_sphere)));
-	ft_lstadd_front(&w->scene, ft_lstnew_dup(SP + 2, sizeof(t_sphere)));
-	ft_lstadd_front(&w->scene, ft_lstnew_dup(SP + 3, sizeof(t_sphere)));
-	ft_lstadd_front(&w->lights, ft_lstnew_dup(LG, sizeof(t_lantern)));
-	w->obj_num = 4;
+	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, 0.5, 5), new_v3_d(0, 0, 1), new_v3_d(1, 1, 1)), (t_color_3){0, 0, 0}, SPHERE));
+	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, -0.5, 5), new_v3_d(0, 0, 1), new_v3_d(1, 1, 1)), (t_color_3){0, 0, 0}, SPHERE));
+	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0.5, 0, 5), new_v3_d(0, 0, 1), new_v3_d(1, 1, 1)), (t_color_3){0, 0, 0}, SPHERE));
+	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(-0.5, 0, 5), new_v3_d(0, 0, 1), new_v3_d(1, 1, 1)), (t_color_3){0, 0, 0}, SPHERE));
+	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, 0, 6.1), new_v3_d(0, 0, 1), new_v3_d(2, 2, 2)), (t_color_3){0, 0, 0}, SPHERE));
 
-	//win->lights = ft_lstnew(new_object(new_v3_d(1, 1, -1), new_v2_d(0, 0), \
-				create_argb(0, 255, 255, 255), LANTERN));
+
+	ft_lstadd_front(&w->lights, ft_lstnew_dup(LG, sizeof(t_lantern)));
+	w->obj_num = 1;
+	
+	//fino a qua sono test
+	
 	return (0);
 }
 

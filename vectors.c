@@ -6,11 +6,24 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:56:59 by lpollini          #+#    #+#             */
-/*   Updated: 2023/07/27 19:18:57 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/07/28 00:13:53 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
+
+void	v3d_out(t_vec3_d a)
+{
+	printf("called vector out. %f %f %f\n", a.x, a.y, a.z);
+}
+
+void	transform_out(t_transform t)
+{
+	printf("\ncalled transform out.\n----------------------------------------------------\n");
+	printf("x = % 12f, y = % 12f, z = % 12f\n", t.position.x, t.position.y, t.position.z);
+	printf("x = % 12f, y = % 12f, z = % 12f\n", t.rotation.x, t.rotation.y, t.rotation.z);
+	printf("x = % 12f, y = % 12f, z = % 12f\n----------------------------------------------------\n", t.scale.x, t.scale.y, t.scale.z);
+}
 
 t_vec2_i	new_v2_i(int x, int y)
 {
@@ -41,11 +54,6 @@ t_vec3_d	v3_normalize(t_vec3_d in)
 		return (in);
 	temp = sqrt(temp);
 	return ((t_vec3_d ){in.x / temp, in.y / temp, in.z / temp});
-}
-
-void	v3d_out(t_vec3_d a)
-{
-	printf("called vector out. %f %f %f\n", a.x, a.y, a.z);
 }
 
 t_vec3_d	v3d_anti(t_vec3_d a)
