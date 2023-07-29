@@ -6,11 +6,13 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:37:06 by lpollini          #+#    #+#             */
-/*   Updated: 2023/07/29 09:56:46 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/07/29 23:56:32 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
+
+t_window	*g_all;
 
 t_vec3_d skybox_calc(t_ray r, t_window *w)
 {
@@ -31,6 +33,7 @@ int hit_sphere(t_sphere *sphere, t_ray *r, t_tracing_mode mode)
 	t_vec3_d vars;
 	double d;
 	t_vec2_d temp;
+	t_ray		refl;
 
 	oc = v3_d_sum_2(r->source, v3d_anti(sphere->transform.position));
 	vars.x = v3_d_dot(r->direction, r->direction);
@@ -49,18 +52,31 @@ int hit_sphere(t_sphere *sphere, t_ray *r, t_tracing_mode mode)
 		temp.x = temp.y;
 	if (temp.x < NEGATIVE_LIM)
 		return (0);
-	if (mode == OCCLUSION)
-		return (1);
+	r->data.hit_pointer = sphere;
 	temp.x /=  vars.x;
 	r->data.sqr_distance = temp.x * temp.x;
-	if (mode == REFERENCE)
-	{
-		r->data.hit_pointer = sphere;
+	if (mode == OCCLUSION)
 		return (1);
-	}
+	if (mode == REFERENCE)
+		return (1);
 	r->data.hit_point = ray_at(*r, temp.x);
 	r->data.point_normal = v3_normalize(v3_d_sum_2(r->data.hit_point, v3d_anti(sphere->transform.position)));
-	//r->data.color = create_argb_s(r->data.point_normal.x, r->data.point_normal.y, r->data.point_normal.z);	//normal-proportioned coloration
+	if (sphere->metalness)
+	{
+		if (r->depth > MAX_REF_DEPTH)
+		{
+			r->data.color = (t_vec3_d){0, 0, 0};
+			return (1);
+		}
+		r->data.ismetal = 1;
+		refl.source = r->data.hit_point;
+		refl.max_sqr_len = INFINITY;
+		refl.direction = v3_d_specular(v3d_anti(r->direction), r->data.point_normal);
+		refl.depth = r->depth + 1;
+		r->data.color = color_3_merge(rft_cast(NULL, &refl, ALL), sphere->color);
+		//v3d_out(refl.direction);
+		return (1);
+	}
 	r->data.color = sphere->color;
 	return (1);
 }
@@ -69,25 +85,45 @@ int hit_plane(t_plane *plane, t_ray *r, t_tracing_mode mode)
 {
 	double		denom;
 	t_vec3_d	temp;
+	t_vec3_d	norm;
 	double		t;
+	t_ray		refl;
 
-	denom = v3_d_dot(r->direction, plane->transform.rotation);
-	if (denom < POSITIVE_LIM)
+	if (mode == OCCLUSION)
+		norm = v3d_anti(plane->transform.rotation);
+	else
+		norm = plane->transform.rotation;
+	denom = v3_d_dot(r->direction, norm);
+	if (denom < 0 || mode == REFERENCE)
 	{
-		t = v3_d_dot(v3_d_sum_2(plane->transform.position, v3d_anti(r->source)), plane->transform.rotation) / denom;
+		t = v3_d_dot(v3_d_sum_2(plane->transform.position, v3d_anti(r->source)), norm) / denom;
 		if (t < POSITIVE_LIM)
 			return (0);
+		r->data.hit_pointer = plane;
+		r->data.sqr_distance = t * t;
 		if (mode == OCCLUSION)
 			return (1);
-		r->data.sqr_distance = t * t;
 		if (mode == REFERENCE)
+			return (1);
+		r->data.point_normal = norm;
+		r->data.hit_point = ray_at(*r, t);
+		if (plane->metalness)
 		{
-			r->data.hit_pointer = plane;
+			if (r->depth > MAX_REF_DEPTH)
+			{
+				r->data.color = (t_vec3_d){0, 0, 0};
+				return (1);
+			}
+			r->data.ismetal = 1;
+			refl.source = r->data.hit_point;
+			refl.max_sqr_len = INFINITY;
+			refl.direction = v3_d_specular(v3d_anti(r->direction), norm);
+			refl.depth = r->depth + 1;
+			r->data.color = color_3_merge(rft_cast(NULL, &refl, ALL), plane->color);
+			//v3d_out(refl.direction);
 			return (1);
 		}
 		r->data.color = plane->color;
-		r->data.hit_point = ray_at(*r, t);
-		r->data.point_normal = plane->transform.rotation;
 		return (1);
 	}
 	r->data.sqr_distance = INFINITY;
@@ -122,8 +158,9 @@ char rft_hitter(t_list *scene, t_ray *r, t_tracing_mode mode)
 	r->data.sqr_distance = INFINITY;
 	while (scene->content)
 	{
+		best.data.ismetal = 0;
 		obj = (t_gameobject *)scene->content;
-		if (scene->content && type_sorter(obj->type, obj, &best, mode))
+		if (scene->content && type_sorter(obj->type, obj, &best, mode) && best.data.sqr_distance < r->max_sqr_len)
 		{
 			if (mode == OCCLUSION)
 				return (1);
@@ -136,9 +173,14 @@ char rft_hitter(t_list *scene, t_ray *r, t_tracing_mode mode)
 	return (did_hit);
 }
 
-t_color_3 rft_specular(t_ray *r, t_ray *o, t_lantern *l)
+t_color_3 rft_specular(t_ray *r, t_ray *lr, t_lantern *l, double lambda)
 {
-	return (new_v3_d(0, 0, 0));
+	t_vec3_d	res = v3_d_specular(lr->direction, r->data.point_normal);
+
+//printf("called. %f\n", lambda);
+	if (r->data.hit_pointer->type == PLANE)
+		return (color_3_merge((v3_d_scal(r->data.color, pow(v3_d_dot(res, v3d_anti(r->direction)), 200) / 5 * l->intensity)), l->color));
+	return (color_3_merge((v3_d_scal(r->data.color, pow(v3_d_dot(res, v3d_anti(r->direction)), 50) / 2 * l->intensity)), l->color));
 }
 
 t_color_3 rft_diffuse(t_ray *r, t_ray *o, t_lantern *l)
@@ -156,76 +198,42 @@ t_vec3_d rft_search_light(t_window *w, t_ray *r, t_tracing_mode mode)
 	temp = v3_d_scal(r->data.color, 0.25);
 	lant = w->lights;
 	lray.source = r->data.hit_point;
-
 	while (lant->content)
 	{
 		l = (t_lantern *)lant->content;
+		lray.max_sqr_len = v3_d_sqr_mod(v3_d_sum_2(lray.source, v3d_anti(l->pos)));
 		lray.direction = v3_normalize(v3_d_sum_2(l->pos, v3d_anti(lray.source)));
-		lray.data.hit_something = 0;
-		rft_cast(w, &lray, OCCLUSION);
-		if (!lray.data.hit_something)
-			temp = v3_d_sum(3, temp, rft_diffuse(r, &lray, l), rft_specular(r, &lray, l));
+		if (v3_d_dot(r->data.point_normal, lray.direction) > 0)
+		{
+			lray.data.hit_something = 0;
+			rft_cast(NULL, &lray, OCCLUSION);
+			if (!lray.data.hit_something)
+				temp = v3_d_sum(3, temp, rft_diffuse(r, &lray, l), rft_specular(r, &lray, l, r->data.hit_pointer->albedo));
+		}
 		lant = lant->next;
 	}
-	return (v3_d_scal(temp, 0.5));
+	return (v3_d_scal(temp, 0.6));
 }
 
 t_vec3_d rft_cast(t_window *w, t_ray *r, t_tracing_mode mode)
 {
-	if (mode == OCCLUSION)
+	static t_window	*aw;
+
+	if (!aw)
 	{
-		r->data.hit_something = rft_hitter(w->scene, r, mode);
+		aw = w;
 		return ((t_vec3_d){});
 	}
-	if (rft_hitter(w->scene, r, mode))
-		return (rft_search_light(w, r, mode));
-	return (skybox_calc(*r, w));
-}
-
-int	rft_anti_aliasing(const t_vec2_i c, const t_vec3_d div_temp, t_ray *r, t_window *w)
-{
-	int			div;
-	int			a;
-	int			b;
-	t_vec3_d	temp;
-
-	a = 0;
-	div = 0;
-	temp = (t_vec3_d){0, 0, 0};
-	while (a++ < div_temp.z)
+	if (mode == OCCLUSION || mode == REFERENCE)
 	{
-		b = 0;
-		while (b++ < div_temp.z)
-		{
-			r->direction = v3_normalize(new_v3_d((c.x + a / div_temp.z) * div_temp.x, (c.y + b / div_temp.z) * div_temp.y, w->cam.lookat.z));
-			temp = color_add(temp, rft_cast(w, r, ALL));
-		}
-		div += b - 1;
+		r->data.hit_something = rft_hitter(aw->scene, r, mode);
+		return ((t_vec3_d){});
 	}
-	if (!c.x && !c.y)
-		printf("called. %i\n", div);
-	return (pull_argb(temp, div));
-}
-
-void rft_window_cast(t_window *w)
-{
-	t_vec3_d div_temp = {w->cam.scene_window.x / w->size.x, w->cam.scene_window.x / w->size.x, 0};
-	t_ray	ray;
-
-	div_temp.z = 1;
-	ray.source = w->cam.pos;
-	if (w->toggle_hd)
-		div_temp.z = w->anti_aliasing;
-	for (int i = -w->size.x / 2; i < w->size.x / 2; i++)
-		for (int j = -w->size.y / 2; j < w->size.y / 2; j++)
-			my_mlx_pixel_put(&w->img, i + w->size.x / 2, w->size.x / 2 - j - 1, rft_anti_aliasing((t_vec2_i){i, j}, div_temp, &ray, w));
-	//																     /| |\ watch out for this - 1!!!!
-}
-
-void my_image_creator(t_window *w)
-{
-	rft_window_cast(w);
-
-	printf("called. %f, %f, %i-%i\n", w->step, w->cam.fov, w->anti_aliasing, w->toggle_hd);
-	reimage(w);
+	if (rft_hitter(aw->scene, r, mode))
+	{
+		if (r->data.ismetal)
+			return (r->data.color);
+		return (rft_search_light(aw, r, mode));
+	}
+	return (skybox_calc(*r, aw));
 }

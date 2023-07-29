@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 18:57:52 by lpollini          #+#    #+#             */
-/*   Updated: 2023/07/29 10:05:30 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/07/29 23:57:25 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,10 @@
 # define SQRT3 1.732051
 # define MAX_INT 0x7fffffff
 # define START_AA_VAL 3
-# define NEGATIVE_LIM -0.000000000001
-# define POSITIVE_LIM 0.000000000001
+# define NEGATIVE_LIM -0.0000000001
+# define POSITIVE_LIM 0.0000000001
 # define M_PI 3.141592653589793238462643383279502884L
+# define MAX_REF_DEPTH 5
 
 # define CREAT_GB_SWITCH 0
 
@@ -110,6 +111,9 @@ typedef enum e_objtype
 	SPHERE = 0,
 	PLANE,
 	CYLINDER,
+	METAL,
+	METALPLANE,
+	METALSPHERE
 }				t_objtype;
 
 /*    //SCENE OBJECTS\\    */
@@ -130,7 +134,7 @@ typedef struct s_transform
 
 typedef struct s_gameobject
 {
-	double		shinyness;
+	double		metalness;	// [0, 1]
 	double		albedo;		// [0, 1]
 	t_color_3	color;		// int x, y, z [0, 255]
 	t_transform	transform;	// see t_transform
@@ -146,11 +150,13 @@ typedef t_gameobject	t_plane;
 typedef struct s_raydata
 {
 	t_vec3_d		color;
+	t_vec3_d		metalcolor;
 	t_vec3_d		hit_point;
 	t_gameobject	*hit_pointer;
 	bool			hit_something;
 	t_vec3_d		point_normal;
 	double			sqr_distance;
+	char			ismetal;
 }				t_raydata;
 
 typedef struct s_ray
@@ -159,6 +165,8 @@ typedef struct s_ray
 	t_vec3_d		direction;
 	t_tracing_mode	mode;
 	t_vec3_d		source;
+	double			max_sqr_len;
+	char			depth;
 }				t_ray;
 
 /*    //ALL PURPOSE STRUCTURE\\    */
@@ -198,6 +206,10 @@ char			rft_hitter(t_list *scene, t_ray *r, t_tracing_mode mode);
 t_vec3_d		skybox_calc(t_ray r, t_window *w);
 t_vec3_d		rft_cast(t_window *w, t_ray *r, t_tracing_mode mode);
 unsigned int	my_mlx_pixel_get(t_data data, int x, int y);
+t_vec3_d		rft_cast(t_window *w, t_ray *r, t_tracing_mode mode);
+int				rft_anti_aliasing(const t_vec2_i c, const t_vec3_d div_temp, t_ray *r, t_window *w);
+void			rft_window_cast(t_window *w);
+void			my_image_creator(t_window *w);
 
 void			transform_out(t_transform t);
 /*    //VECTOR METHODS\\    */
@@ -220,5 +232,8 @@ t_vec3_d		v3_d_sum_2(t_vec3_d a, t_vec3_d b);
 t_vec3_d		color_add(t_vec3_d a, const t_vec3_d b);
 t_color_3		color_3_merge(t_color_3 a, t_color_3 b);
 double			plan_module(double a);
+t_vec3_d		v3_d_specular(t_vec3_d v, t_vec3_d normal);
+t_vec3_d		v3_d_sumponder(t_vec3_d a, t_vec3_d b, double p);
+double			v3_d_mod(t_vec3_d a);
 
 #endif

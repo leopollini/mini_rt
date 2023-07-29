@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 09:56:15 by lpollini          #+#    #+#             */
-/*   Updated: 2023/07/29 09:59:36 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/07/29 22:01:11 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,15 @@ int create_trgb(int a, int r, int g, int b)
 
 int pull_argb(t_vec3_d c, int div)
 {
+	const int	d_d = div * 255;
+
+	if (c.x > d_d)
+		c.x = d_d;
+	if (c.y > d_d)
+		c.y = d_d;
+	if (c.z > d_d)
+		c.z = d_d;
+
 	return ((int)(c.x / div) << 16 | (int)(c.y / div) << 8 | (int)(c.z / div));
 }
 
