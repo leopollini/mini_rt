@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 22:14:44 by lpollini          #+#    #+#             */
-/*   Updated: 2023/07/26 18:13:42 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/07/29 09:36:00 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,26 +34,7 @@ static int	keys_manager_1(t_window *win, int keypressed)
 		win->anti_aliasing--;
 	else if (keypressed == 104)
 		win->toggle_hd = !win->toggle_hd;
-	/*else if (keypressed == 107)
-		win->col.g -= CHANGE_VAL;
-	else if (keypressed == 111)
-		win->col.b += CHANGE_VAL;
-	else if (keypressed == 108)
-		win->col.b -= CHANGE_VAL;
-	else if (keypressed == 118)
-		win->col.z /= SCALE_L;
-	else if (keypressed == 109)
-		win->col.z *= SCALE_L;
-	else if (keypressed == 113)
-		win->firstp.x += E_0;*/
-	else
-		return (0);
-	return (1);
-}
-
-static int	keys_manager_2(t_window *win, int keypressed)
-{
-	/*if (keypressed == 119)
+	/*else if (keypressed == 119)
 		win->firstp.x += E_N1;
 	else if (keypressed == 101)
 		win->firstp.x += E_N2;
@@ -64,19 +45,43 @@ static int	keys_manager_2(t_window *win, int keypressed)
 	else if (keypressed == 121)
 		win->firstp.x -= E_0;
 	else if (keypressed == 97)
-		win->firstp.y += E_0;
-	else if (keypressed == 115)
-		win->firstp.y += E_N1;
-	else if (keypressed == 100)
-		win->firstp.y += E_N2;
-	else if (keypressed == 102)
-		win->firstp.y -= E_N2;
-	else if (keypressed == 103)
-		win->firstp.y -= E_N1;
-	else if (keypressed == 104)
-		win->firstp.y -= E_0;
+		win->firstp.y += E_0;*/
 	else
-		return (0);*/
+		return (0);
+	return (1);
+}
+
+static int	keys_manager_2(t_window *win, int keypressed)
+{
+	if (keypressed == 65432 && win->selected)
+		win->selected->transform.position.x += win->step;
+	else if (keypressed == 65430 && win->selected)
+		win->selected->transform.position.x -= win->step;
+	else if (keypressed == 65431 && win->selected)
+		win->selected->transform.position.y += win->step;
+	else if (keypressed == 65433 && win->selected)
+		win->selected->transform.position.y -= win->step;
+	else if (keypressed == 65437 && win->selected)
+		win->selected->transform.position.z += win->step;
+	else if (keypressed == 65438 && win->selected)
+		win->selected->transform.position.z -= win->step;
+	else if (keypressed == 65453 && win->selected)
+		win->selected->transform.scale = v3_d_sum_2(win->selected->transform.scale, (t_vec3_d){-win->step, -win->step, -win->step});
+	else if (keypressed == 65451 && win->selected)
+		win->selected->transform.scale = v3_d_sum_2(win->selected->transform.scale, (t_vec3_d){win->step, win->step, win->step});
+	else if (keypressed == 65455)
+	{
+		win->step /= SCALE_S;
+		return (0);
+	}
+	else if (keypressed == 65450)
+	{
+		win->step *= SCALE_S;
+		return (0);
+	}
+	else
+		return (0);
+	transform_out(win->selected->transform);
 	return (1);
 }
 
@@ -116,20 +121,25 @@ int	manage_keys(int keypressed, t_window *win)
 int	manage_mouse(int button, int x, int y, t_window *w)
 {
 	t_vec2_i	t;
+	t_ray		ray;
 	int	a;
 
 	if (button == 5)
 		manage_keys(98, w);
 	if (button == 4)
 		manage_keys(110, w);
-	/*if (button == 1 || button == 3)
+	if (button == 1)// || button == 3)
 	{
-		a = *(int*)(w->skybox.addr + ((int)y * w->skybox.ll + (int)x * (w->skybox.bps / 8)));
-		my_mlx_pixel_put(&w->img, x, y, a);
-		printf("---------------\ncalled. %i, %x\n", button, a);
-		a = pull_argb(create_argb((a >> 16) &0xff, (a >> 8) &0xff, a & 0xff), 1);
-		printf("called. %i, %x\n", button, a);
+		ray.direction = v3_normalize(new_v3_d((x - w->size.x / 2) * w->cam.scene_window.x / w->size.x, (w->size.y / 2 - y) * w->cam.scene_window.y / w->size.y, w->cam.lookat.z));
+		ray.source = w->cam.pos;
+		ray.data.hit_pointer = NULL;
+		rft_cast(w, &ray, REFERENCE);
+		w->selected = ray.data.hit_pointer;
+		if (w->selected)
+			printf("called. %i\n", w->selected->defnum);
+		else
+			printf("called. %s\n", (char *)NULL);
 		reimage(w);
-	}*/
+	}
 	return (0);
 }

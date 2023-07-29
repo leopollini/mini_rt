@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 10:08:34 by lpollini          #+#    #+#             */
-/*   Updated: 2023/07/27 23:54:43 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/07/29 09:47:40 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_gameobject new_object1(t_transform tr, t_color_3 cl, t_objtype type)	// return
 	return (res);
 }
 
-t_gameobject	*new_gameobject(t_transform tr, t_color_3 cl, t_objtype type)	// return malloc'd gameobject
+t_gameobject	*new_gameobject(t_transform tr, t_color_3 cl, t_objtype type, double sh)	// return malloc'd gameobject
 {
 	t_gameobject	*res;
 
@@ -30,6 +30,7 @@ t_gameobject	*new_gameobject(t_transform tr, t_color_3 cl, t_objtype type)	// re
 	res->transform = tr;
 	res->color = cl;
 	res->type = type;
+	res->shinyness = sh;
 	return (res);
 }
 
@@ -50,21 +51,9 @@ t_list	*ft_lstnew_dup(const void *a, int size)		// duplicates adding to list (a 
 	return (ft_lstnew(temp));
 }
 
-/************************************************
-
-
- * questa e` roba tua!!
-
---	prototipo inizializzatore:
-new_gameobject(new_transform((t_vec3_d){PUNTO CENTRO}, (t_vec3_d){VERSORE ROTAZIONE}, (t_vec3_d){VETTORE SCALA}), (t_color_3){COLORE RGB}, TIPO)));
-
-
-int alternativa a (t_vec3_d){x, y, z} esiste gia' new_v3_d(x, y, z), pero' il primo metodo e' piu' leggero :P
-
-************************************************/
-
 void	rft_add_gameobject_to_scene(t_window *w, t_gameobject *elem)	// requires elem to be malloc'd
 {
+	elem->defnum = w->obj_num;
 	ft_lstadd_front(&w->scene, ft_lstnew(elem));
 	w->obj_num++;
 }
@@ -75,17 +64,18 @@ int	rft_load_scene(t_window *w)
 	w->lights = ft_lstnew(NULL);
 	w->obj_num = 0;
 
-	t_lantern const LG[] = {{{100, 0 ,0}, {255, 255, 255}, 1}};
+	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0.5, 0.5, 5), new_v3_d(0, 0, 1), new_v3_d(1, 1, 1)), (t_color_3){255, 0, 0}, SPHERE, 0.6));
+	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0.5, -0.5, 5), new_v3_d(0, 0, 1), new_v3_d(1, 1, 1)), (t_color_3){0, 255, 0}, SPHERE, 0.6));
+	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(-0.5, 0.5, 5), new_v3_d(0, 0, 1), new_v3_d(1, 1, 1)), (t_color_3){0, 0, 255}, SPHERE, 0.6));
+	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(-0.5, -0.5, 5), new_v3_d(0, 0, 1), new_v3_d(1, 1, 1)), (t_color_3){0, 255, 255}, SPHERE, 0.6));
+	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, 0, 6), new_v3_d(0, 0, 1), new_v3_d(2, 2, 2)), (t_color_3){200, 200, 200}, SPHERE, 0));
+	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, 100, 10), v3_normalize(new_v3_d(-1, -12, -1)), new_v3_d(1, 1, 1)), (t_color_3){150, 150, 150}, PLANE, 0));
 
-	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, 0.5, 5), new_v3_d(0, 0, 1), new_v3_d(1, 1, 1)), (t_color_3){0, 0, 0}, SPHERE));
-	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, -0.5, 5), new_v3_d(0, 0, 1), new_v3_d(1, 1, 1)), (t_color_3){0, 0, 0}, SPHERE));
-	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0.5, 0, 5), new_v3_d(0, 0, 1), new_v3_d(1, 1, 1)), (t_color_3){0, 0, 0}, SPHERE));
-	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(-0.5, 0, 5), new_v3_d(0, 0, 1), new_v3_d(1, 1, 1)), (t_color_3){0, 0, 0}, SPHERE));
-	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, 0, 6.1), new_v3_d(0, 0, 1), new_v3_d(2, 2, 2)), (t_color_3){0, 0, 0}, SPHERE));
-
-
+	t_lantern const LG[] = {{{-10, -2, 0}, {255, 0, 255}, 2}, {{10, 5, 0}, {200, 255, 200}, 2}, {{0, -5, 2}, {255, 255, 255}, 0.5}, {{0, 10, 2}, {255, 255, 255}, 5}};
 	ft_lstadd_front(&w->lights, ft_lstnew_dup(LG, sizeof(t_lantern)));
-	w->obj_num = 1;
+	ft_lstadd_front(&w->lights, ft_lstnew_dup(LG + 1, sizeof(t_lantern)));
+	ft_lstadd_front(&w->lights, ft_lstnew_dup(LG + 2, sizeof(t_lantern)));
+	ft_lstadd_front(&w->lights, ft_lstnew_dup(LG + 3, sizeof(t_lantern)));
 	
 	//fino a qua sono test
 	
@@ -128,6 +118,8 @@ int	initw(t_window *win, int argn, char *args[])
 	camera_init(win);
 	win->anti_aliasing = START_AA_VAL;
 	win->toggle_hd = 0;
+	win->step = 0.1;
+	win->selected = NULL;
 	return (0);
 }
 
