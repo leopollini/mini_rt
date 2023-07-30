@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 10:08:34 by lpollini          #+#    #+#             */
-/*   Updated: 2023/07/30 00:00:35 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/07/30 19:23:05 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,12 @@ int	rft_load_scene(t_window *w)
 	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(-0.5, 0.5, 10), new_v3_d(0, 0, 1), new_v3_d(1, 1, 1)), (t_color_3){0, 0, 255}, SPHERE, 0));
 	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(-0.5, -0.5, 10), new_v3_d(0, 0, 1), new_v3_d(1, 1, 1)), (t_color_3){0, 255, 255}, SPHERE, 0));
 	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, 0, 11), new_v3_d(0, 0, 1), new_v3_d(2, 2, 2)), (t_color_3){200, 200, 200}, SPHERE, 0.4));
+	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, 0, 11), new_v3_d(0, 0, 1), new_v3_d(2, 2, 2)), (t_color_3){200, 200, 200}, SPHERE, 0.4));
 	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(-6, 0, 0), v3_normalize(new_v3_d(1, 0, 0)), new_v3_d(1, 1, 1)), (t_color_3){50, 200, 100}, PLANE, 0));
 	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(6, 0, 0), v3_normalize(new_v3_d(-1, 0, 0)), new_v3_d(1, 1, 1)), (t_color_3){200, 100, 50}, PLANE, 0));
-	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, 0, 20), v3_normalize(new_v3_d(0, 0, -1)), new_v3_d(1, 1, 1)), (t_color_3){255, 255, 255}, PLANE, 0.5));
+	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, -0.1, 0), v3_normalize(new_v3_d(0, 1, 0)), new_v3_d(1, 1, 1)), (t_color_3){255, 255, 255}, PLANE, 0.5));
 	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, 9, 0), v3_normalize(new_v3_d(0, -1, 0)), new_v3_d(1, 1, 1)), (t_color_3){255, 255, 255}, PLANE, 0));
-	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, -9, 0), v3_normalize(new_v3_d(0, 1, 0)), new_v3_d(1, 1, 1)), (t_color_3){255, 255, 255}, PLANE, 0));
+	// rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, -9, 0), v3_normalize(new_v3_d(0, 1, 0)), new_v3_d(1, 1, 1)), (t_color_3){255, 255, 255}, PLANE, 0));
 
 	t_lantern const LG[] = {/*{{-10, -2, 0}, {255, 0, 255}, 2}, {{3, 8, 2}, {200, 255, 200}, 2}, */{{0, 10, 18}, {200, 250, 230}, 1}, {{0, 7, 2}, {255, 255, 255}, 1}};
 
@@ -124,6 +125,7 @@ int	initw(t_window *win, int argn, char *args[])
 	win->toggle_hd = 0;
 	win->step = 0.1;
 	win->selected = NULL;
+	win->do_exit = 0;
 	return (0);
 }
 
@@ -144,6 +146,12 @@ int	ft_atoi(const char *str)
 	while (str[i] >= '0' && str[i] <= '9')
 		res = (res * 10) + (str[i++] - '0');
 	return (res);
+}
+
+int	loop_rt(t_window *w)
+{
+	usleep(2000);
+	reimage(w);
 }
 
 int main(int argn, char *args[])
@@ -167,5 +175,6 @@ int main(int argn, char *args[])
 	mlx_hook(w.win, 17, 1L << 0, win_close, &w);
 	mlx_hook(w.win, 2, 1L << 0, manage_keys, &w);
 	mlx_mouse_hook(w.win, manage_mouse, &w);
+	mlx_loop_hook(w.mlx, loop_rt, &w);
 	mlx_loop(w.mlx);
 }

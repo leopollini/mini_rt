@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:37:06 by lpollini          #+#    #+#             */
-/*   Updated: 2023/07/29 23:56:32 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/07/30 13:34:04 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ int hit_sphere(t_sphere *sphere, t_ray *r, t_tracing_mode mode)
 		refl.direction = v3_d_specular(v3d_anti(r->direction), r->data.point_normal);
 		refl.depth = r->depth + 1;
 		r->data.color = color_3_merge(rft_cast(NULL, &refl, ALL), sphere->color);
-		//v3d_out(refl.direction);
 		return (1);
 	}
 	r->data.color = sphere->color;
@@ -120,7 +119,6 @@ int hit_plane(t_plane *plane, t_ray *r, t_tracing_mode mode)
 			refl.direction = v3_d_specular(v3d_anti(r->direction), norm);
 			refl.depth = r->depth + 1;
 			r->data.color = color_3_merge(rft_cast(NULL, &refl, ALL), plane->color);
-			//v3d_out(refl.direction);
 			return (1);
 		}
 		r->data.color = plane->color;

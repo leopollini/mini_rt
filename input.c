@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 22:14:44 by lpollini          #+#    #+#             */
-/*   Updated: 2023/07/29 22:59:36 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/07/30 19:21:50 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,14 @@
 
 int	win_close(t_window *win)
 {
-	mlx_destroy_image(win->mlx, win->img.img);
+	win->do_exit = 1;
+	rft_window_cast(NULL);
+	/*mlx_destroy_image(win->mlx, win->img.img);
 	mlx_destroy_window(win->mlx, win->win);
 	mlx_destroy_display(win->mlx);
 	free(win->mlx);
 	printf("called close window.\n");
-	exit(0);
+	exit(0);*/
 }
 
 static int	keys_manager_1(t_window *win, int keypressed)
@@ -34,15 +36,15 @@ static int	keys_manager_1(t_window *win, int keypressed)
 		win->anti_aliasing--;
 	else if (keypressed == 104)
 		win->toggle_hd = !win->toggle_hd;
-	/*else if (keypressed == 119)
-		win->firstp.x += E_N1;
-	else if (keypressed == 101)
-		win->firstp.x += E_N2;
-	else if (keypressed == 114)
-		win->firstp.x -= E_N2;
-	else if (keypressed == 116)
-		win->firstp.x -= E_N1;
-	else if (keypressed == 121)
+	else if (keypressed == 119)
+		win->cam.pos.y += win->step;
+	else if (keypressed == 97)
+		win->cam.pos.y -= win->step;
+	else if (keypressed == 115)
+		win->cam.pos.x += win->step;
+	else if (keypressed == 100)
+		win->cam.pos.x -= win->step;
+	/*else if (keypressed == 121)
 		win->firstp.x -= E_0;
 	else if (keypressed == 97)
 		win->firstp.y += E_0;*/
@@ -120,7 +122,8 @@ int	manage_keys(int keypressed, t_window *win)
 	else
 		return (0);
 	camera_update(win);
-	my_image_creator(win);
+	if (!THREADS)
+		my_image_creator(win);
 	return (0);
 }
 
@@ -143,7 +146,10 @@ int	manage_mouse(int button, int x, int y, t_window *w)
 		rft_cast(w, &ray, REFERENCE);
 		w->selected = ray.data.hit_pointer;
 		if (w->selected)
-			printf("called. %i\n", w->selected->defnum);
+		{
+			printf("called id %i : ", w->selected->defnum);
+			transform_out(w->selected->transform);
+		}
 		else
 			printf("called. %s\n", (char *)NULL);
 		reimage(w);

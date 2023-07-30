@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:56:59 by lpollini          #+#    #+#             */
-/*   Updated: 2023/07/29 22:55:36 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/07/30 19:24:42 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	v3d_out(t_vec3_d a)
 
 void	transform_out(t_transform t)
 {
-	printf("\ncalled transform out.\n----------------------------------------------------\n");
+	printf("called transform out.\n----------------------------------------------------\n");
 	printf("x = % 12f, y = % 12f, z = % 12f\n", t.position.x, t.position.y, t.position.z);
 	printf("x = % 12f, y = % 12f, z = % 12f\n", t.rotation.x, t.rotation.y, t.rotation.z);
 	printf("x = % 12f, y = % 12f, z = % 12f\n----------------------------------------------------\n", t.scale.x, t.scale.y, t.scale.z);
@@ -146,6 +146,11 @@ t_color_3	color_3_merge(t_color_3 a, t_color_3 b)
 	return ((t_color_3 ){a.x * b.x / 255, a.y * b.y / 255, a.z * b.z / 255});
 }
 
+t_vec3_d	v3_d_sumponder(t_vec3_d a, t_vec3_d b, double p)
+{
+	return ((t_vec3_d){a.x * (1 - p) + b.x * p, a.y * (1 - p) + b.y * p, a.z * (1 - p) + b.z * p});
+}
+
 t_vec3_d	v3_d_specular(t_vec3_d v, t_vec3_d normal)
 {
 	return (v3_d_sum_2(v3_d_scal(normal, v3_d_dot(v, normal) * 2), v3d_anti(v)));
@@ -161,9 +166,4 @@ double	plan_module(double a)
 double	v3_d_mod(t_vec3_d a)
 {
 	return (a.x * a.x + a.y * a .y + a.z * a.z);
-}
-
-t_vec3_d	v3_d_sumponder(t_vec3_d a, t_vec3_d b, double p)
-{
-	return ((t_vec3_d){a.x * (1 - p) + b.x * p, a.y * (1 - p) + b.y * p, a.z * (1 - p) + b.z * p});
 }

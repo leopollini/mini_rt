@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 18:57:52 by lpollini          #+#    #+#             */
-/*   Updated: 2023/07/29 23:57:25 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/07/30 19:14:59 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # define E_0 0.1f
 # define E_N1 0.01f
 # define E_N2 0.001f
-# define SCALE_S 1.1f
+# define SCALE_S 1.3f
 # define SCALE_L 2.2f
 # define SCALE_LL 12
 # define SQRT2 1.414214
@@ -34,6 +34,8 @@
 # define M_PI 3.141592653589793238462643383279502884L
 # define MAX_REF_DEPTH 5
 
+# define THREADS 10
+
 # define CREAT_GB_SWITCH 0
 
 # include "mlx.h"
@@ -43,6 +45,10 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <time.h>
+# include <pthread.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <sys/wait.h>
 
 /*    //VECTOR STRUCTURES\\    */
 typedef struct s_data
@@ -186,7 +192,16 @@ typedef struct s_window
 	bool			toggle_hd;
 	t_gameobject	*selected;
 	double			step;
+	char			do_exit;
 }				t_window;
+
+/*    //THREAD STRUCTURE\\    */
+typedef struct s_thread
+{
+	int			i;
+	int			j;
+	t_window	*w;
+}				t_thread;
 
 /*    //FUNCTIONS\\    */
 int				win_close(t_window *win);
