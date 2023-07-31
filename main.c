@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 10:08:34 by lpollini          #+#    #+#             */
-/*   Updated: 2023/07/30 19:23:05 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/07/31 16:58:54 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	rft_load_scene(t_window *w)
 	w->lights = ft_lstnew(NULL);
 	w->obj_num = 0;
 
-	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0.5, 0.5, 10), new_v3_d(0, 0, 1), new_v3_d(1, 1, 1)), (t_color_3){255, 0, 0}, SPHERE, 0));
+	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0.5, 0.5, 10), new_v3_d(0, 0, 1), new_v3_d(1, 1, 1)), (t_color_3){255, 0, 0}, SPHERE, -1.2));
 	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0.5, -0.5, 10), new_v3_d(0, 0, 1), new_v3_d(1, 1, 1)), (t_color_3){0, 255, 0}, SPHERE, 0));
 	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(-0.5, 0.5, 10), new_v3_d(0, 0, 1), new_v3_d(1, 1, 1)), (t_color_3){0, 0, 255}, SPHERE, 0));
 	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(-0.5, -0.5, 10), new_v3_d(0, 0, 1), new_v3_d(1, 1, 1)), (t_color_3){0, 255, 255}, SPHERE, 0));
@@ -72,8 +72,9 @@ int	rft_load_scene(t_window *w)
 	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, 0, 11), new_v3_d(0, 0, 1), new_v3_d(2, 2, 2)), (t_color_3){200, 200, 200}, SPHERE, 0.4));
 	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(-6, 0, 0), v3_normalize(new_v3_d(1, 0, 0)), new_v3_d(1, 1, 1)), (t_color_3){50, 200, 100}, PLANE, 0));
 	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(6, 0, 0), v3_normalize(new_v3_d(-1, 0, 0)), new_v3_d(1, 1, 1)), (t_color_3){200, 100, 50}, PLANE, 0));
-	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, -0.1, 0), v3_normalize(new_v3_d(0, 1, 0)), new_v3_d(1, 1, 1)), (t_color_3){255, 255, 255}, PLANE, 0.5));
+	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, -9, 0), v3_normalize(new_v3_d(0, 1, 0)), new_v3_d(1, 1, 1)), (t_color_3){255, 255, 255}, PLANE, 0));
 	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, 9, 0), v3_normalize(new_v3_d(0, -1, 0)), new_v3_d(1, 1, 1)), (t_color_3){255, 255, 255}, PLANE, 0));
+	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, -4, 0), v3_normalize(new_v3_d(0, 1, 0)), new_v3_d(1, 1, 1)), (t_color_3){255, 255, 255}, PLANE, 0.5));
 	// rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, -9, 0), v3_normalize(new_v3_d(0, 1, 0)), new_v3_d(1, 1, 1)), (t_color_3){255, 255, 255}, PLANE, 0));
 
 	t_lantern const LG[] = {/*{{-10, -2, 0}, {255, 0, 255}, 2}, {{3, 8, 2}, {200, 255, 200}, 2}, */{{0, 10, 18}, {200, 250, 230}, 1}, {{0, 7, 2}, {255, 255, 255}, 1}};
@@ -152,6 +153,7 @@ int	loop_rt(t_window *w)
 {
 	usleep(2000);
 	reimage(w);
+	return (0);
 }
 
 int main(int argn, char *args[])
