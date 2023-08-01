@@ -12,3 +12,7 @@ new_gameobject(new_transform((t_vec3_d){ORIGINE}, (t_vec3_d){VERSORE ROTAZIONE},
 -- int alternativa a (t_vec3_d){x, y, z} esiste gia' new_v3_d(x, y, z), pero' il primo metodo e' piu' leggero :P
 
 ************************************************/
+
+>>>>>modifiche<<<<<<< Nelly
+
+Ciao!!! ho inserito il makefile e fatto un po' di ordine nelle cartelle... il make dovrebbe gia' compilare... se trovi problemi, scusa XD

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mini_rt.h"
+#include "./include/mini_rt.h"
 
 t_gameobject new_object1(t_transform tr, t_color_3 cl, t_objtype type)	// return NON malloc'd gameobject
 {
@@ -152,6 +152,7 @@ int	loop_rt(t_window *w)
 {
 	usleep(2000);
 	reimage(w);
+	return (0);
 }
 
 int main(int argn, char *args[])
