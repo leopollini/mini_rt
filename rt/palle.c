@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 22:21:11 by lpollini          #+#    #+#             */
-/*   Updated: 2023/07/30 13:49:53 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/07/31 16:07:21 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	*thread_lol(void *a)
 		for (int i = 0; i < w->size.x / THREADS; i++)
 			for (int j = 0; j < w->size.y / THREADS; j++)
 				my_mlx_pixel_put(&w->img, i + t.i * size.x, w->size.y - (j + t.j * size.y) - 2, rft_anti_aliasing((t_vec2_i){i+ t.i * size.x - w->size.x / 2, j + t.j * size.y - w->size.x / 2}, div_temp, &ray, w));
-		usleep(50000);
+		usleep(200000);
 	}
 	return (NULL);
 }
