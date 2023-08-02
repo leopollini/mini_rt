@@ -20,26 +20,29 @@
 # -s = silent
 # @echo = stampa quello che viene dopo
 
-NAME = mini_rt
+NAME		= mini_rt
 
-CC = gcc 
+CC			= gcc 
 
-CFLAGS = -Wall -Wextra -Werror -pthread -Iheaders/
+CFLAGS		= -pthread -Iheaders/ # -Wall -Wextra -Werror
 
-LIBFT = libft/libft.a
+LIB			= mlx/libmlx_Linux.a -lX11 -lXext -lm libft/libft.a
 
-LIB = mlx/libmlx_Linux.a -lX11 -lXext -lm
+MLX			= mlx/
 
-MLX = mlx/
+INCLUDE		= include/
 
-INCLUDE = include/
+FLAG		=  -lXext -lX11 -lm -lz
 
-FLAG =  -lXext -lX11 -lm -lz
-
-SRC = 	main.c \
-		parsing/parsing.c parsing/file_rt.c \
-		rt/color_opers.c rt/input.c rt/rft_init_scene.c \
-		rt/vectors.c rt/image_creat.c rt/lol.c rt/palle.c rt/utils.c
+SRC			= main.c \
+parsing/parsing.c \
+parsing/file_rt.c \
+rt/color_opers.c \
+rt/input.c \
+rt/rft_init_scene.c \
+rt/vectors.c \
+rt/image_creat.c \
+rt/lol.c rt/palle.c rt/utils.c
 
 
 OBJ = $(SRC:.c=.o)
@@ -50,15 +53,24 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	@echo "⌛ compiling...⌛"
-	$(MAKE) -s -C libft/
-	$(MAKE) -s -C $(MLX)
-	$(CC) $(CFLAGS) $(OBJ) $(LIB) $(LIBFT) -o $(NAME)
+	make -s -C libft/
+	make -s -C $(MLX)
+	$(CC) $(CFLAGS) $(OBJ) $(LIB) -o $(NAME)
 	@echo "🎉 mini_rt compiled! 🎉"
+	rm -f $(OBJ)
+
+bonus: all
+
+debug: $(OBJ)
+	@echo "⌛ compiling...⌛"
+	$(CC) $(CFLAGS) $(OBJ) $(LIB) -o $(NAME)
+	@echo "🎉 mini_rt compiled! 🎉"
+	rm -f $(OBJ)
 
 clean:	
 	@echo "🧽 cleaning... 🧽"
 	@rm -f $(OBJ) $(OBJ_BONUS)
-	@make clean -s -C libft/
+	@make fclean -s -C libft/
 
 
 fclean: clean
