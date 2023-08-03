@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: iragusa <marvin@42.fr>                     +#+  +:+       +#+         #
+#    By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/22 15:15:27 by iragusa           #+#    #+#              #
-#    Updated: 2022/10/28 17:09:02 by iragusa          ###   ########.fr        #
+#    Updated: 2023/08/02 16:53:49 by lpollini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,6 +68,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	$(AR) $(NAME) $(OBJ)
+	rm -f $(OBJ)
 
 %.o: %.c
 	$(CC) -c $(FLAG) -I. $< -o $@

@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 22:21:11 by lpollini          #+#    #+#             */
-/*   Updated: 2023/07/31 16:07:21 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/08/02 16:57:51 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	*thread_lol(void *a)
 	 t_window	*w = t.w;
 	t_vec3_d	div_temp;
 	t_ray		ray;
-	const t_vec2_i	size = (t_vec2_i){w->size.x / THREADS, w->size.x / THREADS};
+	const t_vec2_i	size = (t_vec2_i){w->size.x / THREADSN, w->size.x / THREADSN};
 
 	free(a);
 	ray.source = w->cam.pos;
@@ -66,8 +66,8 @@ void	*thread_lol(void *a)
 		div_temp = (t_vec3_d){w->cam.scene_window.x / w->size.x, w->cam.scene_window.y / w->size.y, 1};
 		if (w->toggle_hd)
 			div_temp.z = w->anti_aliasing;
-		for (int i = 0; i < w->size.x / THREADS; i++)
-			for (int j = 0; j < w->size.y / THREADS; j++)
+		for (int i = 0; i < w->size.x / THREADSN; i++)
+			for (int j = 0; j < w->size.y / THREADSN; j++)
 				my_mlx_pixel_put(&w->img, i + t.i * size.x, w->size.y - (j + t.j * size.y) - 2, rft_anti_aliasing((t_vec2_i){i+ t.i * size.x - w->size.x / 2, j + t.j * size.y - w->size.x / 2}, div_temp, &ray, w));
 		usleep(200000);
 	}
@@ -76,16 +76,16 @@ void	*thread_lol(void *a)
 
 void	init_threads(t_window *w)
 {
-	static pthread_t	lol[THREADS][THREADS];
+	static pthread_t	lol[THREADSN][THREADSN];
 	int					i;
 	int					j;
 
 	i = -1;
 	if (w)
-		while (++i < THREADS)
+		while (++i < THREADSN)
 		{
 			j = -1;
-			while (++j < THREADS)
+			while (++j < THREADSN)
 				pthread_create(&lol[i][j], NULL, thread_lol, build_pt(w, i, j));
 		}
 	else

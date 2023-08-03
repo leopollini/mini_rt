@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 18:57:52 by lpollini          #+#    #+#             */
-/*   Updated: 2023/07/31 16:59:10 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/08/02 16:51:09 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@
 # define M_PI 3.141592653589793238462643383279502884L
 # define MAX_REF_DEPTH 5
 
-# define THREADS 10
+# define THREADS 0
+# define THREADSN 10
 
 # define CREAT_GB_SWITCH 0
 
