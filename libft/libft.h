@@ -152,5 +152,6 @@ void		ft_print_sign(int d, t_flags *flag);
 void		ft_print_numzero(t_flags *flag);
 void		ft_print_space_s(t_flags *flag);
 int			free_mat(char **matrix);
+int			ft_printf(const char *src, ...);
 
 #endif

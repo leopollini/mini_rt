@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "./include/mini_rt.h"
+#include "./include/libft.h"
 
 t_gameobject new_object1(t_transform tr, t_color_3 cl, t_objtype type)	// return NON malloc'd gameobject
 {

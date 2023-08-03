@@ -1,32 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
+/*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iragusa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/17 17:57:49 by iragusa           #+#    #+#             */
-/*   Updated: 2022/10/17 17:58:49 by iragusa          ###   ########.fr       */
+/*   Created: 2023/08/03 17:09:12 by iragusa           #+#    #+#             */
+/*   Updated: 2023/08/03 17:09:14 by iragusa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
-#include <unistd.h>
 
-void	ft_putchar(char c)
+#include "../include/mini_rt.h"
+
+int ft_print_error(char *err)
 {
-	char	*ptr;
-	ptr = &c;
-	write(1, ptr, 1);
+    write(2, "Error: ", 7);
+	ft_putstr_fd(err, 2);
+	write(2, "\n", 1);
+	return (1);    
 }
-
-void	ft_putchar_fd(char c, int fd)
-{
-	char	*ptr;
-	size_t	cont;
-
-	ptr = &c;
-	cont = 1;
-	write(fd, ptr, cont);
-}
-
 

@@ -37,8 +37,17 @@
 
 # define CREAT_GB_SWITCH 0
 
-# include "mlx.h"
+/*error msg*/
+
+# define NOARGS "something's wrong, you have to write: ./minirt scenes/mandatory.c"
+# define NOFILE "sorry, file not exist!"
+# define NO_RT "ehy dude, only rt file!"
+# define NO_LIGHT "check your params! missing light data"
+# define NO_CAM "check your params! missing camera data"
+# define NO_AMBIENT "check your params! missing ambient data"
+
 # include "libft.h"
+# include "mlx.h"
 # include <math.h>
 # include <stdio.h>
 # include <unistd.h>
@@ -89,6 +98,7 @@ typedef	char	bool;
 /*    //CAMERA STRUCTURE\\    */
 typedef struct s_camera
 {
+	char			id;
 	t_vec3_d		pos;
 	t_vec3_d		lookat;
 	t_vec3_d		hori;
@@ -98,6 +108,19 @@ typedef struct s_camera
 	t_vec2_d		scene_window;
 	double			fov;
 }				t_camera;
+
+typedef struct s_ambient
+{
+	char			id;
+	t_vec3_d		pos;
+}				t_ambient;
+
+typedef struct s_light
+{
+	char			id;
+	t_vec3_d		pos;
+}				t_light;
+
 
 /*    //ENUMS\\    */
 typedef enum e_tracing_mode
@@ -175,6 +198,7 @@ typedef struct s_ray
 }				t_ray;
 
 /*    //ALL PURPOSE STRUCTURE\\    */
+
 typedef struct s_window
 {
 	void			*mlx;
@@ -184,6 +208,8 @@ typedef struct s_window
 	t_vec2_i		skybox_size;
 	t_vec2_i		size;
 	t_camera		cam;
+	t_ambient		ambient;
+	t_light			light;
 	t_list			*scene;
 	int				obj_num;
 	t_list			*lights;
@@ -192,9 +218,11 @@ typedef struct s_window
 	t_gameobject	*selected;
 	double			step;
 	char			do_exit;
+	int				num_line;
 }				t_window;
 
 /*    //THREAD STRUCTURE\\    */
+
 typedef struct s_thread
 {
 	int			i;
@@ -302,5 +330,20 @@ t_vec3_d		v3_d_sumponder(t_vec3_d a, t_vec3_d b, double p);
 t_vec3_d		v3_d_specular(t_vec3_d v, t_vec3_d normal);
 double			plan_module(double a);
 double			v3_d_mod(t_vec3_d a);
+
+/*file parse_utils.c*/
+
+int				ft_print_error(char *err);
+
+/*file file_rt.c*/
+
+int				ft_check_data(t_window *w);
+int				ft_check_file(char *scene);
+int				ft_read_rt(t_window *w, int fd);
+int				ft_open_rt(t_window *w, char *scene);
+
+/*file parsing.c*/
+
+
 
 #endif

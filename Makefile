@@ -37,7 +37,6 @@ INCLUDE = include/
 FLAG =  -lXext -lX11 -lm -lz
 
 SRC = 	main.c \
-		parsing/parsing.c parsing/file_rt.c \
 		rt/color_opers.c rt/input.c rt/rft_init_scene.c \
 		rt/vectors.c rt/image_creat.c rt/lol.c rt/palle.c rt/utils.c
 
