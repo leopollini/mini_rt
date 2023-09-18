@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 22:21:11 by lpollini          #+#    #+#             */
-/*   Updated: 2023/08/02 16:57:51 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/08/31 15:45:29 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	rft_anti_aliasing(const t_vec2_i c, const t_vec3_d div_temp, t_ray *r, t_win
 		while (b++ < div_temp.z)
 		{
 			r->direction = v3_normalize(new_v3_d((c.x + a / div_temp.z) * div_temp.x, (c.y + b / div_temp.z) * div_temp.y, w->cam.lookat.z));
+			//r->direction = v3_d_specular(r->direction, w->cam.lookat);
 			temp = color_add(temp, rft_cast(w, r, ALL));
 		}
 		div += b - 1;
@@ -80,6 +81,8 @@ void	init_threads(t_window *w)
 	int					i;
 	int					j;
 
+	if (!THREADS)
+		return ;
 	i = -1;
 	if (w)
 		while (++i < THREADSN)
@@ -89,9 +92,12 @@ void	init_threads(t_window *w)
 				pthread_create(&lol[i][j], NULL, thread_lol, build_pt(w, i, j));
 		}
 	else
-		for (int i = 0; i < 10; i++)
-			for (int j = 0; j < 10; j++)
+		while (++i < THREADSN)
+		{
+			j = -1;
+			while (++j < THREADSN)
 				pthread_join(lol[i][j], NULL);
+		}
 }
 
 void rft_window_cast(t_window *w)
@@ -105,6 +111,9 @@ void rft_window_cast(t_window *w)
 	ray.depth = 0;
 	if (w->toggle_hd)
 		div_temp.z = w->anti_aliasing;
+	// for (int i = 0; i < w->size.x; i++)
+	// 	for (int j = 0; j < w->size.y; j++)
+	// 		my_mlx_pixel_put(&w->img, i, j, rft_anti_aliasing((t_vec2_i){i, j}, div_temp, &ray, w));
 	for (int i = -w->size.x / 2; i < w->size.x / 2; i++)
 		for (int j = -w->size.y / 2; j < w->size.y / 2; j++)
 			my_mlx_pixel_put(&w->img, i + w->size.x / 2, w->size.x / 2 - j - 1, rft_anti_aliasing((t_vec2_i){i, j}, div_temp, &ray, w));

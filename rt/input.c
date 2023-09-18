@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 22:14:44 by lpollini          #+#    #+#             */
-/*   Updated: 2023/07/30 19:21:50 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/08/15 15:01:15 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 int	win_close(t_window *win)
 {
 	win->do_exit = 1;
-	rft_window_cast(NULL);
-	/*mlx_destroy_image(win->mlx, win->img.img);
+	init_threads(NULL);
+	mlx_destroy_image(win->mlx, win->img.img);
 	mlx_destroy_window(win->mlx, win->win);
 	mlx_destroy_display(win->mlx);
 	free(win->mlx);
 	printf("called close window.\n");
-	exit(0);*/
+	exit(0);
 	return(0);
 }
 
@@ -39,12 +39,12 @@ static int	keys_manager_1(t_window *win, int keypressed)
 		win->toggle_hd = !win->toggle_hd;
 	else if (keypressed == 119)
 		win->cam.pos.y += win->step;
-	else if (keypressed == 97)
-		win->cam.pos.y -= win->step;
 	else if (keypressed == 115)
-		win->cam.pos.x += win->step;
-	else if (keypressed == 100)
+		win->cam.pos.y -= win->step;
+	else if (keypressed == 97)
 		win->cam.pos.x -= win->step;
+	else if (keypressed == 100)
+		win->cam.pos.x += win->step;
 	/*else if (keypressed == 121)
 		win->firstp.x -= E_0;
 	else if (keypressed == 97)
@@ -109,7 +109,7 @@ static int	keys_manager_2(t_window *win, int keypressed)
 int	manage_keys(int keypressed, t_window *win)
 {
 	printf("[PRESSED: %i]\n", keypressed);
-	if (keypressed == 65307)
+	if (keypressed == 65307 || keypressed == 113)
 		win_close(win);
 	if (keys_manager_1(win, keypressed))
 		(void)win;
