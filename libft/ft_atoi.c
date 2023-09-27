@@ -11,29 +11,21 @@
 /* ************************************************************************** */
 #include "libft.h"
 
-int	ft_atoi(const char *nptr)
+int	ft_atoi(const char *str)
 {
-	int	sign;
-	int	out;
 	int	i;
+	int	res;
 
-	sign = 1;
-	out = 0;
+	if (!str)
+		return (0);
 	i = 0;
-	while (nptr[i] == ' ' || (nptr[i] >= '\t' && nptr[i] <= '\r'))
+	while (str[i] == '\t' || str[i] == '\n' || str[i] == '\v'
+		|| str[i] == '\f' || str[i] == '\r' || str[i] == ' ')
 		i++;
-	while (nptr[i] == '+' || nptr[i] == '-')
-	{
-		if (nptr[i + 1] == '+' || nptr[i + 1] == '-')
-			return (0);
-		if (nptr[i] == '-')
-			sign *= -1;
+	if (str[i] == '-' || str[i] == '+')
 		i++;
-	}
-	while (nptr[i] >= '0' && nptr[i] <= '9' && nptr[i] != 0)
-	{
-		out = (out * 10) + (nptr[i] - 48);
-		i++;
-	}
-	return (out * sign);
+	res = 0;
+	while (str[i] >= '0' && str[i] <= '9')
+		res = (res * 10) + (str[i++] - '0');
+	return (res);
 }

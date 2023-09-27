@@ -68,7 +68,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	$(AR) $(NAME) $(OBJ)
-	rm -f $(OBJ)
+	rm -f $(OBJ) $(OBJ_BONUS)
 
 %.o: %.c
 	$(CC) -c $(FLAG) -I. $< -o $@

@@ -40,12 +40,15 @@
 
 /*error msg*/
 
-# define NOARGS "something's wrong, you have to write: ./minirt scenes/mandatory.c"
+# define NOARGS "something's wrong, you have to write: ./minirt scenes/mandatory.rt, if you followed by size of windows (ex. 500 500)"
+# define NOSIZE "the last two args are size of win, so they can be only digits!"
+# define NOINIT "something's wrong during initialization, try again"
 # define NOFILE "sorry, file not exist!"
 # define NO_RT "ehy dude, only rt file!"
-# define NO_LIGHT "check your params! missing light data"
-# define NO_CAM "check your params! missing camera data"
-# define NO_AMBIENT "check your params! missing ambient data"
+# define MALLOC "oh no, error in malloc() on memory allocation"
+# define ACL_ERR "check your params! file rt must have 1 A, 1 C, at least 1 L and at most 1 R!"
+# define CHECK_RT ",check your params!"
+# define PCS_ERR "check your params! you need at least one sphere, one cylinder and one plane!"
 
 # include "libft.h"
 # include "mlx.h"
@@ -112,16 +115,11 @@ typedef struct s_camera
 
 typedef struct s_ambient
 {
+	float			value; //inserita da ivana 
 	char			id;
-	t_vec3_d		pos;
+	t_vec3_d		color; //inserita da ivana 
+	t_vec3_d		pos; //nella luce d'ambiente servono le pos???
 }				t_ambient;
-
-typedef struct s_light
-{
-	char			id;
-	t_vec3_d		pos;
-}				t_light;
-
 
 /*    //ENUMS\\    */
 typedef enum e_tracing_mode
@@ -210,7 +208,6 @@ typedef struct s_window
 	t_vec2_i		size;
 	t_camera		cam;
 	t_ambient		ambient;
-	t_light			light;
 	t_list			*scene;
 	int				obj_num;
 	t_list			*lights;
@@ -220,7 +217,8 @@ typedef struct s_window
 	double			step;
 	char			do_exit;
 	int				num_line;
-}				t_window;
+	char 			**rt;
+}	t_window;
 
 /*    //THREAD STRUCTURE\\    */
 
@@ -332,19 +330,57 @@ t_vec3_d		v3_d_specular(t_vec3_d v, t_vec3_d normal);
 double			plan_module(double a);
 double			v3_d_mod(t_vec3_d a);
 
-/*file parse_utils.c*/
+/*file check_rt.c*/
 
-int				ft_print_error(char *err);
+int				contchar(t_window *w);
+char			*ft_clean_str(char *line);
+int				ft_pre_exit(t_window *w);
+char			*ft_strjoin2(char *s1, char *s2);
+int				ft_print_error(char *err, t_window *w);
 
-/*file file_rt.c*/
+/*file read_rt.c*/
 
-int				ft_check_data(t_window *w);
 int				ft_check_file(char *scene);
-int				ft_read_rt(t_window *w, int fd);
-int				ft_open_rt(t_window *w, char *scene);
+int				checkobj(t_window *w);
+int				ft_check_data(t_window *w);
+void			ft_read_rt(t_window *w, char *scene);
+int				ft_open_rt(t_window *w, char **av);
 
 /*file parsing.c*/
 
+float			tofloat(char **str);
+t_vec3_d		color_parse(char **str, t_window *w);
+t_vec3_d		pos_parse(char **str, t_window *w);
+int				ft_line_parser(t_window *w, char* line);
 
+/*file init.c*/
+
+void			rft_add_gameobject_to_scene(t_window *w, t_gameobject *elem);
+t_list			*ft_lstnew_dup(const void *a, int size);
+t_transform		new_transform(t_vec3_d p, t_vec3_d r, t_vec3_d s);
+t_gameobject	*new_gameobject(t_transform tr, t_color_3 cl, t_objtype type, double sh);
+t_gameobject 	new_object1(t_transform tr, t_color_3 cl, t_objtype type);
+
+/*file init_help.c*/
+
+int				rft_load_scene(t_window *w);
+void			camera_update(t_window *w);
+int				initw(t_window *win, int argn, char *args[]);
+int				loop_rt(t_window *w);
+
+/*file parse_utils.c*/
+
+int				ft_char_digit(char *str);
+void			*sux_malloc(unsigned int size, t_window *w);
+void			next_val(char **str);
+int				my_atoi(char **str);
+void			ft_comma(char **str, t_window *w);
+
+/*file parse_data.c*/
+
+int				parse_res(t_window *w, char **line);
+int				parse_amb(t_window *w, char **line);
+int				parse_cam(t_window *w, char **line);
+int				parse_light(t_window *w, char **line);
 
 #endif

@@ -16,3 +16,14 @@ new_gameobject(new_transform((t_vec3_d){ORIGINE}, (t_vec3_d){VERSORE ROTAZIONE},
 >>>>>modifiche<<<<<<< Nelly
 
 Ciao!!! ho inserito il makefile e fatto un po' di ordine nelle cartelle... il make dovrebbe gia' compilare... se trovi problemi, scusa XD
+
+Ho implementato il parsing, li dove non sapevo inserire la roba ho aggiunto delle variabili
+qui un riassunto:
+
+La R risoluzione l'ho inserita nelle x e y della size di t_windows, ho lasciato di base la possibilita' di cambiarle inserendole come 3/4 argomento oppure di default a 500/500.
+
+La A, luce di ambiente l'ho inserita in ambient ho creato un double value per il valore e inserito t_color per il colore, spero andassero li.
+
+La C ho inserito il view point nella pos xyz,  l'orentation in lookat xyz e il FOV. Dimmi se poi hai bisogno di altro qui, io ho trattato tutto come float, ho visto che ci sono varie altre liste o strutture dentro cam, comunque non ho toccato la tua impostazione iniziale, le sovrascrivo. 
+
+
