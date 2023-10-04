@@ -43,7 +43,8 @@ SRC = main.c \
 		parsing/init.c \
 		parsing/init_help.c \
 		parsing/parse_utils.c \
-		parsing/parse_data.c
+		parsing/parse_data.c \
+		parsing/parse_obj.c
 
 OBJ = $(SRC:.c=.o)
 

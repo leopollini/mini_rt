@@ -18,27 +18,27 @@ int	rft_load_scene(t_window *w)
 	w->lights = ft_lstnew(NULL);
 	w->obj_num = 0;
 
-	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0.5, 0.5, 10), new_v3_d(0, 0, 1), new_v3_d(1, 1, 1)), (t_color_3){255, 0, 0}, SPHERE, -1.2));
-	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0.5, -0.5, 10), new_v3_d(0, 0, 1), new_v3_d(1, 1, 1)), (t_color_3){0, 255, 0}, SPHERE, 0));
-	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(-0.5, 0.5, 10), new_v3_d(0, 0, 1), new_v3_d(1, 1, 1)), (t_color_3){0, 0, 255}, SPHERE, 0));
-	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(-0.5, -0.5, 10), new_v3_d(0, 0, 1), new_v3_d(1, 1, 1)), (t_color_3){0, 255, 255}, SPHERE, 0));
-	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, 0, 11), new_v3_d(0, 0, 1), new_v3_d(2, 2, 2)), (t_color_3){200, 200, 200}, SPHERE, 0.4));
-	//rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, 0, 11), new_v3_d(0, 0, 1), new_v3_d(2, 2, 2)), (t_color_3){200, 200, 200}, SPHERE, 0.4));
-	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(-6, 0, 0), v3_normalize(new_v3_d(1, 0, 0)), new_v3_d(1, 1, 1)), (t_color_3){50, 200, 100}, PLANE, 0));
-	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(6, 0, 0), v3_normalize(new_v3_d(-1, 0, 0)), new_v3_d(1, 1, 1)), (t_color_3){200, 100, 50}, PLANE, 0));
-	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, -9, 0), v3_normalize(new_v3_d(0, 1, 0)), new_v3_d(1, 1, 1)), (t_color_3){255, 255, 255}, PLANE, 0));
-	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, 9, 0), v3_normalize(new_v3_d(0, -1, 0)), new_v3_d(1, 1, 1)), (t_color_3){255, 255, 255}, PLANE, 0));
-	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, -4, 0), v3_normalize(new_v3_d(0, 1, 0)), new_v3_d(1, 1, 1)), (t_color_3){255, 255, 255}, PLANE, 0.5));
-	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, -9, 0), v3_normalize(new_v3_d(0, 1, 0)), new_v3_d(1, 1, 1)), (t_color_3){255, 255, 255}, PLANE, 0));
+	// rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0.5, 0.5, 10), new_v3_d(0, 0, 1), new_v3_d(1, 1, 1)), (t_color_3){255, 0, 0}, SPHERE, -1.2));
+	// rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0.5, -0.5, 10), new_v3_d(0, 0, 1), new_v3_d(1, 1, 1)), (t_color_3){0, 255, 0}, SPHERE, 0));
+	// rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(-0.5, 0.5, 10), new_v3_d(0, 0, 1), new_v3_d(1, 1, 1)), (t_color_3){0, 0, 255}, SPHERE, 0));
+	// rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(-0.5, -0.5, 10), new_v3_d(0, 0, 1), new_v3_d(1, 1, 1)), (t_color_3){0, 255, 255}, SPHERE, 0));
+	// rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, 0, 11), new_v3_d(0, 0, 1), new_v3_d(2, 2, 2)), (t_color_3){200, 200, 200}, SPHERE, 0.4));
+	// //rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, 0, 11), new_v3_d(0, 0, 1), new_v3_d(2, 2, 2)), (t_color_3){200, 200, 200}, SPHERE, 0.4));
+	// rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(-6, 0, 0), v3_normalize(new_v3_d(1, 0, 0)), new_v3_d(1, 1, 1)), (t_color_3){50, 200, 100}, PLANE, 0));
+	// rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(6, 0, 0), v3_normalize(new_v3_d(-1, 0, 0)), new_v3_d(1, 1, 1)), (t_color_3){200, 100, 50}, PLANE, 0));
+	// rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, -9, 0), v3_normalize(new_v3_d(0, 1, 0)), new_v3_d(1, 1, 1)), (t_color_3){255, 255, 255}, PLANE, 0));
+	// rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, 9, 0), v3_normalize(new_v3_d(0, -1, 0)), new_v3_d(1, 1, 1)), (t_color_3){255, 255, 255}, PLANE, 0));
+	// rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, -4, 0), v3_normalize(new_v3_d(0, 1, 0)), new_v3_d(1, 1, 1)), (t_color_3){255, 255, 255}, PLANE, 0.5));
+	// rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, -9, 0), v3_normalize(new_v3_d(0, 1, 0)), new_v3_d(1, 1, 1)), (t_color_3){255, 255, 255}, PLANE, 0));
 
-	// t_lantern const LG[] = {/*{{-10, -2, 0}, {255, 0, 255}, 2}, {{3, 8, 2}, {200, 255, 200}, 2},*/ {{0, 10, 18}, {200, 250, 230}, 2}, {{0, 7, 2}, {255, 255, 255}, 2}};
+	// // t_lantern const LG[] = {/*{{-10, -2, 0}, {255, 0, 255}, 2}, {{3, 8, 2}, {200, 255, 200}, 2},*/ {{0, 10, 18}, {200, 250, 230}, 2}, {{0, 7, 2}, {255, 255, 255}, 2}};
 
-	// ft_lstadd_front(&w->lights, ft_lstnew_dup(LG, sizeof(t_lantern)));
-	// ft_lstadd_front(&w->lights, ft_lstnew_dup(LG + 1, sizeof(t_lantern)));
-	//ft_lstadd_front(&w->lights, ft_lstnew_dup(LG + 2, sizeof(t_lantern)));
-	//ft_lstadd_front(&w->lights, ft_lstnew_dup(LG + 3, sizeof(t_lantern)));
+	// // ft_lstadd_front(&w->lights, ft_lstnew_dup(LG, sizeof(t_lantern)));
+	// // ft_lstadd_front(&w->lights, ft_lstnew_dup(LG + 1, sizeof(t_lantern)));
+	// //ft_lstadd_front(&w->lights, ft_lstnew_dup(LG + 2, sizeof(t_lantern)));
+	// //ft_lstadd_front(&w->lights, ft_lstnew_dup(LG + 3, sizeof(t_lantern)));
 	
-	rft_cast(w, NULL, 0);
+	
 	return (0);
 }
 

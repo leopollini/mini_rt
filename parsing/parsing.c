@@ -85,18 +85,12 @@ int ft_line_parser(t_window *w, char *line)
 		return (parse_cam(w, &line));
 	if (*line == 'L' && *line++)
 		return (parse_light(w, &line));
-	// if (ft_strncmp(line, "sp", 2) == 0 && *line++)
-	// 	return (parse_obj(w, line, SPHERE));
-	/*
-	if (ft_strncmp(line, "pl", 2) == 0)
-		return (parse_obj(w, line, PLANE));
-	if (ft_strncmp(line, "cy", 2) == 0)
-		return (parse_obj(w, line, CYLINDER));
-	if (ft_strncmp(line, "msp", 3) == 0)
-		return (parse_obj(w, line, METALSPHERE));
-    if (ft_strncmp(line, "mpl", 3) == 0)
-        return (parse_obj(w, line, METALPLANE));
-		*/
+	if (ft_strncmp(line, "sp", 2) == 0 && *line++)
+		return (parse_sphere(w, &line));
+	if (ft_strncmp(line, "pl", 2) == 0 && *line++)
+		return (parse_plane(w, &line));
+	if (ft_strncmp(line, "cy", 2) == 0 && *line++)
+		return (parse_cylinder(w, &line));
 	if (strcmp(line, ""))
 		return (1);  
 	return (0);

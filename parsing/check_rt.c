@@ -61,21 +61,21 @@ char *ft_clean_str(char *line)
 
 int	ft_pre_exit(t_window *w)
 {
-	int	y;
+	// int	y;
 
-	y = 0;
+	// y = 0;
 	if (!w->rt)
 		exit(1);
-	else
-	{
-		while (w->rt && w->rt[y] != NULL)
-		{
-			free(w->rt[y]);
-			y++;
-		}
-		if(w->rt)
-			free(w->rt);
-	}
+	// else
+	// // {
+	// // 	while (w->rt && w->rt[y] != NULL)
+	// // 	{
+	// // 		free(w->rt[y]);
+	// // 		y++;
+	// // 	}
+	// // 	if(w->rt)
+	// // 		free(w->rt);
+	// // }
 	exit(1);
 }
 

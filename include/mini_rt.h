@@ -364,7 +364,6 @@ t_gameobject 	new_object1(t_transform tr, t_color_3 cl, t_objtype type);
 /*file init_help.c*/
 
 int				rft_load_scene(t_window *w);
-void			camera_update(t_window *w);
 int				initw(t_window *win, int argn, char *args[]);
 int				loop_rt(t_window *w);
 
@@ -378,9 +377,16 @@ void			ft_comma(char **str, t_window *w);
 
 /*file parse_data.c*/
 
+void			camera_update(t_window *w);
 int				parse_res(t_window *w, char **line);
 int				parse_amb(t_window *w, char **line);
 int				parse_cam(t_window *w, char **line);
 int				parse_light(t_window *w, char **line);
 
+/*file parse_data.c*/
+
+t_vec3_d		normalize(t_vec3_d p);
+int				parse_sphere(t_window *w, char **line);
+int				parse_plane(t_window *w, char **line);
+int				parse_cylinder(t_window *w, char **line);
 #endif
