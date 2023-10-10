@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:37:06 by lpollini          #+#    #+#             */
-/*   Updated: 2023/10/10 16:57:56 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/10 18:01:22 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ int hit_sphere(t_sphere *sphere, t_ray *r, t_tracing_mode mode)
 	// 	r->data.color = skybox_calc(refl, sphere->texture);
 	// }
 	// else
-		r->data.color = sphere->color;
+	r->data.color = sphere->color;
 	return (1);
 }
 
@@ -290,5 +290,5 @@ t_vec3_d rft_cast(t_window *w, t_ray *r, t_tracing_mode mode)
 			return (r->data.color);
 		return (rft_search_light(aw, r, mode));
 	}
-	return ((t_vec3_d){0, 100, 0});//skybox_calc(*r, aw->skybox));
+	return (skybox_calc(*r, aw->skybox));
 }

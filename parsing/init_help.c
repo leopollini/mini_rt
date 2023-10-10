@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 10:08:34 by lpollini          #+#    #+#             */
-/*   Updated: 2023/10/10 16:16:07 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/10 17:58:14 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	rft_load_scene(t_window *w)
 	w->obj_num = 0;
 
 	// rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0.5, 0.5, 10), new_v3_d(0, 0, 1), new_v3_d(1, 1, 1)), (t_color_3){255, 0, 0}, SPHERE, -1.2));
-	// rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0.5, -0.5, 10), new_v3_d(0, 0, 1), new_v3_d(1, 1, 1)), (t_color_3){0, 255, 0}, SPHERE, 0));
+	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3d(0.5, -0.5, 10), new_v3d(0, 0, 1), new_v3d(1, 1, 1)), (t_color_3){0, 255, 0}, SPHERE, 0), NULL);
 	// rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(-0.5, 0.5, 10), new_v3_d(0, 0, 1), new_v3_d(1, 1, 1)), (t_color_3){0, 0, 255}, SPHERE, 0));
 	// rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3d(-0.5, -0.5, 10), new_v3d(0, 0, 1), new_v3d(1, 1, 1)), (t_color_3){0, 255, 255}, SPHERE, 0), NULL);
 	// rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, 0, 11), new_v3_d(0, 0, 1), new_v3_d(2, 2, 2)), (t_color_3){200, 200, 200}, SPHERE, 0.4));
@@ -62,12 +62,14 @@ void	camera_init(t_window *win)
 
 int	initw(t_window *win, int argn, char *args[])
 {
-	if (argn > 2)
-	{
-		win->size.x = ft_atoi((const char *)args[1]);
-		win->size.y = win->size.x;
-	}
-	else
+	// if (argn > 3)
+	// {
+	// 	win->size.x = ft_atoi((const char *)args[1]);
+	// 	win->size.y = win->size.x;
+	// }
+	// else
+	(void)argn;
+	(void)args;
 	{
 		win->size.x = 500;
 		win->size.y = 500;

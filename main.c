@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 10:08:34 by lpollini          #+#    #+#             */
-/*   Updated: 2023/10/10 16:50:50 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/10 17:50:55 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int main(int argn, char *args[])
 	if (initw(&w, argn, args))
 		ft_print_error(NOINIT, &w);
 
-	ft_open_rt(&w, args);
+	//ft_open_rt(&w, args);
 	//ft_test_parsing(&w);
 	rft_cast(&w, NULL, 0);
 
