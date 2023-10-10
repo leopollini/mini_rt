@@ -19,7 +19,7 @@ int	rft_load_scene(t_window *w)
 	w->obj_num = 0;
 
 	// rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0.5, 0.5, 10), new_v3_d(0, 0, 1), new_v3_d(1, 1, 1)), (t_color_3){255, 0, 0}, SPHERE, -1.2));
-	rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3d(0.5, -0.5, 10), new_v3d(0, 0, 1), new_v3d(1, 1, 1)), (t_color_3){0, 255, 0}, SPHERE, 0), NULL);
+	//rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3d(0.5, -0.5, 10), new_v3d(0, 0, 1), new_v3d(1, 1, 1)), (t_color_3){0, 255, 0}, SPHERE, 0), NULL);
 	// rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(-0.5, 0.5, 10), new_v3_d(0, 0, 1), new_v3_d(1, 1, 1)), (t_color_3){0, 0, 255}, SPHERE, 0));
 	// rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3d(-0.5, -0.5, 10), new_v3d(0, 0, 1), new_v3d(1, 1, 1)), (t_color_3){0, 255, 255}, SPHERE, 0), NULL);
 	// rft_add_gameobject_to_scene(w, new_gameobject(new_transform(new_v3_d(0, 0, 11), new_v3_d(0, 0, 1), new_v3_d(2, 2, 2)), (t_color_3){200, 200, 200}, SPHERE, 0.4));
@@ -56,8 +56,8 @@ void	camera_init(t_window *win)
 	tp->pos = (t_vec3_d){0, 0, 0};
 	tp->lookat = (t_vec3_d){0, 0, 1};
 	tp->rotation = (t_vec2_d){0, 0};
-
 	camera_update(win);
+	rft_load_scene(win);
 }
 
 int	initw(t_window *win, int argn, char *args[])

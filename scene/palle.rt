@@ -7,10 +7,9 @@ L	-50,100,0		0.7				                255,250,240
 pl	0,0,100			0,0,1.0			                255,255,255	            a:0.2 	m:1
 pl	0,-10,0			0,1.0,0			                80,20,60        	    a:0.2 	m:0.5
 
-sp	-35,-5,60		                12			    0,255,22	            a:0.2   txm:imgs/SoftballColor.xpm bum:imgs/SoftballBump.xpm m:0.1
-sp	-20,-5,50		                12			    0,255,22	            a:0.2   txm:imgs/NewTennisBallColor.xpm bum:imgs/TennisBallBump.xpm
-
-sp	0,-5,50		                    12  		    0,255,22	            a:0.2   txm:imgs/Ball4.xpm m:0.3
-sp	10,-5,45		                12			    0,255,22	            a:0.2   txm:imgs/Ball2.xpm m:0.3
+sp	-35,-5,60		                12			    0,255,22	            a:0.2   
+sp	-20,-5,50		                12			    0,255,22	            a:0.2   
+sp	0,-5,50		                    12  		    0,255,22	            a:0.2   m:0.3
+sp	10,-5,45		                12			    0,255,22	            a:0.2   m:0.3
 
 cy	30,0,40	        0,-1.0,0		1.5	40			255,0,0	
