@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 10:08:34 by lpollini          #+#    #+#             */
-/*   Updated: 2023/10/10 17:50:55 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/10 18:10:16 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int main(int argn, char *args[])
 		ft_print_error(NOSIZE, &w);
 
 	w.mlx = mlx_init();
+	if (rft_load_scene(&w))
+		return (1);
 	if (initw(&w, argn, args))
 		ft_print_error(NOINIT, &w);
 	ft_open_rt(&w, args);
@@ -51,7 +53,10 @@ int main(int argn, char *args[])
 	w.img.img = mlx_new_image(w.mlx, w.size.x, w.size.y);
 	w.img.addr = mlx_get_data_addr(w.img.img, &w.img.bps, &w.img.ll, &w.img.en);
 
+<<<<<<< HEAD
 	
+=======
+>>>>>>> f28ddbcc0bfb0766c792a0991cfd34d47d29e05d
 
 	my_image_creator(&w);
 	

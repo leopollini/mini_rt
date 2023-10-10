@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 22:14:44 by lpollini          #+#    #+#             */
-/*   Updated: 2023/10/06 23:03:44 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/10 18:11:54 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,10 @@ static int	keys_manager_1(t_window *win, int keypressed)
 		win->cam.pos.x -= win->step;
 	else if (keypressed == 100)
 		win->cam.pos.x += win->step;
+	else if (keypressed == 101)
+		win->cam.pos.z -= win->step;
+	else if (keypressed == 114)
+		win->cam.pos.z += win->step;
 		// end move cam section
 	/*else if (keypressed == 121)
 		win->firstp.x -= E_0;
