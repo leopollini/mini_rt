@@ -14,7 +14,7 @@
 
 //str to float
 
-int parse_res(t_window *w, char **line)
+int	parse_res(t_window *w, char **line)
 {
 	next_val(line);
 	w->size.x = my_atoi(line);
@@ -24,7 +24,7 @@ int parse_res(t_window *w, char **line)
 	w->size.y = my_atoi(line);
 	if (w->size.y < 1 || w->size.y > INFINITY)
 		ft_print_error("resolution y out of range!", w);
-	return(0);
+	return (0);
 }
 
 int parse_amb(t_window *w, char **line)
@@ -36,10 +36,10 @@ int parse_amb(t_window *w, char **line)
 	if (w->ambient.value < 0 || w->ambient.value > 1)
 		ft_print_error("ambient light out of range!", w);
 	w->ambient.color = color_parse(line, w);
-	return(0);
+	return (0);
 }
 
-int		parse_cam(t_window *w, char **line)
+int	parse_cam(t_window *w, char **line)
 {
 	camera_init(w);
 	(void)line;
@@ -68,12 +68,13 @@ int		parse_cam(t_window *w, char **line)
 		ft_print_error("cam FOV out of range", w);
 	w->cam.scene_window = new_v2d(w->cam.fov, w->cam.fov);
 	//printf("called. %i | %lf | %lf | %lf | %lf | %lf\n", w->cam.id, w->cam.pos.x, w->cam.lookat.x, w->cam.scene_window.x, w->cam.rotation.x, w->cam.fov);*/
-	return(0);
+	return (0);
 }
 
 int	parse_light(t_window *w, char **line)
 {
 	t_lantern	*new;
+
 	new = sux_malloc(sizeof(t_lantern), w);
 	new->pos = pos_parse(line, w);
 	next_val(line);

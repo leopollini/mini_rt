@@ -12,45 +12,35 @@
 
 #include "../include/mini_rt.h"
 
-t_gameobject *ft_metal_alb(t_gameobject *p, char **line)
+t_gameobject	*ft_metal_alb(t_gameobject *p, char **line)
 {
 	next_val(line);
-
 	p->metalness = 0;
 	p->albedo = 0;
 	while (**line != 0)
 	{
 		if (**line == 'a')
 		{
-			(*line)++;
-			(*line)++;
+			(*line) = (*line) + 2;
 			p->albedo = tofloat(line);
 		}
 		if ((**line) == 'm')
 		{
-			(*line)++;
-			(*line)++;
+			(*line) = (*line) + 2;
 			p->metalness = tofloat(line);
+		}
+		if ((**line) == 't')
+		{
+			(*line) = (*line) + 2;
+			p->text = ft_strtrim(ft_strdup(*line), " ");
+			return (p);
 		}
 		next_val(line);
 	}
-	return p;
+	return (p);
 }
 
-t_vec3_d		normalize(t_vec3_d p)
-{
-	t_vec3_d	new;
-	double	mod;
-
-	mod = sqrt(p.x * p.x + p.y * p.y + p.z * p.z);
-	new.x = p.x / mod;
-	new.y = p.y / mod;
-	new.z = p.z / mod;
-	return (new);
-}
-
-
-int		parse_sphere(t_window *w, char **line)
+int	parse_sphere(t_window *w, char **line)
 {
 	t_sphere	*s;
 
@@ -71,67 +61,64 @@ int		parse_sphere(t_window *w, char **line)
 	ft_lstadd_front(&w->scene, ft_lstnew_dup(s, sizeof(t_sphere)));
 	w->obj_num++;
 	free(s);
-	return 0;
+	return (0);
 }
 
-int		parse_plane(t_window *w, char **line)
+int	parse_plane(t_window *w, char **line)
 {
-	t_plane *p;
-    
+	t_plane	*p;
+
 	(*line)++;
 	p = sux_malloc(sizeof(t_plane), w);
-    p->type = PLANE;
-    next_val(line);
-    p->transform.position = pos_parse(line, w);
+	p->type = PLANE;
+	p->transform.scale.x = 0;
+	p->transform.scale.y = 0;
+	p->transform.scale.z = 0;
 	next_val(line);
-	if (ft_findchar('.', *line))
-	{
-		p->transform.rotation = normalize(pos_parse(line, w));
-		if ((p->transform.rotation.x < -1 || p->transform.rotation.x > 1) ||
-			(p->transform.rotation.y < -1 || p->transform.rotation.y > 1) ||
-			(p->transform.rotation.z < -1 || p->transform.rotation.z > 1))
-				ft_print_error("plane vectors must be between -1 and 1", w);
-		next_val(line);
-	}
+	p->transform.position = pos_parse(line, w);
+	next_val(line);
+	p->transform.rotation = v3d_normalize(pos_parse(line, w));
+	next_val(line);
 	p->color = color_parse(line, w);
 	p = ft_metal_alb(p, line);
 	ft_lstadd_front(&w->scene, ft_lstnew_dup(p, sizeof(t_plane)));
-    w->obj_num++;
+	w->obj_num++;
 	free(p);
-	return 0;
+	return (0);
 }
 
-int		parse_cylinder(t_window *w, char **line)
+t_cylinder	*parse_cylinder_help(t_window *w, t_cylinder *p, char **line, int i)
 {
-	t_cylinder *p;
-	int i;
-
-	i = 0;
-    
 	(*line)++;
-	p = sux_malloc(sizeof(t_cylinder), w);
-    p->type = CYLINDER;
-    next_val(line);
-    p->transform.position = pos_parse(line, w);
+	p->type = CYLINDER;
+	next_val(line);
+	p->transform.position = pos_parse(line, w);
 	next_val(line);
 	while ((*line)[i] != 0 && (*line)[i] != 32 && (*line)[i] != 9)
 	{
 		if ((*line)[i] == '.')
 		{
 			i = -1;
-			break;
+			break ;
 		}
 		i++;
 	}
 	if (i == -1)
 	{
-		p->transform.rotation = normalize(pos_parse(line, w));
-		if ((p->transform.rotation.x < -1 || p->transform.rotation.x > 1) ||
-			(p->transform.rotation.y < -1 || p->transform.rotation.y > 1) ||
-			(p->transform.rotation.z < -1 || p->transform.rotation.z > 1))
-				ft_print_error("cylinder vectors must be between -1 and 1", w);
+		p->transform.rotation = v3d_normalize(pos_parse(line, w));
 		next_val(line);
 	}
+	return (p);
+}
+
+int	parse_cylinder(t_window *w, char **line)
+{
+	t_cylinder	*p;
+	int			i;
+
+	i = 0;
+	p = sux_malloc(sizeof(t_cylinder), w);
+	p = parse_cylinder_help(w, p, line, i);
 	p->transform.scale.x = tofloat(line);
 	if (p->transform.scale.x <= 0)
 		ft_print_error("cylinder diameter must be > 0", w);
@@ -139,10 +126,11 @@ int		parse_cylinder(t_window *w, char **line)
 	p->transform.scale.y = tofloat(line);
 	if (p->transform.scale.y < 0)
 		ft_print_error("cylinder high must be >= 0", w);
+	p->transform.scale.z = 0;
 	p->color = color_parse(line, w);
 	p = ft_metal_alb(p, line);
 	ft_lstadd_front(&w->scene, ft_lstnew_dup(p, sizeof(t_cylinder)));
-    w->obj_num++;
+	w->obj_num++;
 	free(p);
-	return 0;
+	return (0);
 }

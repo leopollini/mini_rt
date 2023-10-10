@@ -19,14 +19,12 @@ int	contchar(t_window *w)
 	int	a;
 	int	c;
 	int	l;
-	int i;
-	int r;
+	int	i;
 
 	a = 0;
 	c = 0;
 	l = 0;
 	i = 0;
-	r = 0;
 	while (w->rt[i])
 	{
 		if (w->rt[i][0] == 'A')
@@ -35,16 +33,14 @@ int	contchar(t_window *w)
 			c++;
 		if (w->rt[i][0] == 'L')
 			l++;
-		if (w->rt[i][0] == 'R')
-			r++;
 		i++;
 	}
-	if (a != 1 || c != 1 || l < 1 || r > 1)
+	if (a != 1 || c != 1 || l < 1)
 		ft_print_error(ACL_ERR, w);
 	return (0);
 }
 
-char *ft_clean_str(char *line)
+char	*ft_clean_str(char *line)
 {
 	int		i;
 	char	*tmp;
@@ -107,12 +103,12 @@ char	*ft_strjoin2(char *s1, char *s2)
 	return (str);
 }
 
-int ft_print_error(char *err, t_window *w)
+int	ft_print_error(char *err, t_window *w)
 {
-    write(2, "Error\n ", 7);
+	write(2, "Error\n ", 7);
 	ft_putstr_fd(err, 2);
 	write(2, "\n", 1);
 	ft_pre_exit(w);
-	return(1);    
+	return (1);
 }
 

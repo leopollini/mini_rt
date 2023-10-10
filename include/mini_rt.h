@@ -145,6 +145,7 @@ typedef struct s_gameobject
 	t_transform	transform;	// see t_transform
 	t_objtype	type;		// see enum objtype
 	int			defnum;
+	char 		*text;
 	t_texture	texture;
 }				t_gameobject;
 
@@ -318,7 +319,7 @@ t_gameobject 	new_object1(t_transform tr, t_color_3 cl, t_objtype type);
 /*file init_help.c*/
 
 int				rft_load_scene(t_window *w);
-int				initw(t_window *win, int argn, char *args[]);
+int				initw(t_window *win);
 int				loop_rt(t_window *w);
 void			camera_init(t_window *win);
 

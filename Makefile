@@ -80,7 +80,6 @@ clean:
 
 fclean: clean
 	@echo "🚮♻️ spring cleaning, rm $(NAME)... ♻️ 🚮" 
-	make clean -C $(MLX)
 	rm -rf $(NAME)
 
 re: fclean all

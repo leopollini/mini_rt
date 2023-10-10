@@ -12,11 +12,12 @@
 
 #include "./include/mini_rt.h"
 
-void ft_test_parsing(t_window *w)
+void	ft_test_parsing(t_window *w)
 {
-	t_gameobject test;
+	t_gameobject	test;
+	t_lantern		*lights;
+
 	test = *(t_gameobject *)w->scene->next->content;
-	t_lantern *lights;
 	lights = malloc(sizeof(t_lantern));
 	lights = (t_lantern *)&(w->lights->next->content);
 	printf("A amb %f , %f ,%f \n", w->ambient.color.x, w->ambient.color.y, w->ambient.color.z);
@@ -26,41 +27,47 @@ void ft_test_parsing(t_window *w)
 	printf("plane pos %f , %f ,%f \n", test.transform.position.x, test.transform.position.y, test.transform.position.z);
 }
 
+void	ft_img_obj(t_window *w)
+{
+	t_list			*ptr;
+	t_gameobject	*p;
 
-int main(int argn, char *args[])
+	if (!w->scene)
+		return ;
+	ptr = w->scene;
+	while (ptr)
+	{
+		p = (t_gameobject *)w->scene->content;
+		if (p->text != NULL)
+		{
+			p->texture.img.img = mlx_xpm_file_to_image(w->mlx, p->text,
+					&p->texture.size.x, &p->texture.size.y);
+			p->texture.img.addr = mlx_get_data_addr(p->texture.img.img,
+					&p->texture.img.bps, &p->texture.img.ll,
+					&p->texture.img.en);
+		}
+		ptr = ptr->next;
+	}
+}
+
+int	main(int argn, char *args[])
 {
 	t_window	w;
-	
+
 	if (!(argn == 2 || argn == 3))
-	 	ft_print_error(NOARGS, &w);
+		ft_print_error(NOARGS, &w);
 	else if (argn == 3 && ft_char_digit(args[2]))
 		ft_print_error(NOSIZE, &w);
-
 	w.mlx = mlx_init();
 	if (rft_load_scene(&w))
 		return (1);
-	if (initw(&w, argn, args))
+	if (initw(&w))
 		ft_print_error(NOINIT, &w);
-
-
 	ft_open_rt(&w, args);
 	//ft_test_parsing(&w);
-
-
-
 	rft_cast(&w, NULL, 0);
-
-	w.win = mlx_new_window(w.mlx, w.size.x, w.size.y, "mini_rt lol");
-	
-	w.skybox.img.img = mlx_xpm_file_to_image(w.mlx, "skybox/universe.xpm", &w.skybox.size.x, &w.skybox.size.y);
-	w.skybox.img.addr = mlx_get_data_addr(w.skybox.img.img, &w.skybox.img.bps, &w.skybox.img.ll, &w.skybox.img.en);
-	
-	w.img.img = mlx_new_image(w.mlx, w.size.x, w.size.y);
-	w.img.addr = mlx_get_data_addr(w.img.img, &w.img.bps, &w.img.ll, &w.img.en);
-
-
+	ft_img_obj(&w);
 	my_image_creator(&w);
-	
 	mlx_put_image_to_window(w.mlx, w.win, w.img.img, 0, 0);
 	mlx_hook(w.win, 17, 1L << 0, win_close, &w);
 	mlx_hook(w.win, 2, 1L << 0, manage_keys, &w);

@@ -14,7 +14,7 @@
 
 t_vec2_d	v2d_anti(t_vec2_d a)
 {
-	return ((t_vec2_d ){-a.x, -a.y});
+	return ((t_vec2_d){-a.x, -a.y});
 }
 
 t_vec3_d	v3d_specular(t_vec3_d v, t_vec3_d normal)
@@ -30,7 +30,7 @@ t_vec3_d	v3d_normalize(t_vec3_d in)
 	if (temp == 1)
 		return (in);
 	temp = sqrt(temp);
-	return ((t_vec3_d ){in.x / temp, in.y / temp, in.z / temp});
+	return ((t_vec3_d){in.x / temp, in.y / temp, in.z / temp});
 }
 
 void	v3d_out(t_vec3_d a)

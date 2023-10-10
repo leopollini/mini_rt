@@ -5,7 +5,7 @@
         "type": "cppdbg",
         "request": "launch",
         "program": "/nfs/homes/iragusa/kickoff/gitoff/progetti/rank04/mini_rt/mini_rt",
-        "args": ["mandatory_plus.rt"],
+        "args": ["mandatory.rt"],
         "stopAtEntry": false,
         "cwd": "${fileDirname}",
         "environment": [],
