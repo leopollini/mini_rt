@@ -12,23 +12,25 @@
 
 #include "../include/mini_rt.h"
 
-t_gameobject *ft_metal_alb(t_gameobject *p, t_window *w, char **line)
+t_gameobject *ft_metal_alb(t_gameobject *p, char **line)
 {
 	next_val(line);
 
-	while ((*line) != 0)
+	while (**line != 0)
 	{
-		if ((*line) == 'a')
+		if (**line == 'a')
 		{
-			(*line) + 2;
+			(*line)++;
+			(*line)++;
 			p->albedo = tofloat(line);
 		}
-		if ((*line) == 'm')
+		if ((**line) == 'm')
 		{
-			(*line) + 2;
+			(*line)++;
+			(*line)++;
 			p->metalness = tofloat(line);
 		}
-		(*line)++;
+		next_val(line);
 	}
 	return p;
 }
@@ -63,7 +65,7 @@ int		parse_sphere(t_window *w, char **line)
 	s->transform.scale.z = s->transform.scale.x;
 	next_val(line);
 	s->color = color_parse(line, w);
-	s = ft_metal_alb(s, w, line);
+	s = ft_metal_alb(s, line);
 	ft_lstadd_back(&w->scene, ft_lstnew_dup(s, sizeof(t_sphere)));
     w->obj_num++;
 	free(s);
@@ -90,7 +92,7 @@ int		parse_plane(t_window *w, char **line)
 		next_val(line);
 	}
 	p->color = color_parse(line, w);
-	p = ft_metal_alb(p, w, line);
+	p = ft_metal_alb(p, line);
 	ft_lstadd_back(&w->scene, ft_lstnew_dup(p, sizeof(t_plane)));
     w->obj_num++;
 	free(p);
@@ -136,7 +138,7 @@ int		parse_cylinder(t_window *w, char **line)
 	if (p->transform.scale.y < 0)
 		ft_print_error("cylinder high must be >= 0", w);
 	p->color = color_parse(line, w);
-	p = ft_metal_alb(p, w, line);
+	p = ft_metal_alb(p, line);
 	ft_lstadd_back(&w->scene, ft_lstnew_dup(p, sizeof(t_cylinder)));
     w->obj_num++;
 	free(p);
