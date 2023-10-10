@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:37:06 by lpollini          #+#    #+#             */
-/*   Updated: 2023/10/10 18:37:43 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/10 18:54:45 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_vec3_d rft_refract(const t_vec3_d uv, const t_vec3_d n, double etai_over_etat)
 
 int	hit_cylinder(t_cylinder *cylinder, t_ray *r, t_tracing_mode mode)
 {
-	t_vec3_d	delta;
+	/*t_vec3_d	delta;
 	t_ray		new_ray;
 	t_vec3_d	c_to_o;
 	double		t;
@@ -80,7 +80,8 @@ int	hit_cylinder(t_cylinder *cylinder, t_ray *r, t_tracing_mode mode)
 		return (0);
 	r->data.sqr_distance = t * t;
 	r->data.color = cylinder->color;
-	return (1);
+	return (1);*/
+	return (0);
 	//return (ft_find_edges(cylinder, ray, inter_point));
 }
 
