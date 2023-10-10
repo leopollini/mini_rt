@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 10:08:34 by lpollini          #+#    #+#             */
-/*   Updated: 2023/08/31 15:44:06 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/10 16:50:50 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,22 +32,32 @@ int main(int argn, char *args[])
 {
 	t_window	w;
 	
-	if (!(argn == 2 || argn == 4))
-		ft_print_error(NOARGS, &w);
-	else if (argn == 4 && (ft_char_digit(args[2]) || ft_char_digit(args[3])))
+	if (!(argn == 2 || argn == 3))
+	 	ft_print_error(NOARGS, &w);
+	else if (argn == 3 && ft_char_digit(args[2]))
 		ft_print_error(NOSIZE, &w);
+
+	w.mlx = mlx_init();
 	if (initw(&w, argn, args))
 		ft_print_error(NOINIT, &w);
+
 	ft_open_rt(&w, args);
-	ft_test_parsing(&w);
+	//ft_test_parsing(&w);
 	rft_cast(&w, NULL, 0);
-	w.mlx = mlx_init();
-	w.win = mlx_new_window(w.mlx, w.size.x, w.size.y, "mini_rt");
-	w.skybox.img = mlx_xpm_file_to_image(w.mlx, "skybox/universe.xpm", &w.skybox_size.x, &w.skybox_size.y);
-	w.skybox.addr = mlx_get_data_addr(w.skybox.img, &w.skybox.bps, &w.skybox.ll, &w.skybox.en);
+
+	w.win = mlx_new_window(w.mlx, w.size.x, w.size.y, "mini_rt lol");
+	
+	w.skybox.img.img = mlx_xpm_file_to_image(w.mlx, "skybox/universe.xpm", &w.skybox.size.x, &w.skybox.size.y);
+	w.skybox.img.addr = mlx_get_data_addr(w.skybox.img.img, &w.skybox.img.bps, &w.skybox.img.ll, &w.skybox.img.en);
+	
 	w.img.img = mlx_new_image(w.mlx, w.size.x, w.size.y);
 	w.img.addr = mlx_get_data_addr(w.img.img, &w.img.bps, &w.img.ll, &w.img.en);
+
+	if (rft_load_scene(&w))
+		return (1);
+
 	my_image_creator(&w);
+	
 	mlx_put_image_to_window(w.mlx, w.win, w.img.img, 0, 0);
 	mlx_hook(w.win, 17, 1L << 0, win_close, &w);
 	mlx_hook(w.win, 2, 1L << 0, manage_keys, &w);

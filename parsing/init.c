@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 10:08:34 by lpollini          #+#    #+#             */
-/*   Updated: 2023/08/31 15:44:06 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/10 16:01:17 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,17 @@ t_list	*ft_lstnew_dup(const void *a, int size)		// duplicates adding to list (a 
 	return (ft_lstnew(temp));
 }
 
-void	rft_add_gameobject_to_scene(t_window *w, t_gameobject *elem)	// requires elem to be malloc'd
+void	rft_add_gameobject_to_scene(t_window *w, t_gameobject *elem, char *texture)	// requires elem to be malloc'd
 {
+	t_texture	*t;
+
 	elem->defnum = w->obj_num;
+	if (texture)
+	{
+		t = &elem->texture;
+		t->img.img = mlx_xpm_file_to_image(w->mlx, texture, &t->size.x, &t->size.y);
+		t->img.addr = mlx_get_data_addr(t->img.img, &t->img.bps, &t->img.ll, &t->img.en);
+	}
 	ft_lstadd_front(&w->scene, ft_lstnew(elem));
 	w->obj_num++;
 }

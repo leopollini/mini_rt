@@ -59,7 +59,7 @@ int		parse_cam(t_window *w, char **line)
 	w->cam.fov = my_atoi(line);
 	if (w->cam.fov < 0 || w->cam.fov > 180)
 		ft_print_error("cam FOV out of range", w);
-	w->cam.scene_window = new_v2_d(w->cam.focal_len * w->cam.fov, w->cam.focal_len * w->cam.fov);
+	w->cam.scene_window = new_v2d(w->cam.fov, w->cam.fov);
 	return(0);
 }
 

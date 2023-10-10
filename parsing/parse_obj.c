@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_obj.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iragusa <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 17:09:12 by iragusa           #+#    #+#             */
-/*   Updated: 2023/08/03 17:09:14 by iragusa          ###   ########.fr       */
+/*   Updated: 2023/10/10 16:55:26 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,13 @@ t_vec3_d		normalize(t_vec3_d p)
 
 int		parse_sphere(t_window *w, char **line)
 {
-	t_sphere *s;
-    
+	t_sphere	*s;
+
 	(*line)++;
 	s = sux_malloc(sizeof(t_sphere), w);
-    s->type = SPHERE;
-    next_val(line);
-    s->transform.position = pos_parse(line, w);
+	s->type = SPHERE;
+	next_val(line);
+	s->transform.position = pos_parse(line, w);
 	next_val(line);
 	s->transform.scale.x = tofloat(line);
 	if (s->transform.scale.x <= 0)
@@ -66,8 +66,8 @@ int		parse_sphere(t_window *w, char **line)
 	next_val(line);
 	s->color = color_parse(line, w);
 	s = ft_metal_alb(s, line);
-	ft_lstadd_back(&w->scene, ft_lstnew_dup(s, sizeof(t_sphere)));
-    w->obj_num++;
+	ft_lstadd_front(&w->scene, ft_lstnew_dup(s, sizeof(t_sphere)));
+	w->obj_num++;
 	free(s);
 	return 0;
 }
@@ -93,7 +93,7 @@ int		parse_plane(t_window *w, char **line)
 	}
 	p->color = color_parse(line, w);
 	p = ft_metal_alb(p, line);
-	ft_lstadd_back(&w->scene, ft_lstnew_dup(p, sizeof(t_plane)));
+	ft_lstadd_front(&w->scene, ft_lstnew_dup(p, sizeof(t_plane)));
     w->obj_num++;
 	free(p);
 	return 0;
@@ -139,7 +139,7 @@ int		parse_cylinder(t_window *w, char **line)
 		ft_print_error("cylinder high must be >= 0", w);
 	p->color = color_parse(line, w);
 	p = ft_metal_alb(p, line);
-	ft_lstadd_back(&w->scene, ft_lstnew_dup(p, sizeof(t_cylinder)));
+	ft_lstadd_front(&w->scene, ft_lstnew_dup(p, sizeof(t_cylinder)));
     w->obj_num++;
 	free(p);
 	return 0;

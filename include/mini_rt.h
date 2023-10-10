@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 18:57:52 by lpollini          #+#    #+#             */
-/*   Updated: 2023/08/02 16:51:09 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/10 15:57:50 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # define E_0 0.1f
 # define E_N1 0.01f
 # define E_N2 0.001f
-# define SCALE_S 1.3f
+# define SCALE_S 1.2f
 # define SCALE_L 2.2f
 # define SCALE_LL 12
 # define SQRT2 1.414214
@@ -32,6 +32,7 @@
 # define POSITIVE_LIM 0.0000000001
 # define M_PI 3.141592653589793238462643383279502884L
 # define MAX_REF_DEPTH 5
+# define ROT_CONST 3
 
 # define THREADS 0
 # define THREADSN 10
@@ -50,8 +51,9 @@
 # define CHECK_RT ",check your params!"
 # define PCS_ERR "check your params! you need at least one sphere, one cylinder and one plane!"
 
-# include "libft.h"
 # include "mlx.h"
+# include "libft.h"
+# include "vectors.h"
 # include <math.h>
 # include <stdio.h>
 # include <unistd.h>
@@ -62,42 +64,12 @@
 # include <sys/stat.h>
 # include <sys/wait.h>
 
-/*    //VECTOR STRUCTURES\\    */
-typedef struct s_data
-{
-	void	*img;
-	char	*addr;
-	int		bps;
-	int		ll;
-	int		en;
-}				t_data;
-typedef struct s_vec2_i
-{
-	int	x;
-	int	y;
-}				t_vec2_i;
-typedef struct s_vec3_i
-{
-	int	x;
-	int	y;
-	int	z;
-}				t_vec3_i;
-typedef struct s_vec2_d
-{
-	double	x;
-	double	y;
-}				t_vec2_d;
-typedef struct s_vec3_d
-{
-	double	x;
-	double	y;
-	double	z;
-}				t_vec3_d;
 
-/*    //VECTOR3 ALIASES\\    */
-typedef t_vec3_d	t_point_3;
-typedef t_vec3_d	t_color_3;
-typedef	char	bool;
+typedef struct	s_texture
+{
+	t_data		img;
+	t_vec2_i	size;
+}				t_texture;
 
 /*    //CAMERA STRUCTURE\\    */
 typedef struct s_camera
@@ -105,21 +77,10 @@ typedef struct s_camera
 	char			id;
 	t_vec3_d		pos;
 	t_vec3_d		lookat;
-	t_vec3_d		hori;
-	t_vec3_d		vert;
-	t_vec3_d		util;
-	double			focal_len;
 	t_vec2_d		scene_window;
+	t_vec2_d		rotation;
 	double			fov;
 }				t_camera;
-
-typedef struct s_ambient
-{
-	float			value; //inserita da ivana 
-	char			id;
-	t_vec3_d		color; //inserita da ivana 
-	t_vec3_d		pos; //nella luce d'ambiente servono le pos???
-}				t_ambient;
 
 /*    //ENUMS\\    */
 typedef enum e_tracing_mode
@@ -140,8 +101,25 @@ typedef enum e_objtype
 	CYLINDER,
 	METAL,
 	METALPLANE,
-	METALSPHERE
+	METALSPHERE,
+	EQ
 }				t_objtype;
+
+typedef enum e_axises
+{
+	aX = 0,
+	aY,
+	aZ
+}				t_axises;
+
+
+typedef struct s_ambient
+{
+	float			value; //inserita da ivana 
+	char			id;
+	t_vec3_d		color; //inserita da ivana 
+	t_vec3_d		pos; //nella luce d'ambiente servono le pos???
+}				t_ambient;
 
 /*    //SCENE OBJECTS\\    */
 typedef struct s_lantern
@@ -167,6 +145,7 @@ typedef struct s_gameobject
 	t_transform	transform;	// see t_transform
 	t_objtype	type;		// see enum objtype
 	int			defnum;
+	t_texture	texture;
 }				t_gameobject;
 
 typedef t_gameobject	t_sphere;
@@ -180,7 +159,7 @@ typedef struct s_raydata
 	t_vec3_d		metalcolor;
 	t_vec3_d		hit_point;
 	t_gameobject	*hit_pointer;
-	bool			hit_something;
+	char			hit_something;
 	t_vec3_d		point_normal;
 	double			sqr_distance;
 	char			ismetal;
@@ -197,14 +176,12 @@ typedef struct s_ray
 }				t_ray;
 
 /*    //ALL PURPOSE STRUCTURE\\    */
-
 typedef struct s_window
 {
 	void			*mlx;
 	void			*win;
 	t_data			img;
-	t_data			skybox;
-	t_vec2_i		skybox_size;
+	t_texture		skybox;
 	t_vec2_i		size;
 	t_camera		cam;
 	t_ambient		ambient;
@@ -212,7 +189,7 @@ typedef struct s_window
 	int				obj_num;
 	t_list			*lights;
 	int				anti_aliasing;
-	bool			toggle_hd;
+	char			toggle_hd;
 	t_gameobject	*selected;
 	double			step;
 	char			do_exit;
@@ -221,7 +198,6 @@ typedef struct s_window
 }	t_window;
 
 /*    //THREAD STRUCTURE\\    */
-
 typedef struct s_thread
 {
 	int			i;
@@ -244,7 +220,7 @@ int				create_trgb_s(double a, double r, double g, double b);
 void			camera_update(t_window *w);
 int				pull_argb(t_vec3_d c, int div);
 char			rft_hitter(t_list *scene, t_ray *r, t_tracing_mode mode);
-t_vec3_d		skybox_calc(t_ray r, t_window *w);
+t_vec3_d		skybox_calc(t_ray r, t_texture t);
 t_vec3_d		rft_cast(t_window *w, t_ray *r, t_tracing_mode mode);
 unsigned int	my_mlx_pixel_get(t_data data, int x, int y);
 t_vec3_d		rft_cast(t_window *w, t_ray *r, t_tracing_mode mode);
@@ -253,7 +229,8 @@ void			rft_window_cast(t_window *w);
 void			my_image_creator(t_window *w);
 
 void			transform_out(t_transform t);
-/*    //VECTOR METHODS\\    */
+
+void			v3d_rotate(t_vec3_d *v, t_axises a, double rot);
 
 /*file color_opers.c*/
 
@@ -268,7 +245,6 @@ unsigned int	my_mlx_pixel_get(t_data data, int x, int y);
 
 /*file image_creat.c*/
 
-t_vec3_d		skybox_calc(t_ray r, t_window *w);
 int				hit_sphere(t_sphere *sphere, t_ray *r, t_tracing_mode mode);
 int				hit_plane(t_plane *plane, t_ray *r, t_tracing_mode mode);
 int				hit_cylinder(t_cylinder *cylinder, t_ray *r, t_tracing_mode mode);
@@ -304,31 +280,9 @@ int 			rft_init_scene();
 
 t_raydata		unpack_ray(void *a);
 
-/*file vectors.c*/
 
-void			v3d_out(t_vec3_d a);
 void			transform_out(t_transform t);
-t_vec2_i		new_v2_i(int x, int y);
-t_vec3_i		new_v3_i(int x, int y, int z);
-t_vec2_d		new_v2_d(double x, double y);
-t_vec3_d		new_v3_d(double x, double y, double z);
-t_vec3_d		v3_normalize(t_vec3_d in);
-t_vec3_d		v3d_anti(t_vec3_d a);
-t_vec2_d		v2d_anti(t_vec2_d a);
-t_vec3_d		v3_d_scal(t_vec3_d a, double b);
 t_vec3_d		ray_at(t_ray r, double t);
-double			v3_d_dot(t_vec3_d a, t_vec3_d b);
-double			v3_d_sqr_mod(t_vec3_d a);
-t_vec2_d		v2_d_sum(int n, ...);
-t_vec3_d		v3_d_sum_2(t_vec3_d a, t_vec3_d b);
-t_vec3_d		v3_d_sum(int n, ...);
-t_vec3_d		v3d_cross(t_vec3_d a, t_vec3_d b);
-t_vec3_d		color_add(t_vec3_d a, const t_vec3_d b);
-t_color_3		color_3_merge(t_color_3 a, t_color_3 b);
-t_vec3_d		v3_d_sumponder(t_vec3_d a, t_vec3_d b, double p);
-t_vec3_d		v3_d_specular(t_vec3_d v, t_vec3_d normal);
-double			plan_module(double a);
-double			v3_d_mod(t_vec3_d a);
 
 /*file check_rt.c*/
 
@@ -355,7 +309,7 @@ int				ft_line_parser(t_window *w, char* line);
 
 /*file init.c*/
 
-void			rft_add_gameobject_to_scene(t_window *w, t_gameobject *elem);
+void			rft_add_gameobject_to_scene(t_window *w, t_gameobject *elem, char *texture);
 t_list			*ft_lstnew_dup(const void *a, int size);
 t_transform		new_transform(t_vec3_d p, t_vec3_d r, t_vec3_d s);
 t_gameobject	*new_gameobject(t_transform tr, t_color_3 cl, t_objtype type, double sh);
@@ -389,4 +343,5 @@ t_vec3_d		normalize(t_vec3_d p);
 int				parse_sphere(t_window *w, char **line);
 int				parse_plane(t_window *w, char **line);
 int				parse_cylinder(t_window *w, char **line);
+
 #endif

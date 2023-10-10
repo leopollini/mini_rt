@@ -36,7 +36,7 @@ FLAG = -lXext -lX11 -lm -lz
 
 SRC = main.c \
 		rt/color_opers.c rt/input.c rt/rft_init_scene.c \
-		rt/vectors.c rt/image_creat.c rt/lol.c rt/palle.c rt/utils.c \
+		rt/image_creat.c rt/palle.c rt/utils.c \
 		parsing/read_rt.c \
 		parsing/check_rt.c \
 		parsing/parsing.c \
@@ -44,7 +44,13 @@ SRC = main.c \
 		parsing/init_help.c \
 		parsing/parse_utils.c \
 		parsing/parse_data.c \
-		parsing/parse_obj.c
+		parsing/parse_obj.c \
+rt/stuff_printer.c \
+vectors/miscellaneous_2.c \
+vectors/miscellaneous.c \
+vectors/vector3_ops_2.c \
+vectors/vector3_ops.c \
+vectors/vectors_new.c
 
 OBJ = $(SRC:.c=.o)
 
@@ -58,6 +64,13 @@ $(NAME): $(OBJ)
 	@echo "🎉 mini_rt compiled! 🎉"
 	@rm -f $(OBJ)
 
+
+debug: $(OBJ)
+	@echo "⌛ compiling...⌛"
+	$(CC) $(CFLAGS) $(OBJ) $(LIB) $(LIBFT) -o $(NAME)
+	@echo "🎉 mini_rt compiled! 🎉"
+	@rm -f $(OBJ)
+	
 clean:	
 	@echo "🧽 cleaning... 🧽"
 	@rm -f $(OBJ)

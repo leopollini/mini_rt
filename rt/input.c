@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 22:14:44 by lpollini          #+#    #+#             */
-/*   Updated: 2023/08/15 15:01:15 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/06 23:03:44 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	win_close(t_window *win)
 {
 	win->do_exit = 1;
-	init_threads(NULL);
+	//init_threads(NULL);
 	mlx_destroy_image(win->mlx, win->img.img);
 	mlx_destroy_window(win->mlx, win->win);
 	mlx_destroy_display(win->mlx);
@@ -27,16 +27,17 @@ int	win_close(t_window *win)
 
 static int	keys_manager_1(t_window *win, int keypressed)
 {
-	if (keypressed == 98)
+	if (keypressed == 98)	// B ~ increase FOV
 		win->cam.fov *= SCALE_S;
-	else if (keypressed == 110)
+	else if (keypressed == 110)	// N ~ decrease FOV
 		win->cam.fov /= SCALE_S;
-	else if (keypressed == 122)
+	else if (keypressed == 122)	// Z ~ more antialiasing
 		win->anti_aliasing++;
-	else if (keypressed == 120 && win->anti_aliasing > 1)
+	else if (keypressed == 120 && win->anti_aliasing > 1) // X ~ less antialiasing
 		win->anti_aliasing--;
-	else if (keypressed == 104)
+	else if (keypressed == 104)	// H ~ toggle antialiasing (dont if potato)
 		win->toggle_hd = !win->toggle_hd;
+		// move cam section  WASD
 	else if (keypressed == 119)
 		win->cam.pos.y += win->step;
 	else if (keypressed == 115)
@@ -45,6 +46,7 @@ static int	keys_manager_1(t_window *win, int keypressed)
 		win->cam.pos.x -= win->step;
 	else if (keypressed == 100)
 		win->cam.pos.x += win->step;
+		// end move cam section
 	/*else if (keypressed == 121)
 		win->firstp.x -= E_0;
 	else if (keypressed == 97)
@@ -52,6 +54,34 @@ static int	keys_manager_1(t_window *win, int keypressed)
 	else
 		return (0);
 	return (1);
+}
+
+void	rt_rotate_object(t_gameobject *o, t_axises a, double rot)
+{
+	const double	cf[2] = {cos(rot / ROT_CONST), sin(rot / ROT_CONST)};
+	double	*temp1;
+	double	*temp2;
+	double	temp3;
+
+printf("called. %lf rotating using %lf %lf\n", rot, cf[0], cf[1]);
+	if (a == aX)
+	{
+		temp1 = &o->transform.rotation.y;
+		temp2 = &o->transform.rotation.z;
+	}
+	if (a == aY)
+	{
+		temp1 = &o->transform.rotation.z;
+		temp2 = &o->transform.rotation.x;
+	}
+	if (a == aZ)
+	{
+		temp1 = &o->transform.rotation.x;
+		temp2 = &o->transform.rotation.y;
+	}
+	temp3 = *temp1 * cf[0] - *temp2 * cf[1];
+	*temp2 = *temp1 * cf[1] + *temp2 * cf[0];
+	*temp1 = temp3;
 }
 
 static int	keys_manager_2(t_window *win, int keypressed)
@@ -69,9 +99,9 @@ static int	keys_manager_2(t_window *win, int keypressed)
 	else if (keypressed == 65438 && win->selected)
 		win->selected->transform.position.z -= win->step;
 	else if (keypressed == 65453 && win->selected)
-		win->selected->transform.scale = v3_d_sum_2(win->selected->transform.scale, (t_vec3_d){-win->step, -win->step, -win->step});
+		win->selected->transform.scale = v3d_sum_2(win->selected->transform.scale, (t_vec3_d){-win->step, -win->step, -win->step});
 	else if (keypressed == 65451 && win->selected)
-		win->selected->transform.scale = v3_d_sum_2(win->selected->transform.scale, (t_vec3_d){win->step, win->step, win->step});
+		win->selected->transform.scale = v3d_sum_2(win->selected->transform.scale, (t_vec3_d){win->step, win->step, win->step});
 	else if (keypressed == 32)
 		win->selected = NULL;
 	else if (keypressed == 65455)
@@ -84,23 +114,33 @@ static int	keys_manager_2(t_window *win, int keypressed)
 		win->step *= SCALE_S;
 		return (0);
 	}
+		// rotation section  on numpad 7,9,1,3,0,'.'
 	else if (keypressed == 65429 && win->selected)
-		win->selected->transform.rotation.x += win->step;
+		rt_rotate_object(win->selected, aX, win->step);
 	else if (keypressed == 65434 && win->selected)
-		win->selected->transform.rotation.x -= win->step;
+		rt_rotate_object(win->selected, aX, -win->step);
 	else if (keypressed == 65436 && win->selected)
-		win->selected->transform.rotation.y += win->step;
+		rt_rotate_object(win->selected, aY, win->step);
 	else if (keypressed == 65435 && win->selected)
-		win->selected->transform.rotation.y -= win->step;
+		rt_rotate_object(win->selected, aY, -win->step);
 	else if (keypressed == 65439 && win->selected)
-		win->selected->transform.rotation.z += win->step;
+		rt_rotate_object(win->selected, aZ, win->step);
 	else if (keypressed == 65421 && win->selected)
-		win->selected->transform.rotation.z -= win->step;
+		rt_rotate_object(win->selected, aZ, -win->step);
+		// end rotation section
+	else if (keypressed == 65362)
+		win->cam.rotation.y -= win->step;
+	else if (keypressed == 65361)
+		win->cam.rotation.x -= win->step;
+	else if (keypressed == 65364)
+		win->cam.rotation.y += win->step;
+	else if (keypressed == 65363)
+		win->cam.rotation.x += win->step;
 	else
 		return (0);
 	if (win->selected)
 	{
-		win->selected->transform.rotation = v3_normalize(win->selected->transform.rotation);
+		win->selected->transform.rotation = v3d_normalize(win->selected->transform.rotation);
 		transform_out(win->selected->transform);
 	}
 	return (1);
@@ -140,7 +180,9 @@ int	manage_mouse(int button, int x, int y, t_window *w)
 		manage_keys(110, w);
 	if (button == 1)// || button == 3)
 	{
-		ray.direction = v3_normalize(new_v3_d((x - w->size.x / 2) * w->cam.scene_window.x / w->size.x, (w->size.y / 2 - y) * w->cam.scene_window.y / w->size.y, w->cam.lookat.z));
+		ray.direction = v3d_normalize(new_v3d((x - w->size.x / 2) * w->cam.scene_window.x / w->size.x, (w->size.y / 2 - y) * w->cam.scene_window.y / w->size.y, w->cam.lookat.z));
+		v3d_rotate(&ray.direction, aX, w->cam.rotation.y);
+		v3d_rotate(&ray.direction, aY, w->cam.rotation.x);
 		ray.source = w->cam.pos;
 		ray.data.hit_pointer = NULL;
 		ray.max_sqr_len = INFINITY;
