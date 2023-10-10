@@ -54,6 +54,12 @@ vectors/vectors_new.c
 
 OBJ = $(SRC:.c=.o)
 
+debug: $(OBJ)
+	@echo "⌛ compiling...⌛"
+	$(CC) $(CFLAGS) $(OBJ) $(LIB) $(LIBFT) -o $(NAME)
+	@echo "🎉 mini_rt compiled! 🎉"
+	@rm -f $(OBJ)
+
 all: $(NAME)
 
 $(NAME): $(OBJ)
@@ -65,11 +71,6 @@ $(NAME): $(OBJ)
 	@rm -f $(OBJ)
 
 
-debug: $(OBJ)
-	@echo "⌛ compiling...⌛"
-	$(CC) $(CFLAGS) $(OBJ) $(LIB) $(LIBFT) -o $(NAME)
-	@echo "🎉 mini_rt compiled! 🎉"
-	@rm -f $(OBJ)
 	
 clean:	
 	@echo "🧽 cleaning... 🧽"

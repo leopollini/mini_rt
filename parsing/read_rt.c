@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_rt.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iragusa <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 20:13:00 by iragusa           #+#    #+#             */
-/*   Updated: 2023/07/31 20:13:08 by iragusa          ###   ########.fr       */
+/*   Updated: 2023/10/10 18:28:48 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,40 +26,13 @@ int	ft_check_file(char *scene)
 	return (0);
 }
 
-
-int	checkobj(t_window *w)
-{
-	int pl;
-	int sp;
-	int cy;
-	int i;
-
-	pl = 0;
-	sp = 0;
-	cy = 0;
-	i = 0;
-	while (w->rt[i])
-	{
-		if (ft_strncmp(w->rt[i], "pl", 2) == 0)
-			pl ++;
-		if (ft_strncmp(w->rt[i], "sp", 2) == 0)
-			sp ++;
-		if (ft_strncmp(w->rt[i], "cy", 2) == 0)
-			cy ++;
-		i++;
-	}
-	if (pl < 1 || cy < 1 || sp < 1)
-		ft_print_error(PCS_ERR, w);
-	return(0);
-}
-
 int	ft_check_data(t_window *w)
 {
 	int	i;
 
 	i = 0;
 	contchar(w);
-	checkobj(w);
+	// checkobj(w);
 	while (w->rt[i])
 	{
 		ft_line_parser(w, w->rt[i]);

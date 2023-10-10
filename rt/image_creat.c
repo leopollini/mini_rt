@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:37:06 by lpollini          #+#    #+#             */
-/*   Updated: 2023/10/10 18:01:22 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/10 18:36:58 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_vec3_d skybox_calc(t_ray r, t_texture t)
 	on_pg.x = (0.5 + atan2(d.z, d.x) / (2 * M_PI)) * t.size.x;
 	on_pg.y = (0.5 - asin(d.y) / (M_PI)) * t.size.y;
 
-	found_col = my_mlx_pixel_get(t.img, (on_pg.x + 100) % t.size.x, on_pg.y);
+	found_col = my_mlx_pixel_get(t.img, on_pg.x, on_pg.y);
 	return (create_argb((found_col >> 16) & 0xff, (found_col >> 8) & 0xff, found_col & 0xff));
 }
 

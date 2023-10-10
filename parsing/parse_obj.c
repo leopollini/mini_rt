@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 17:09:12 by iragusa           #+#    #+#             */
-/*   Updated: 2023/10/10 17:53:27 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/10 18:35:15 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ t_gameobject *ft_metal_alb(t_gameobject *p, char **line)
 {
 	next_val(line);
 
+	p->metalness = 0;
+	p->albedo = 0;
 	while (**line != 0)
 	{
 		if (**line == 'a')
