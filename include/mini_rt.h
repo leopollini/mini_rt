@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 18:57:52 by lpollini          #+#    #+#             */
-/*   Updated: 2023/10/10 15:57:50 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/10 18:44:19 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -320,6 +320,7 @@ t_gameobject 	new_object1(t_transform tr, t_color_3 cl, t_objtype type);
 int				rft_load_scene(t_window *w);
 int				initw(t_window *win, int argn, char *args[]);
 int				loop_rt(t_window *w);
+void			camera_init(t_window *win);
 
 /*file parse_utils.c*/
 

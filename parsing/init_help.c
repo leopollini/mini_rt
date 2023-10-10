@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 10:08:34 by lpollini          #+#    #+#             */
-/*   Updated: 2023/10/10 17:58:14 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/10 18:38:17 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	initw(t_window *win, int argn, char *args[])
 	}
 	if (win->size.x <= 0 || win->size.y <= 0)
 		return (write(1, "Window size error\n", 8));
-	camera_init(win);
+	//camera_init(win);
 	win->anti_aliasing = START_AA_VAL;
 	win->toggle_hd = 0;
 	win->step = 0.1;
