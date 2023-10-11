@@ -37,14 +37,16 @@ void	ft_img_obj(t_window *w)
 	ptr = w->scene;
 	while (ptr)
 	{
-		p = (t_gameobject *)w->scene->content;
-		if (p->text != NULL)
+		p = (t_gameobject *)ptr->content;
+		if (p != NULL && p->text != NULL)
 		{
 			p->texture.img.img = mlx_xpm_file_to_image(w->mlx, p->text,
 					&p->texture.size.x, &p->texture.size.y);
 			p->texture.img.addr = mlx_get_data_addr(p->texture.img.img,
 					&p->texture.img.bps, &p->texture.img.ll,
 					&p->texture.img.en);
+			if (p->texture.img.img == NULL || p->texture.img.addr == NULL)
+				ft_print_error("error nella texture", w);
 		}
 		ptr = ptr->next;
 	}
