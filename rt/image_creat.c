@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:37:06 by lpollini          #+#    #+#             */
-/*   Updated: 2023/10/10 18:54:45 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/21 15:43:10 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,46 +51,82 @@ t_vec3_d rft_refract(const t_vec3_d uv, const t_vec3_d n, double etai_over_etat)
 	return (v3d_normalize(v3d_sum_2(r_out_perp, r_out_parallel)));
 }
 
+int	test_over(t_vec3_d rot, t_vec3_d dst, double dt)
+{
+	if(v3d_dot(dst, rot) < 0 || v3d_sqr_mod(dst) > dt)
+		return (1);
+	return (0);
+}
+
 int	hit_cylinder(t_cylinder *cylinder, t_ray *r, t_tracing_mode mode)
 {
-	/*t_vec3_d	delta;
+	t_vec3_d	delta;
 	t_ray		new_ray;
 	t_vec3_d	c_to_o;
+	t_ray		refl;
 	double		t;
 	double		t1;
 	double		dt;
 
 	(void) mode;
 	r->data.sqr_distance = INFINITY;
-	r->data.hit_pointer = cylinder;
 	new_ray.source = r->source;
 	new_ray.direction = v3d_cross(r->direction, cylinder->transform.rotation);
 	c_to_o = v3d_sum_2(r->source, v3d_anti(cylinder->transform.position));
 	delta.x = v3d_dot(new_ray.direction, new_ray.direction);
 	delta.y = 2 * v3d_dot(new_ray.direction, v3d_cross(c_to_o, cylinder->transform.rotation));
-	delta.z = v3d_dot(v3d_cross(c_to_o, cylinder->transform.rotation), v3d_cross(c_to_o, cylinder->transform.rotation)) - pow(cylinder->transform.scale.z / 2, 2);
+	delta.z = v3d_dot(v3d_cross(c_to_o, cylinder->transform.rotation), v3d_cross(c_to_o, cylinder->transform.rotation)) - pow(cylinder->transform.scale.x / 2, 2);
 	dt = pow(delta.y, 2) - 4 * delta.z * delta.x;
 	if (dt < 0)
 		return (0);
-	t = (-delta.y - sqrt(dt)) / (2 * delta.x);
-	t1 = (-delta.y + sqrt(dt)) / (2 * delta.x);
+	dt = sqrt(dt);
+	t = (-delta.y - dt) / (2 * delta.x);
+	t1 = t + dt / delta.x;
 	if (t > t1)
+	{
+		dt = t;
 		t = t1;
+		t1 = dt;
+	}
 	if (t < NEGATIVE_LIM)
 		return (0);
-	r->data.sqr_distance = t * t;
+
 	r->data.color = cylinder->color;
-	return (1);*/
-	return (0);
-	//return (ft_find_edges(cylinder, ray, inter_point));
+	dt = pow(cylinder->transform.scale.x / 2, 2) + pow(cylinder->transform.scale.y, 2);
+
+	r->data.hit_point = v3d_scal(r->direction, t);
+	r->data.point_normal = v3d_cross(cylinder->transform.rotation, r->direction);
+	if (test_over(cylinder->transform.rotation, v3d_sum_2(r->data.hit_point, v3d_anti(cylinder->transform.position)), dt))
+	{
+		t = t1;
+		r->data.hit_point = v3d_scal(r->direction, t);
+		r->data.point_normal = v3d_anti(cylinder->transform.rotation);
+		if (test_over(cylinder->transform.rotation, v3d_sum_2(r->data.hit_point, v3d_anti(cylinder->transform.position)), dt))
+			return (0);
+	}
+	r->data.hit_pointer = cylinder;
+	r->data.sqr_distance = t * t;
+	if (cylinder->metalness > 0)
+	{
+		if (r->depth > MAX_REF_DEPTH)
+			return (r->data.color = (t_vec3_d){0, 0, 0}, 1);
+		r->data.ismetal = 1;
+		refl.source = r->data.hit_point;
+		refl.max_sqr_len = INFINITY;
+		refl.direction = v3d_specular(v3d_anti(r->direction), r->data.point_normal);
+		refl.depth = r->depth + 1;
+		r->data.color = color_3_merge(rft_cast(NULL, &refl, ALL), cylinder->color);
+		return (1);
+	}
+	return (1);
 }
 
 int hit_sphere(t_sphere *sphere, t_ray *r, t_tracing_mode mode)
 {
-	t_vec3_d oc;
-	t_vec3_d vars;
-	double d;
-	t_vec2_d temp;
+	t_vec3_d	oc;
+	t_vec3_d	vars;
+	double		d;
+	t_vec2_d	temp;
 	t_ray		refl;
 
 	oc = v3d_sum_2(r->source, v3d_anti(sphere->transform.position));
@@ -130,14 +166,14 @@ int hit_sphere(t_sphere *sphere, t_ray *r, t_tracing_mode mode)
 		r->data.color = color_3_merge(rft_cast(NULL, &refl, ALL), sphere->color);
 		return (1);
 	}
-	// if (sphere->metalness == -1)
-	// {
-	// 	refl = *r;
-	// 	refl.direction = r->data.point_normal;
-	// 	r->data.color = skybox_calc(refl, sphere->texture);
-	// }
-	// else
-	r->data.color = sphere->color;
+	if (sphere->metalness == -1)
+	{
+		refl = *r;
+		refl.direction = r->data.point_normal;
+		r->data.color = skybox_calc(refl, sphere->texture);
+	}
+	else
+		r->data.color = sphere->color;
 	return (1);
 }
 

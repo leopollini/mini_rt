@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 18:57:52 by lpollini          #+#    #+#             */
-/*   Updated: 2023/10/10 18:44:19 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/18 15:53:49 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,8 +229,6 @@ int				rft_anti_aliasing(const t_vec2_i c, const t_vec3_d div_temp, t_ray *r, t_
 void			rft_window_cast(t_window *w);
 void			my_image_creator(t_window *w);
 
-void			transform_out(t_transform t);
-
 void			v3d_rotate(t_vec3_d *v, t_axises a, double rot);
 
 /*file color_opers.c*/
@@ -263,6 +261,7 @@ int				win_close(t_window *win);
 //static int		keys_manager_2(t_window *win, int keypressed);
 int				manage_keys(int keypressed, t_window *win);
 int				manage_mouse(int button, int x, int y, t_window *w);
+int				show_campos(t_camera ct);
 
 /*file palle.c*/
 

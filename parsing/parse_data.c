@@ -39,14 +39,33 @@ int parse_amb(t_window *w, char **line)
 	return (0);
 }
 
+t_vec2_d	ft_get_rot(t_vec3_d v)
+{
+	double		tz;
+	double		cosy;
+	double		cosx;
+	t_vec2_d	res;
+
+	tz = sqrt(v.x * v.x + v.z * v.z);
+	cosy = tz * v.z / (v.x * v.x + v.z * v.z);
+	cosx = tz / (v.y * v.y + tz * tz);
+	if (!(cosx <= 1 && cosx >= -1))
+		cosx = 1;
+	if (!(cosy <= 1 && cosy >= -1))
+		cosy = 1;
+	res = (t_vec2_d){acos(cosx), acos(cosy)};
+	if (v.y > 0)
+		res.x = -res.x;
+	if (v.x < 0)
+		res.y = -res.y;
+	return (res);
+}
+
 int	parse_cam(t_window *w, char **line)
 {
-	camera_init(w);
-	(void)line;
-	/*w->cam.fov = 1;
+	w->cam.fov = 1;
 	w->cam.pos = (t_vec3_d){0, 0, 0};
 	w->cam.lookat = (t_vec3_d){0, 0, 1};
-	w->cam.rotation = (t_vec2_d){0, 0};
 
 	w->cam.id = 'C';
 	w->cam.pos = pos_parse(line, w);
@@ -62,12 +81,14 @@ int	parse_cam(t_window *w, char **line)
 	w->cam.lookat.z = tofloat(line);
 	if (w->cam.lookat.z < -1 || w->cam.lookat.z > 1)
 		ft_print_error("cam orientation z out of range!", w);
+	w->cam.lookat = v3d_normalize(w->cam.lookat);
 	next_val(line);
-	w->cam.fov = my_atoi(line);
+	w->cam.fov = pow(my_atoi(line) / (double )70, 2);
 	if (w->cam.fov < 0 || w->cam.fov > 180)
 		ft_print_error("cam FOV out of range", w);
 	w->cam.scene_window = new_v2d(w->cam.fov, w->cam.fov);
-	//printf("called. %i | %lf | %lf | %lf | %lf | %lf\n", w->cam.id, w->cam.pos.x, w->cam.lookat.x, w->cam.scene_window.x, w->cam.rotation.x, w->cam.fov);*/
+	w->cam.rotation = ft_get_rot(w->cam.lookat);
+	camera_update(w);
 	return (0);
 }
 

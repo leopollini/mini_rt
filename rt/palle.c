@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 22:21:11 by lpollini          #+#    #+#             */
-/*   Updated: 2023/10/06 23:03:14 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/18 19:31:11 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	v3d_rotate(t_vec3_d *v, t_axises a, double rot)
 {
-	const double	cf[2] = {cos(rot / ROT_CONST), sin(rot / ROT_CONST)};
+	const double	cf[2] = {cos(rot), sin(rot)};
 	double	*temp1;
 	double	*temp2;
 	double	temp3;
@@ -54,9 +54,9 @@ int	rft_anti_aliasing(const t_vec2_i c, const t_vec3_d div_temp, t_ray *r, t_win
 		b = 0;
 		while (b++ < div_temp.z)
 		{
-			r->direction = v3d_normalize(new_v3d((c.x + a / div_temp.z) * div_temp.x, (c.y + b / div_temp.z) * div_temp.y, w->cam.lookat.z));
-			v3d_rotate(&r->direction, aX, w->cam.rotation.y);
-			v3d_rotate(&r->direction, aY, w->cam.rotation.x);
+			r->direction = v3d_normalize(new_v3d((c.x + a / div_temp.z) * div_temp.x, (c.y + b / div_temp.z) * div_temp.y, 1));
+			v3d_rotate(&r->direction, aX, w->cam.rotation.x);
+			v3d_rotate(&r->direction, aY, w->cam.rotation.y);
 			temp = color_add(temp, rft_cast(w, r, ALL));
 		}
 		div += b - 1;

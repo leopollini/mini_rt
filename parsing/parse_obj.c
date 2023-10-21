@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 17:09:12 by iragusa           #+#    #+#             */
-/*   Updated: 2023/10/10 18:35:15 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/18 16:29:16 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int	parse_sphere(t_window *w, char **line)
 
 	(*line)++;
 	s = sux_malloc(sizeof(t_sphere), w);
+	s->text = NULL;
 	s->type = SPHERE;
 	next_val(line);
 	s->transform.position = pos_parse(line, w);
@@ -70,6 +71,7 @@ int	parse_plane(t_window *w, char **line)
 
 	(*line)++;
 	p = sux_malloc(sizeof(t_plane), w);
+	p->text = NULL;
 	p->type = PLANE;
 	p->transform.scale.x = 0;
 	p->transform.scale.y = 0;
@@ -118,10 +120,11 @@ int	parse_cylinder(t_window *w, char **line)
 
 	i = 0;
 	p = sux_malloc(sizeof(t_cylinder), w);
+	p->text = NULL;
 	p = parse_cylinder_help(w, p, line, i);
 	p->transform.scale.x = tofloat(line);
 	if (p->transform.scale.x <= 0)
-		ft_print_error("cylinder diameter must be > 0", w);
+		ft_print_error("cylinder radious must be > 0", w);
 	next_val(line);
 	p->transform.scale.y = tofloat(line);
 	if (p->transform.scale.y < 0)
