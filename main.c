@@ -12,21 +12,6 @@
 
 #include "./include/mini_rt.h"
 
-void	ft_test_parsing(t_window *w)
-{
-	t_gameobject	test;
-	t_lantern		*lights;
-
-	test = *(t_gameobject *)w->scene->next->content;
-	lights = malloc(sizeof(t_lantern));
-	lights = (t_lantern *)&(w->lights->next->content);
-	printf("A amb %f , %f ,%f \n", w->ambient.color.x, w->ambient.color.y, w->ambient.color.z);
-	printf("L pos %f , %f ,%f \n", lights->pos.x, lights->pos.y, lights->pos.z);
-	printf("pos cam %f , %f ,%f \n", w->cam.pos.x, w->cam.pos.y, w->cam.pos.z);
-	printf("look cam e fov %f , %f ,%f, fov : %f \n", w->cam.lookat.x, w->cam.lookat.y, w->cam.lookat.z, w->cam.fov);
-	printf("plane pos %f , %f ,%f \n", test.transform.position.x, test.transform.position.y, test.transform.position.z);
-}
-
 void	ft_img_obj(t_window *w)
 {
 	t_list			*ptr;
@@ -66,7 +51,6 @@ int	main(int argn, char *args[])
 	if (initw(&w))
 		ft_print_error(NOINIT, &w);
 	ft_open_rt(&w, args);
-	//ft_test_parsing(&w);
 	rft_cast(&w, NULL, 0);
 	ft_img_obj(&w);
 	my_image_creator(&w);

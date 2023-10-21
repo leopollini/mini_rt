@@ -4,12 +4,12 @@ C	0,0,-80			0.4,0,1.0			50
 L	0,0,-100		1				255,255,255
 L	50,100,20		0.7				255,230,240
 
-sp	0,0,0		1			0,0,0 m:-1	t:planets/mercury.xpm
-sp	3,0,0		2			0,0,0 m:-1	t:planets/venus.xpm
-sp	9,0,0		4			0,0,0 m:-1	t:planets/earth.xpm
-sp	15,0,0		3			0,0,0 m:-1	t:planets/mars.xpm
+sp	0,0,0		1			0,0,0 t:planets/mercury.xpm
+sp	3,0,0		2			0,0,0 t:planets/venus.xpm
+sp	9,0,0		4			0,0,0 t:planets/earth.xpm
+sp	15,0,0		3			0,0,0 t:planets/mars.xpm
 
-sp	28,0,0		10			0,0,0 m:-1	t:planets/SoccerBall.xpm
-sp	45,0,0		7			0,0,0 m:-1	t:planets/saturn.xpm
-sp	57,0,0		5			0,0,0 m:-1	t:planets/uranus.xpm
-sp	68,0,0		6			0,0,0 m:-1	t:planets/neptune.xpm
+sp	28,0,0		10			0,0,0 t:planets/SoccerBall.xpm
+sp	45,0,0		7			0,0,0 t:planets/saturn.xpm
+sp	57,0,0		5			0,0,0 t:planets/uranus.xpm
+sp	68,0,0		6			0,0,0 t:planets/neptune.xpm

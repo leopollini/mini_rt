@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_utils.c                                      :+:      :+:    :+:   */
+/*   parse_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iragusa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,54 +12,34 @@
 
 #include "../include/mini_rt.h"
 
-int	ft_char_digit(char *str)
-{
-	int	i;
 
+char	*ft_copyadd(char *str)
+{
+	int		len;
+	int		i;
+	char	*new;
+
+	len = 0;
+	while (str[len] != ' ' && str[len] != '\0')
+		len++;
+	new = (char *) malloc ((len + 1) * sizeof (char));
+	if (new == NULL)
+		return (NULL);
 	i = 0;
-	while (str[i] != 0)
+	while (i < len)
 	{
-		if (!(str[i] >= '0' && str[i] <= '9'))
-			return (1);
+		new[i] = str[i];
 		i++;
 	}
-	return (0);
+	new[i] = '\0';
+	return (new);
 }
 
-void	*sux_malloc(unsigned int size, t_window *w)
+void	ft_check_path(char *s, t_window *w)
 {
-	void	*ptr;
+	FILE	*file;
 
-	ptr = malloc(size);
-	if (ptr == NULL)
-		ft_print_error(MALLOC, w);
-	return (ptr);
-}
-
-void	next_val(char **str)
-{
-	while (**str == 32 || **str == 9)
-		(*str)++;
-}
-
-int	my_atoi(char **str)
-{
-	int	i;
-	int	neg;
-
-	i = 0;
-	neg = 1;
-	if (**str == '-' && *((*str)++))
-		neg = -1;
-	while (ft_isdigit(**str))
-		i = i * 10 + (*((*str)++) - '0');
-	next_val(str);
-	return (i * neg);
-}
-
-void	ft_comma(char **str, t_window *w)
-{
-	if (**str != ',')
-		ft_print_error("parameters bad formatted\n", w);
-	(*str)++;
+	file = fopen(s, "r");
+	if (file == NULL)
+		ft_print_error("wrong path in the texture", w);
 }

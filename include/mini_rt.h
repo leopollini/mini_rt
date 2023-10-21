@@ -41,15 +41,14 @@
 
 /*error msg*/
 
-# define NOARGS "something's wrong, you have to write: ./minirt scenes/mandatory.rt, if you followed by size of windows (ex. 500 500)"
+# define NOARGS "check input, write:./minirt scenes/mandatory.rt"
 # define NOSIZE "the last two args are size of win, so they can be only digits!"
 # define NOINIT "something's wrong during initialization, try again"
 # define NOFILE "sorry, file not exist!"
 # define NO_RT "ehy dude, only rt file!"
 # define MALLOC "oh no, error in malloc() on memory allocation"
-# define ACL_ERR "check your params! file rt must have 1 A, 1 C, at least 1 L and at most 1 R!"
+# define ACL_ERR "check file rt! need 1 A, 1 C, at least 1 L and at most 1 R!"
 # define CHECK_RT ",check your params!"
-# define PCS_ERR "check your params! you need at least one sphere, one cylinder and one plane!"
 
 # include "mlx.h"
 # include "libft.h"
@@ -64,8 +63,7 @@
 # include <sys/stat.h>
 # include <sys/wait.h>
 
-
-typedef struct	s_texture
+typedef struct s_texture
 {
 	t_data		img;
 	t_vec2_i	size;
@@ -112,13 +110,12 @@ typedef enum e_axises
 	aZ
 }				t_axises;
 
-
 typedef struct s_ambient
 {
-	float			value; //inserita da ivana 
+	float			value;
 	char			id;
-	t_vec3_d		color; //inserita da ivana 
-	t_vec3_d		pos; //nella luce d'ambiente servono le pos???
+	t_vec3_d		color;
+	t_vec3_d		pos;
 }				t_ambient;
 
 /*    //SCENE OBJECTS\\    */
@@ -132,20 +129,20 @@ typedef struct s_lantern
 /*    //GAMEOBJECTS\\    */
 typedef struct s_transform
 {
-	t_point_3	position;	// double x, y, z
-	t_vec3_d	rotation;	// double x, y, z {MUST BE NORMALIZED}
-	t_vec3_d	scale;		// x, y, z > 0
+	t_point_3	position;	
+	t_vec3_d	rotation;	
+	t_vec3_d	scale;	
 }				t_transform;
 
 typedef struct s_gameobject
 {
-	double		metalness;	// [0, 1]
-	double		albedo;		// [0, 1]
-	t_color_3	color;		// int x, y, z [0, 255]
-	t_transform	transform;	// see t_transform
-	t_objtype	type;		// see enum objtype
+	double		metalness;
+	double		albedo;
+	t_color_3	color;
+	t_transform	transform;
+	t_objtype	type;
 	int			defnum;
-	char 		*text;
+	char		*text;
 	t_texture	texture;
 }				t_gameobject;
 
@@ -195,7 +192,7 @@ typedef struct s_window
 	double			step;
 	char			do_exit;
 	int				num_line;
-	char 			**rt;
+	char			**rt;
 }	t_window;
 
 /*    //THREAD STRUCTURE\\    */
@@ -210,7 +207,6 @@ typedef struct s_thread
 int				win_close(t_window *win);
 int				manage_keys(int keypressed, t_window *win);
 int				manage_mouse(int button, int x, int y, t_window *win);
-int 			rft_init_scene();
 void			my_image_creator(t_window *w);
 void			my_mlx_pixel_put(t_data *data, int x, int y, int cl);
 void			reimage(t_window *win);
@@ -225,7 +221,8 @@ t_vec3_d		skybox_calc(t_ray r, t_texture t);
 t_vec3_d		rft_cast(t_window *w, t_ray *r, t_tracing_mode mode);
 unsigned int	my_mlx_pixel_get(t_data data, int x, int y);
 t_vec3_d		rft_cast(t_window *w, t_ray *r, t_tracing_mode mode);
-int				rft_anti_aliasing(const t_vec2_i c, const t_vec3_d div_temp, t_ray *r, t_window *w);
+int				rft_anti_aliasing(const t_vec2_i c, const t_vec3_d div_temp,
+					t_ray *r, t_window *w);
 void			rft_window_cast(t_window *w);
 void			my_image_creator(t_window *w);
 
@@ -233,12 +230,12 @@ void			v3d_rotate(t_vec3_d *v, t_axises a, double rot);
 
 /*file color_opers.c*/
 
-t_vec3_d 		create_argb_s(double r, double g, double b);
-int 			create_trgb_s(double a, double r, double g, double b);
+t_vec3_d		create_argb_s(double r, double g, double b);
+int				create_trgb_s(double a, double r, double g, double b);
 int				create_trgb(int a, int r, int g, int b);
-int 			pull_argb(t_vec3_d c, int div);
-t_vec3_d 		create_argb(int r, int g, int b);
-void 			reimage(t_window *win);
+int				pull_argb(t_vec3_d c, int div);
+t_vec3_d		create_argb(int r, int g, int b);
+void			reimage(t_window *win);
 void			my_mlx_pixel_put(t_data *data, int x, int y, int cl);
 unsigned int	my_mlx_pixel_get(t_data data, int x, int y);
 
@@ -246,11 +243,13 @@ unsigned int	my_mlx_pixel_get(t_data data, int x, int y);
 
 int				hit_sphere(t_sphere *sphere, t_ray *r, t_tracing_mode mode);
 int				hit_plane(t_plane *plane, t_ray *r, t_tracing_mode mode);
-int				hit_cylinder(t_cylinder *cylinder, t_ray *r, t_tracing_mode mode);
-int				type_sorter(t_objtype t, t_gameobject *obj, t_ray *r, t_tracing_mode mode);
+int				hit_cylinder(t_cylinder *cylinder, t_ray *r,
+					t_tracing_mode mode);
+int				type_sorter(t_objtype t, t_gameobject *obj,
+					t_ray *r, t_tracing_mode mode);
 char			rft_hitter(t_list *scene, t_ray *r, t_tracing_mode mode);
 t_color_3		rft_specular(t_ray *r, t_ray *lr, t_lantern *l, double lambda);
-t_color_3 		rft_diffuse(t_ray *r, t_ray *o, t_lantern *l);
+t_color_3		rft_diffuse(t_ray *r, t_ray *o, t_lantern *l);
 t_vec3_d		rft_search_light(t_window *w, t_ray *r, t_tracing_mode mode);
 t_vec3_d		rft_cast(t_window *w, t_ray *r, t_tracing_mode mode);
 
@@ -265,22 +264,17 @@ int				show_campos(t_camera ct);
 
 /*file palle.c*/
 
-int				rft_anti_aliasing(const t_vec2_i c, const t_vec3_d div_temp, t_ray *r, t_window *w);
+int				rft_anti_aliasing(const t_vec2_i c, const t_vec3_d div_temp,
+					t_ray *r, t_window *w);
 void			*build_pt(t_window *w, int i, int j);
 void			*thread_lol(void *a);
 void			init_threads(t_window *w);
 void			rft_window_cast(t_window *w);
-void 			my_image_creator(t_window *w);
-
-/*file rft_init_scene.c*/
-
-int 			rft_init_scene();
+void			my_image_creator(t_window *w);
 
 /*file utils.c*/
 
 t_raydata		unpack_ray(void *a);
-
-
 void			transform_out(t_transform t);
 t_vec3_d		ray_at(t_ray r, double t);
 
@@ -295,25 +289,27 @@ int				ft_print_error(char *err, t_window *w);
 /*file read_rt.c*/
 
 int				ft_check_file(char *scene);
-int				checkobj(t_window *w);
 int				ft_check_data(t_window *w);
 void			ft_read_rt(t_window *w, char *scene);
 int				ft_open_rt(t_window *w, char **av);
+void			ft_initcam(t_window *w);
 
 /*file parsing.c*/
 
 float			tofloat(char **str);
 t_vec3_d		color_parse(char **str, t_window *w);
 t_vec3_d		pos_parse(char **str, t_window *w);
-int				ft_line_parser(t_window *w, char* line);
+int				ft_line_parser(t_window *w, char *line);
 
 /*file init.c*/
 
-void			rft_add_gameobject_to_scene(t_window *w, t_gameobject *elem, char *texture);
+void			rft_add_gameobject_to_scene(t_window *w, t_gameobject *elem,
+					char *texture);
 t_list			*ft_lstnew_dup(const void *a, int size);
 t_transform		new_transform(t_vec3_d p, t_vec3_d r, t_vec3_d s);
-t_gameobject	*new_gameobject(t_transform tr, t_color_3 cl, t_objtype type, double sh);
-t_gameobject 	new_object1(t_transform tr, t_color_3 cl, t_objtype type);
+t_gameobject	*new_gameobject(t_transform tr, t_color_3 cl, t_objtype type,
+					double sh);
+t_gameobject	new_object1(t_transform tr, t_color_3 cl, t_objtype type);
 
 /*file init_help.c*/
 
@@ -329,6 +325,11 @@ void			*sux_malloc(unsigned int size, t_window *w);
 void			next_val(char **str);
 int				my_atoi(char **str);
 void			ft_comma(char **str, t_window *w);
+
+/*file parse_utils2.c*/
+
+char			*ft_copyadd(char *str);
+void			ft_check_path(char *s, t_window *w);
 
 /*file parse_data.c*/
 

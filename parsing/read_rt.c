@@ -15,7 +15,7 @@
 /*controllo estensione (-3 perche' tolgo ".rt")*/
 int	ft_check_file(char *scene)
 {
-	size_t len;
+	size_t	len;
 
 	len = ft_strlen(scene) - 3;
 	if (len > 3)
@@ -32,13 +32,12 @@ int	ft_check_data(t_window *w)
 
 	i = 0;
 	contchar(w);
-	// checkobj(w);
 	while (w->rt[i])
 	{
 		ft_line_parser(w, w->rt[i]);
 		i++;
 	}
-	return 0;
+	return (0);
 }
 
 /*leggo ogni riga, la pulisco e controllo ci siano tutti i parametri corretti*/
@@ -48,7 +47,6 @@ void	ft_read_rt(t_window *w, char *scene)
 	char	*line;
 	char	*full_rt;
 	int		fd;
-	
 
 	w->num_line = 0;
 	full_rt = ft_calloc(1, 1);
@@ -85,3 +83,10 @@ int	ft_open_rt(t_window *w, char **av)
 	return (0);
 }
 
+void	ft_initcam(t_window *w)
+{
+	w->cam.fov = 1;
+	w->cam.pos = (t_vec3_d){0, 0, 0};
+	w->cam.lookat = (t_vec3_d){0, 0, 1};
+	w->cam.id = 'C';
+}

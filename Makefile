@@ -35,11 +35,12 @@ MLX = mlx/
 FLAG = -lXext -lX11 -lm -lz
 
 SRC = main.c \
-		rt/color_opers.c rt/input.c rt/rft_init_scene.c \
+		rt/color_opers.c rt/input.c \
 		rt/image_creat.c rt/palle.c rt/utils.c \
 		parsing/read_rt.c \
 		parsing/check_rt.c \
 		parsing/parsing.c \
+		parsing/parse_utils2.c \
 		parsing/init.c \
 		parsing/init_help.c \
 		parsing/parse_utils.c \

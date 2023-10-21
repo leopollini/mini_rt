@@ -12,9 +12,8 @@
 
 #include "../include/mini_rt.h"
 
-t_gameobject	*ft_metal_alb(t_gameobject *p, char **line)
+t_gameobject	*ft_metal_alb(t_gameobject *p, char **line, t_window *w)
 {
-	next_val(line);
 	p->metalness = 0;
 	p->albedo = 0;
 	while (**line != 0)
@@ -31,8 +30,10 @@ t_gameobject	*ft_metal_alb(t_gameobject *p, char **line)
 		}
 		if ((**line) == 't')
 		{
+			p->metalness = -1;
 			(*line) = (*line) + 2;
-			p->text = ft_strtrim(ft_strdup(*line), " ");
+			p->text = ft_copyadd(*line);
+			ft_check_path(p->text, w);
 			return (p);
 		}
 		next_val(line);
@@ -58,7 +59,8 @@ int	parse_sphere(t_window *w, char **line)
 	s->transform.scale.z = s->transform.scale.x;
 	next_val(line);
 	s->color = color_parse(line, w);
-	s = ft_metal_alb(s, line);
+	next_val(line);
+	s = ft_metal_alb(s, line, w);
 	ft_lstadd_front(&w->scene, ft_lstnew_dup(s, sizeof(t_sphere)));
 	w->obj_num++;
 	free(s);
@@ -82,7 +84,8 @@ int	parse_plane(t_window *w, char **line)
 	p->transform.rotation = v3d_normalize(pos_parse(line, w));
 	next_val(line);
 	p->color = color_parse(line, w);
-	p = ft_metal_alb(p, line);
+	next_val(line);
+	p = ft_metal_alb(p, line, w);
 	ft_lstadd_front(&w->scene, ft_lstnew_dup(p, sizeof(t_plane)));
 	w->obj_num++;
 	free(p);
@@ -131,7 +134,8 @@ int	parse_cylinder(t_window *w, char **line)
 		ft_print_error("cylinder high must be >= 0", w);
 	p->transform.scale.z = 0;
 	p->color = color_parse(line, w);
-	p = ft_metal_alb(p, line);
+	next_val(line);
+	p = ft_metal_alb(p, line, w);
 	ft_lstadd_front(&w->scene, ft_lstnew_dup(p, sizeof(t_cylinder)));
 	w->obj_num++;
 	free(p);

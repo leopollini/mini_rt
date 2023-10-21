@@ -111,4 +111,3 @@ int	ft_print_error(char *err, t_window *w)
 	ft_pre_exit(w);
 	return (1);
 }
-

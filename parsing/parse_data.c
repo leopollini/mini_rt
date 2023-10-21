@@ -27,7 +27,7 @@ int	parse_res(t_window *w, char **line)
 	return (0);
 }
 
-int parse_amb(t_window *w, char **line)
+int	parse_amb(t_window *w, char **line)
 {
 	w->ambient.id = 'A';
 	next_val(line);
@@ -63,11 +63,6 @@ t_vec2_d	ft_get_rot(t_vec3_d v)
 
 int	parse_cam(t_window *w, char **line)
 {
-	w->cam.fov = 1;
-	w->cam.pos = (t_vec3_d){0, 0, 0};
-	w->cam.lookat = (t_vec3_d){0, 0, 1};
-
-	w->cam.id = 'C';
 	w->cam.pos = pos_parse(line, w);
 	next_val(line);
 	w->cam.lookat.x = tofloat(line);
@@ -108,8 +103,3 @@ int	parse_light(t_window *w, char **line)
 	free(new);
 	return (0);
 }
-
-
-
-
-

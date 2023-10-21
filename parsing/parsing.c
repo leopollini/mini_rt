@@ -12,7 +12,7 @@
 
 #include "../include/mini_rt.h"
 
-float		tofloat(char **str)
+float	tofloat(char **str)
 {
 	int		w;
 	double	d;
@@ -40,7 +40,7 @@ float		tofloat(char **str)
 
 t_vec3_d	color_parse(char **str, t_window *w)
 {
-	t_vec3_d pos;
+	t_vec3_d	pos;
 
 	pos.x = 0;
 	pos.y = 0;
@@ -61,7 +61,7 @@ t_vec3_d	color_parse(char **str, t_window *w)
 
 t_vec3_d	pos_parse(char **str, t_window *w)
 {
-	t_vec3_d pos;
+	t_vec3_d	pos;
 
 	pos.x = 0;
 	pos.y = 0;
@@ -75,7 +75,7 @@ t_vec3_d	pos_parse(char **str, t_window *w)
 	return (pos);
 }
 
-int ft_line_parser(t_window *w, char *line)
+int	ft_line_parser(t_window *w, char *line)
 {
 	if (*line == 'R' && *line++)
 		return (parse_res(w, &line));
@@ -92,6 +92,6 @@ int ft_line_parser(t_window *w, char *line)
 	if (ft_strncmp(line, "cy", 2) == 0 && *line++)
 		return (parse_cylinder(w, &line));
 	if (strcmp(line, ""))
-		return (1);  
+		return (1);
 	return (0);
 }
