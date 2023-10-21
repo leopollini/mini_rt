@@ -43,3 +43,35 @@ void	ft_check_path(char *s, t_window *w)
 	if (file == NULL)
 		ft_print_error("wrong path in the texture", w);
 }
+
+void	free_obj(t_window *w)
+{
+	t_gameobject	*obj;
+	t_list			*tmp;
+
+	while (w->scene != NULL)
+	{
+		tmp = w->scene;
+		obj = (t_gameobject *)w->scene->content;
+		if (obj && obj->text != NULL)
+		{
+			free(obj->text);
+			free(obj);
+		}
+		w->scene = w->scene->next;
+		free(tmp);
+	}
+}
+
+int	ft_print_error(char *err, t_window *w)
+{
+	write(2, "Error\n ", 7);
+	ft_putstr_fd(err, 2);
+	write(2, "\n", 1);
+	if (w->rt != NULL)
+		free_mat(w->rt);
+	ft_lstclear((&w->lights), free);
+	free_obj(w);
+	win_close(w);
+	return (1);
+}

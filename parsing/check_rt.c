@@ -40,41 +40,6 @@ int	contchar(t_window *w)
 	return (0);
 }
 
-char	*ft_clean_str(char *line)
-{
-	int		i;
-	char	*tmp;
-
-	i = -1;
-	tmp = line;
-	while (tmp && tmp[++i])
-		if (tmp[i] == '\t' || tmp[i] == '\n')
-			tmp[i] = ' ';
-	line = ft_strtrim(tmp, " ");
-	free(tmp);
-	return (line);
-}
-
-int	ft_pre_exit(t_window *w)
-{
-	// int	y;
-
-	// y = 0;
-	if (!w->rt)
-		exit(1);
-	// else
-	// // {
-	// // 	while (w->rt && w->rt[y] != NULL)
-	// // 	{
-	// // 		free(w->rt[y]);
-	// // 		y++;
-	// // 	}
-	// // 	if(w->rt)
-	// // 		free(w->rt);
-	// // }
-	exit(1);
-}
-
 char	*ft_strjoin2(char *s1, char *s2)
 {
 	size_t	i;
@@ -101,13 +66,4 @@ char	*ft_strjoin2(char *s1, char *s2)
 	str[ft_strlen(s1) + ft_strlen(s2)] = '\0';
 	free(s1);
 	return (str);
-}
-
-int	ft_print_error(char *err, t_window *w)
-{
-	write(2, "Error\n ", 7);
-	ft_putstr_fd(err, 2);
-	write(2, "\n", 1);
-	ft_pre_exit(w);
-	return (1);
 }

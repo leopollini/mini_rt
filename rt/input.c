@@ -16,6 +16,10 @@ int	win_close(t_window *win)
 {
 	win->do_exit = 1;
 	//init_threads(NULL);
+	free_obj(win);
+	// if (win->rt != NULL)
+	// 	free_mat(win->rt);
+	ft_lstclear((&win->lights), free);
 	mlx_destroy_image(win->mlx, win->img.img);
 	mlx_destroy_window(win->mlx, win->win);
 	mlx_destroy_display(win->mlx);

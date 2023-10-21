@@ -284,7 +284,7 @@ int				contchar(t_window *w);
 char			*ft_clean_str(char *line);
 int				ft_pre_exit(t_window *w);
 char			*ft_strjoin2(char *s1, char *s2);
-int				ft_print_error(char *err, t_window *w);
+
 
 /*file read_rt.c*/
 
@@ -330,6 +330,9 @@ void			ft_comma(char **str, t_window *w);
 
 char			*ft_copyadd(char *str);
 void			ft_check_path(char *s, t_window *w);
+void			free_obj(t_window *w);
+int				ft_print_error(char *err, t_window *w);
+
 
 /*file parse_data.c*/
 
