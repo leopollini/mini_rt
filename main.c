@@ -6,26 +6,11 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 10:08:34 by lpollini          #+#    #+#             */
-/*   Updated: 2023/10/18 16:06:19 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/22 14:55:22 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/mini_rt.h"
-
-void	ft_test_parsing(t_window *w)
-{
-	t_gameobject	test;
-	t_lantern		*lights;
-
-	test = *(t_gameobject *)w->scene->next->content;
-	lights = malloc(sizeof(t_lantern));
-	lights = (t_lantern *)&(w->lights->next->content);
-	printf("A amb %f , %f ,%f \n", w->ambient.color.x, w->ambient.color.y, w->ambient.color.z);
-	printf("L pos %f , %f ,%f \n", lights->pos.x, lights->pos.y, lights->pos.z);
-	printf("pos cam %f , %f ,%f \n", w->cam.pos.x, w->cam.pos.y, w->cam.pos.z);
-	printf("look cam e fov %f , %f ,%f, fov : %f \n", w->cam.lookat.x, w->cam.lookat.y, w->cam.lookat.z, w->cam.fov);
-	printf("plane pos %f , %f ,%f \n", test.transform.position.x, test.transform.position.y, test.transform.position.z);
-}
 
 void	ft_img_obj(t_window *w)
 {
@@ -46,10 +31,45 @@ void	ft_img_obj(t_window *w)
 					&p->texture.img.bps, &p->texture.img.ll,
 					&p->texture.img.en);
 			if (p->texture.img.img == NULL || p->texture.img.addr == NULL)
-				ft_print_error("error nella texture", w);
+				ft_print_error("texture error", w);
 		}
 		ptr = ptr->next;
 	}
+}
+
+void	clean_scene_list(t_list *lst, t_window *win, char mode)
+{
+	if (!lst)
+		return ;
+	if (lst->content)
+	{
+		if (mode && ((t_gameobject *)lst->content)->metalness == -1)
+		{
+			mlx_destroy_image(win->mlx, ((t_gameobject *)lst->content)->texture.img.img);
+			free(((t_gameobject *)lst->content)->text);
+		}
+		free(lst->content);
+	}
+	clean_scene_list(lst->next, win, mode);
+	free(lst);
+}
+
+int	win_close(t_window *win)
+{
+	if (!win)
+		exit(0);
+	win->do_exit = 1;
+	clean_scene_list(win->scene, win, 1);
+	clean_scene_list(win->lights, win, 0);
+	mlx_destroy_image(win->mlx, win->skybox.img.img);
+	mlx_destroy_image(win->mlx, win->img.img);
+	mlx_destroy_window(win->mlx, win->win);
+	mlx_destroy_display(win->mlx);
+	free(win->mlx);
+	free_mat(win->rt);
+	printf("called close window.\n");
+	exit(0);
+	return(0);
 }
 
 int	main(int argn, char *args[])
@@ -60,13 +80,10 @@ int	main(int argn, char *args[])
 		ft_print_error(NOARGS, &w);
 	else if (argn == 3 && ft_char_digit(args[2]))
 		ft_print_error(NOSIZE, &w);
+	ft_open_rt(&w, args);
 	w.mlx = mlx_init();
-	if (rft_load_scene(&w))
-		return (1);
 	if (initw(&w))
 		ft_print_error(NOINIT, &w);
-	ft_open_rt(&w, args);
-	//ft_test_parsing(&w);
 	rft_cast(&w, NULL, 0);
 	ft_img_obj(&w);
 	my_image_creator(&w);

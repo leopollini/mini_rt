@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 11:02:16 by lpollini          #+#    #+#             */
-/*   Updated: 2023/09/18 11:33:56 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/21 17:19:09 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,3 @@ void	v3d_out(t_vec3_d a)
 {
 	printf("called vector out. %f %f %f\n", a.x, a.y, a.z);
 }
-

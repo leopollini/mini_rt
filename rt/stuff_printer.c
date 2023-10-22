@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 09:56:15 by lpollini          #+#    #+#             */
-/*   Updated: 2023/10/06 19:07:23 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/21 17:19:51 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,15 @@
 
 void	transform_out(t_transform t)
 {
-	printf("called transform out.\n----------------------------------------------------\n");
-	printf("x = % 12f, y = % 12f, z = % 12f\n", t.position.x, t.position.y, t.position.z);
-	printf("x = % 12f, y = % 12f, z = % 12f\n", t.rotation.x, t.rotation.y, t.rotation.z);
-	printf("x = % 12f, y = % 12f, z = % 12f\n----------------------------------------------------\n", t.scale.x, t.scale.y, t.scale.z);
+	printf("called transform out.\n------------- \
+			---------------------------------------\n");
+	printf("x = % 12f, y = % 12f, z = % 12f\n", t.position.x, \
+			t.position.y, t.position.z);
+	printf("x = % 12f, y = % 12f, z = % 12f\n", t.rotation.x, \
+			t.rotation.y, t.rotation.z);
+	printf("x = % 12f, y = % 12f, z = % 12f\n--- \
+			-------------------------------------------------\n", \
+			t.scale.x, t.scale.y, t.scale.z);
 }
 
 t_vec3_d	ray_at(t_ray r, double t)

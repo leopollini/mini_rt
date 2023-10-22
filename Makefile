@@ -24,19 +24,20 @@ NAME = mini_rt
 
 CC = gcc 
 
-CFLAGS = -g -Iheaders/ 
+CFLAGS = -g
 
 LIBFT = libft/libft.a
 
-LIB = mlx/libmlx_Linux.a -lX11 -lXext -lm
+LIB = .mlx/libmlx_Linux.a -lX11 -lXext -lm
 
-MLX = mlx/
+MLX = .mlx/
 
 FLAG = -lXext -lX11 -lm -lz
 
 SRC = main.c \
-		rt/color_opers.c rt/input.c rt/rft_init_scene.c \
+		rt/color_opers.c rt/input.c \
 		rt/image_creat.c rt/palle.c rt/utils.c \
+		rt/stuff_printer.c rt/pixel_stuff.c \
 		parsing/read_rt.c \
 		parsing/check_rt.c \
 		parsing/parsing.c \
@@ -45,7 +46,6 @@ SRC = main.c \
 		parsing/parse_utils.c \
 		parsing/parse_data.c \
 		parsing/parse_obj.c \
-rt/stuff_printer.c \
 vectors/miscellaneous_2.c \
 vectors/miscellaneous.c \
 vectors/vector3_ops_2.c \

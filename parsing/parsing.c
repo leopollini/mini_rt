@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iragusa <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 22:03:03 by iragusa           #+#    #+#             */
-/*   Updated: 2023/07/27 22:03:07 by iragusa          ###   ########.fr       */
+/*   Updated: 2023/10/22 12:28:00 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/mini_rt.h"
 
-float		tofloat(char **str)
+float	tofloat(char **str)
 {
 	int		w;
 	double	d;
@@ -36,11 +36,10 @@ float		tofloat(char **str)
 	return (d * neg);
 }
 
-//parse dei colori e shift dei valori R(x) G(y) e B(z)
-
+/*color parse and RGB shift*/
 t_vec3_d	color_parse(char **str, t_window *w)
 {
-	t_vec3_d pos;
+	t_vec3_d	pos;
 
 	pos.x = 0;
 	pos.y = 0;
@@ -61,7 +60,7 @@ t_vec3_d	color_parse(char **str, t_window *w)
 
 t_vec3_d	pos_parse(char **str, t_window *w)
 {
-	t_vec3_d pos;
+	t_vec3_d	pos;
 
 	pos.x = 0;
 	pos.y = 0;
@@ -75,7 +74,7 @@ t_vec3_d	pos_parse(char **str, t_window *w)
 	return (pos);
 }
 
-int ft_line_parser(t_window *w, char *line)
+int	ft_line_parser(t_window *w, char *line)
 {
 	if (*line == 'R' && *line++)
 		return (parse_res(w, &line));
@@ -92,6 +91,6 @@ int ft_line_parser(t_window *w, char *line)
 	if (ft_strncmp(line, "cy", 2) == 0 && *line++)
 		return (parse_cylinder(w, &line));
 	if (strcmp(line, ""))
-		return (1);  
+		return (1);
 	return (0);
 }

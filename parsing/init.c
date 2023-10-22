@@ -6,13 +6,13 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 10:08:34 by lpollini          #+#    #+#             */
-/*   Updated: 2023/10/10 16:01:17 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/22 12:24:40 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/mini_rt.h"
 
-t_gameobject new_object1(t_transform tr, t_color_3 cl, t_objtype type)	// return NON malloc'd gameobject
+t_gameobject	new_object1(t_transform tr, t_color_3 cl, t_objtype type)
 {
 	t_gameobject	res;
 
@@ -22,7 +22,8 @@ t_gameobject new_object1(t_transform tr, t_color_3 cl, t_objtype type)	// return
 	return (res);
 }
 
-t_gameobject	*new_gameobject(t_transform tr, t_color_3 cl, t_objtype type, double sh)	// return malloc'd gameobject
+t_gameobject	*new_gameobject(t_transform tr,
+			t_color_3 cl, t_objtype type, double sh)
 {
 	t_gameobject	*res;
 
@@ -39,7 +40,7 @@ t_transform	new_transform(t_vec3_d p, t_vec3_d r, t_vec3_d s)
 	return ((t_transform){p, r, s});
 }
 
-t_list	*ft_lstnew_dup(const void *a, int size)		// duplicates adding to list (a can be stack'd)
+t_list	*ft_lstnew_dup(const void *a, int size)
 {
 	void	*temp;
 	int		i;
@@ -51,7 +52,8 @@ t_list	*ft_lstnew_dup(const void *a, int size)		// duplicates adding to list (a 
 	return (ft_lstnew(temp));
 }
 
-void	rft_add_gameobject_to_scene(t_window *w, t_gameobject *elem, char *texture)	// requires elem to be malloc'd
+void	rft_add_gameobject_to_scene(t_window *w,
+			t_gameobject *elem, char *texture)
 {
 	t_texture	*t;
 
@@ -59,8 +61,10 @@ void	rft_add_gameobject_to_scene(t_window *w, t_gameobject *elem, char *texture)
 	if (texture)
 	{
 		t = &elem->texture;
-		t->img.img = mlx_xpm_file_to_image(w->mlx, texture, &t->size.x, &t->size.y);
-		t->img.addr = mlx_get_data_addr(t->img.img, &t->img.bps, &t->img.ll, &t->img.en);
+		t->img.img = mlx_xpm_file_to_image(w->mlx,
+				texture, &t->size.x, &t->size.y);
+		t->img.addr = mlx_get_data_addr(t->img.img,
+				&t->img.bps, &t->img.ll, &t->img.en);
 	}
 	ft_lstadd_front(&w->scene, ft_lstnew(elem));
 	w->obj_num++;

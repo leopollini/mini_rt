@@ -6,26 +6,24 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:37:06 by lpollini          #+#    #+#             */
-/*   Updated: 2023/10/21 15:43:10 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/22 12:10:58 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/mini_rt.h"
 
-t_window	*g_all;
-
-t_vec3_d skybox_calc(t_ray r, t_texture t)
+t_vec3_d	skybox_calc(t_ray r, t_texture t)
 {
-	t_vec3_d d;
-	t_vec2_i on_pg;
-	unsigned int found_col;
+	t_vec3_d		d;
+	t_vec2_i		on_pg;
+	unsigned int	found_col;
 
 	d = r.direction;
 	on_pg.x = (0.5 + atan2(d.z, d.x) / (2 * M_PI)) * t.size.x;
 	on_pg.y = (0.5 - asin(d.y) / (M_PI)) * t.size.y;
-
 	found_col = my_mlx_pixel_get(t.img, on_pg.x, on_pg.y);
-	return (create_argb((found_col >> 16) & 0xff, (found_col >> 8) & 0xff, found_col & 0xff));
+	return (create_argb((found_col >> 16) & 0xff,
+			(found_col >> 8) & 0xff, found_col & 0xff));
 }
 
 double	double_min(double a, double b)
@@ -58,15 +56,29 @@ int	test_over(t_vec3_d rot, t_vec3_d dst, double dt)
 	return (0);
 }
 
+int	metal_manager(t_ray *r, t_gameobject *gm)
+{
+	t_ray		refl;
+	
+	if (r->depth > MAX_REF_DEPTH)
+		return (r->data.color = (t_vec3_d){0, 0, 0}, 1);
+	r->data.ismetal = 1;
+	refl.source = r->data.hit_point;
+	refl.max_sqr_len = INFINITY;
+	refl.direction = v3d_specular(v3d_anti(r->direction),
+			r->data.point_normal);
+	refl.depth = r->depth + 1;
+	r->data.color = v3d_sumponder(gm->color, rft_cast(NULL,
+			&refl, ALL), gm->metalness);
+	return (1);
+}
+
 int	hit_cylinder(t_cylinder *cylinder, t_ray *r, t_tracing_mode mode)
 {
 	t_vec3_d	delta;
 	t_ray		new_ray;
 	t_vec3_d	c_to_o;
-	t_ray		refl;
-	double		t;
-	double		t1;
-	double		dt;
+	t_vec3_d	t;
 
 	(void) mode;
 	r->data.sqr_distance = INFINITY;
@@ -76,48 +88,37 @@ int	hit_cylinder(t_cylinder *cylinder, t_ray *r, t_tracing_mode mode)
 	delta.x = v3d_dot(new_ray.direction, new_ray.direction);
 	delta.y = 2 * v3d_dot(new_ray.direction, v3d_cross(c_to_o, cylinder->transform.rotation));
 	delta.z = v3d_dot(v3d_cross(c_to_o, cylinder->transform.rotation), v3d_cross(c_to_o, cylinder->transform.rotation)) - pow(cylinder->transform.scale.x / 2, 2);
-	dt = pow(delta.y, 2) - 4 * delta.z * delta.x;
-	if (dt < 0)
+	t.z = pow(delta.y, 2) - 4 * delta.z * delta.x;
+	if (t.z < 0)
 		return (0);
-	dt = sqrt(dt);
-	t = (-delta.y - dt) / (2 * delta.x);
-	t1 = t + dt / delta.x;
-	if (t > t1)
+	t.z = sqrt(t.z);
+	t.x = (-delta.y - t.z) / (2 * delta.x);
+	t.y = t.x + t.z / delta.x;
+	if (t.x > t.y)
 	{
-		dt = t;
-		t = t1;
-		t1 = dt;
+		t.z = t.x;
+		t.x = t.y;
+		t.y = t.z;
 	}
-	if (t < NEGATIVE_LIM)
+	if (t.x < NEGATIVE_LIM)
 		return (0);
 
-	r->data.color = cylinder->color;
-	dt = pow(cylinder->transform.scale.x / 2, 2) + pow(cylinder->transform.scale.y, 2);
-
-	r->data.hit_point = v3d_scal(r->direction, t);
+	t.z = pow(cylinder->transform.scale.x / 2, 2) + pow(cylinder->transform.scale.y, 2);
+	r->data.hit_point = v3d_scal(r->direction, t.x);
 	r->data.point_normal = v3d_cross(cylinder->transform.rotation, r->direction);
-	if (test_over(cylinder->transform.rotation, v3d_sum_2(r->data.hit_point, v3d_anti(cylinder->transform.position)), dt))
+	if (test_over(cylinder->transform.rotation, v3d_sum_2(r->data.hit_point, v3d_anti(cylinder->transform.position)), t.z))
 	{
-		t = t1;
-		r->data.hit_point = v3d_scal(r->direction, t);
+		t.x = t.y;
+		r->data.hit_point = v3d_scal(r->direction, t.x);
 		r->data.point_normal = v3d_anti(cylinder->transform.rotation);
-		if (test_over(cylinder->transform.rotation, v3d_sum_2(r->data.hit_point, v3d_anti(cylinder->transform.position)), dt))
+		if (test_over(cylinder->transform.rotation, v3d_sum_2(r->data.hit_point, v3d_anti(cylinder->transform.position)), t.z))
 			return (0);
 	}
 	r->data.hit_pointer = cylinder;
-	r->data.sqr_distance = t * t;
-	if (cylinder->metalness > 0)
-	{
-		if (r->depth > MAX_REF_DEPTH)
-			return (r->data.color = (t_vec3_d){0, 0, 0}, 1);
-		r->data.ismetal = 1;
-		refl.source = r->data.hit_point;
-		refl.max_sqr_len = INFINITY;
-		refl.direction = v3d_specular(v3d_anti(r->direction), r->data.point_normal);
-		refl.depth = r->depth + 1;
-		r->data.color = color_3_merge(rft_cast(NULL, &refl, ALL), cylinder->color);
+	r->data.sqr_distance = t.x * t.x;
+	if (cylinder->metalness > 0 && metal_manager(r, cylinder))
 		return (1);
-	}
+	r->data.color = cylinder->color;
 	return (1);
 }
 
@@ -151,21 +152,8 @@ int hit_sphere(t_sphere *sphere, t_ray *r, t_tracing_mode mode)
 		return (1);
 	r->data.hit_point = ray_at(*r, temp.x);
 	r->data.point_normal = v3d_normalize(v3d_sum_2(r->data.hit_point, v3d_anti(sphere->transform.position)));
-	if (sphere->metalness > 0)
-	{
-		if (r->depth > MAX_REF_DEPTH)
-		{
-			r->data.color = (t_vec3_d){0, 0, 0};
-			return (1);
-		}
-		r->data.ismetal = 1;
-		refl.source = r->data.hit_point;
-		refl.max_sqr_len = INFINITY;
-		refl.direction = v3d_specular(v3d_anti(r->direction), r->data.point_normal);
-		refl.depth = r->depth + 1;
-		r->data.color = color_3_merge(rft_cast(NULL, &refl, ALL), sphere->color);
+	if (sphere->metalness > 0 && metal_manager(r, sphere))
 		return (1);
-	}
 	if (sphere->metalness == -1)
 	{
 		refl = *r;
@@ -180,7 +168,6 @@ int hit_sphere(t_sphere *sphere, t_ray *r, t_tracing_mode mode)
 int hit_plane(t_plane *plane, t_ray *r, t_tracing_mode mode)
 {
 	double		denom;
-	//t_vec3_d	temp;
 	t_vec3_d	norm;
 	double		t;
 	t_ray		refl;
@@ -203,21 +190,8 @@ int hit_plane(t_plane *plane, t_ray *r, t_tracing_mode mode)
 			return (1);
 		r->data.point_normal = norm;
 		r->data.hit_point = ray_at(*r, t);
-		if (plane->metalness > 0)
-		{
-			if (r->depth > MAX_REF_DEPTH)
-			{
-				r->data.color = (t_vec3_d){0, 0, 0};
-				return (1);
-			}
-			r->data.ismetal = 1;
-			refl.source = r->data.hit_point;
-			refl.max_sqr_len = INFINITY;
-			refl.direction = v3d_specular(v3d_anti(r->direction), norm);
-			refl.depth = r->depth + 1;
-			r->data.color = color_3_merge(rft_cast(NULL, &refl, ALL), plane->color);
+		if (plane->metalness > 0 && metal_manager(r, plane))
 			return (1);
-		}
 		r->data.color = plane->color;
 		return (1);
 	}
@@ -250,7 +224,8 @@ char rft_hitter(t_list *scene, t_ray *r, t_tracing_mode mode)
 	{
 		best.data.ismetal = 0;
 		obj = (t_gameobject *)scene->content;
-		if (scene->content && type_sorter(obj->type, obj, &best, mode) && best.data.sqr_distance < r->max_sqr_len)
+		if (scene->content && type_sorter(obj->type, obj, &best, mode)
+				&& best.data.sqr_distance < r->max_sqr_len)
 		{
 			if (mode == OCCLUSION)
 				return (1);
@@ -267,15 +242,18 @@ t_color_3 rft_specular(t_ray *r, t_ray *lr, t_lantern *l, double lambda)
 {
 	t_vec3_d	res = v3d_specular(lr->direction, r->data.point_normal);
 	(void)lambda;
-//printf("called. %f\n", lambda);
 	if (r->data.hit_pointer->type == PLANE)
-		return (color_3_merge((v3d_scal(r->data.color, pow(v3d_dot(res, v3d_anti(r->direction)), 200) / 5 * l->intensity)), l->color));
-	return (color_3_merge((v3d_scal(r->data.color, pow(v3d_dot(res, v3d_anti(r->direction)), 50) / 2 * l->intensity)), l->color));
+		return (color_3_merge((v3d_scal(r->data.color, pow(v3d_dot(res,
+			v3d_anti(r->direction)), 200) / 5 * l->intensity)), l->color));
+	return (color_3_merge((v3d_scal(r->data.color, pow(v3d_dot(res,
+			v3d_anti(r->direction)), 50) / 2 * l->intensity)), l->color));
 }
 
 t_color_3 rft_diffuse(t_ray *r, t_ray *o, t_lantern *l)
 {
-	return (color_3_merge((v3d_scal(r->data.color, v3d_dot(r->data.point_normal, o->direction) / 2 * l->intensity)), l->color));
+	return (color_3_merge((v3d_scal(r->data.color,
+			v3d_dot(r->data.point_normal, o->direction) / 2
+			* l->intensity)), l->color));
 }
 
 t_vec3_d rft_search_light(t_window *w, t_ray *r, t_tracing_mode mode)
@@ -313,7 +291,6 @@ t_vec3_d rft_cast(t_window *w, t_ray *r, t_tracing_mode mode)
 	if (!aw)
 	{
 		aw = w;
-		g_all = w;
 		return ((t_vec3_d){});
 	}
 	if (mode == OCCLUSION || mode == REFERENCE)

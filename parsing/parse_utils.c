@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iragusa <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 17:09:12 by iragusa           #+#    #+#             */
-/*   Updated: 2023/08/03 17:09:14 by iragusa          ###   ########.fr       */
+/*   Updated: 2023/10/22 12:25:35 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int	ft_char_digit(char *str)
 {
 	int	i;
+
 	i = 0;
 	while (str[i] != 0)
 	{
@@ -25,9 +26,9 @@ int	ft_char_digit(char *str)
 	return (0);
 }
 
-void		*sux_malloc(unsigned int size, t_window *w)
+void	*sux_malloc(unsigned int size, t_window *w)
 {
-	void *ptr;
+	void	*ptr;
 
 	ptr = malloc(size);
 	if (ptr == NULL)
@@ -35,15 +36,15 @@ void		*sux_malloc(unsigned int size, t_window *w)
 	return (ptr);
 }
 
-void		next_val(char **str)
+void	next_val(char **str)
 {
 	while (**str == 32 || **str == 9)
 		(*str)++;
 }
 
-int			my_atoi(char **str)
+int	my_atoi(char **str)
 {
-	int i;
+	int	i;
 	int	neg;
 
 	i = 0;
@@ -56,7 +57,7 @@ int			my_atoi(char **str)
 	return (i * neg);
 }
 
-void		ft_comma(char **str, t_window *w)
+void	ft_comma(char **str, t_window *w)
 {
 	if (**str != ',')
 		ft_print_error("parameters bad formatted\n", w);

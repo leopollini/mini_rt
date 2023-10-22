@@ -6,24 +6,11 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 22:14:44 by lpollini          #+#    #+#             */
-/*   Updated: 2023/10/18 19:44:38 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/22 12:39:03 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/mini_rt.h"
-
-int	win_close(t_window *win)
-{
-	win->do_exit = 1;
-	//init_threads(NULL);
-	mlx_destroy_image(win->mlx, win->img.img);
-	mlx_destroy_window(win->mlx, win->win);
-	mlx_destroy_display(win->mlx);
-	free(win->mlx);
-	printf("called close window.\n");
-	exit(0);
-	return(0);
-}
 
 int	show_campos(t_camera ct)
 {

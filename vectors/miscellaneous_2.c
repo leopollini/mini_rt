@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:56:59 by lpollini          #+#    #+#             */
-/*   Updated: 2023/10/06 19:00:13 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/21 17:15:30 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_vec3_d	color_add(t_vec3_d a, const t_vec3_d b)
 
 t_color_3	color_3_merge(t_color_3 a, t_color_3 b)
 {
-	return ((t_color_3 ){a.x * b.x / 255, a.y * b.y / 255, a.z * b.z / 255});
+	return ((t_color_3){a.x * b.x / 255, a.y * b.y / 255, a.z * b.z / 255});
 }
 
 double	plain_module(double a)

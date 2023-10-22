@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 17:09:12 by iragusa           #+#    #+#             */
-/*   Updated: 2023/10/18 16:29:16 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/22 14:56:41 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_gameobject	*ft_metal_alb(t_gameobject *p, char **line)
 		if ((**line) == 't')
 		{
 			(*line) = (*line) + 2;
-			p->text = ft_strtrim(ft_strdup(*line), " ");
+			p->text = ft_strtrim(*line, " ");
 			return (p);
 		}
 		next_val(line);

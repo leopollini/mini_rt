@@ -6,16 +6,16 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 20:13:00 by iragusa           #+#    #+#             */
-/*   Updated: 2023/10/10 18:28:48 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/22 14:24:22 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/mini_rt.h"
 
-/*controllo estensione (-3 perche' tolgo ".rt")*/
+/*check extension (-3 stands for remove ".rt")*/
 int	ft_check_file(char *scene)
 {
-	size_t len;
+	size_t	len;
 
 	len = ft_strlen(scene) - 3;
 	if (len > 3)
@@ -32,23 +32,20 @@ int	ft_check_data(t_window *w)
 
 	i = 0;
 	contchar(w);
-	// checkobj(w);
 	while (w->rt[i])
 	{
 		ft_line_parser(w, w->rt[i]);
 		i++;
 	}
-	return 0;
+	return (0);
 }
 
-/*leggo ogni riga, la pulisco e controllo ci siano tutti i parametri corretti*/
-
+/*read line, clean and check parameters correctness*/
 void	ft_read_rt(t_window *w, char *scene)
 {
 	char	*line;
 	char	*full_rt;
 	int		fd;
-	
 
 	w->num_line = 0;
 	full_rt = ft_calloc(1, 1);
@@ -71,7 +68,7 @@ void	ft_read_rt(t_window *w, char *scene)
 	ft_check_data(w);
 }
 
-/*apro il file passato, controllo l'estensione e lo mando alla lettura*/
+/*open argument file, check extension and send to read*/
 int	ft_open_rt(t_window *w, char **av)
 {
 	int	fd;
@@ -81,7 +78,7 @@ int	ft_open_rt(t_window *w, char **av)
 		return (ft_print_error(NOFILE, w));
 	if (ft_check_file(av[1]) == 0)
 		return (ft_print_error(NO_RT, w));
+	rft_load_scene(w);
 	ft_read_rt(w, av[1]);
 	return (0);
 }
-
