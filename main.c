@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 10:08:34 by lpollini          #+#    #+#             */
-/*   Updated: 2023/10/22 14:55:22 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/22 15:48:32 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ void	clean_scene_list(t_list *lst, t_window *win, char mode)
 	{
 		if (mode && ((t_gameobject *)lst->content)->metalness == -1)
 		{
-			mlx_destroy_image(win->mlx, ((t_gameobject *)lst->content)->texture.img.img);
+			mlx_destroy_image(win->mlx,
+				((t_gameobject *)lst->content)->texture.img.img);
 			free(((t_gameobject *)lst->content)->text);
 		}
 		free(lst->content);
@@ -69,7 +70,7 @@ int	win_close(t_window *win)
 	free_mat(win->rt);
 	printf("called close window.\n");
 	exit(0);
-	return(0);
+	return (0);
 }
 
 int	main(int argn, char *args[])

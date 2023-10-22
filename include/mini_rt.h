@@ -6,14 +6,13 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 18:57:52 by lpollini          #+#    #+#             */
-/*   Updated: 2023/10/22 14:51:29 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/22 15:47:48 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINI_RT_H
 # define MINI_RT_H
 
-# define IMGSIZE 100
 # define EXITVAL 10
 # define LN_ACCURACY 50
 # define MAX_ITER 80
@@ -40,6 +39,9 @@
 
 # define CREAT_GB_SWITCH 0
 
+# define IMGSIZE 100
+# define SKYBOX "skybox/universe.xpm"
+
 /*error msg*/
 # define NOARGS "something's wrong, you have to write: ./minirt \
 scenes/mandatory.rt, possibly followed by size of square windows (ex. 500)"
@@ -51,7 +53,6 @@ scenes/mandatory.rt, possibly followed by size of square windows (ex. 500)"
 # define ACL_ERR "check your params! file rt must have \
 1 A, 1 C, at least 1 L and at most 1 R!"
 # define CHECK_RT ", check your params!"
-# define SKYBOX "skybox/universe.xpm"
 
 # include "mlx.h"
 # include "libft.h"
