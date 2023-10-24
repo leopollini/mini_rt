@@ -63,6 +63,11 @@ t_vec2_d	ft_get_rot(t_vec3_d v)
 
 int	parse_cam(t_window *w, char **line)
 {
+<<<<<<< HEAD
+=======
+	w->cam.fov = 1;
+	w->cam.id = 'C';
+>>>>>>> 96c89d8363d67293422c321c115fa49b465a9042
 	w->cam.pos = pos_parse(line, w);
 	next_val(line);
 	w->cam.lookat.x = tofloat(line);

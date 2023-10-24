@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 11:02:16 by lpollini          #+#    #+#             */
-/*   Updated: 2023/09/18 11:38:45 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/21 17:15:41 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,5 @@ t_vec3_d	v3d_sum(int n, ...)
 
 t_vec3_d	v3d_anti(t_vec3_d a)
 {
-	return ((t_vec3_d ){-a.x, -a.y, -a.z});
+	return ((t_vec3_d){-a.x, -a.y, -a.z});
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_rt.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iragusa <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 17:09:12 by iragusa           #+#    #+#             */
-/*   Updated: 2023/08/03 17:09:14 by iragusa          ###   ########.fr       */
+/*   Updated: 2023/10/22 12:41:43 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,24 @@ int	contchar(t_window *w)
 	return (0);
 }
 
+<<<<<<< HEAD
+=======
+char	*ft_clean_str(char *line)
+{
+	int		i;
+	char	*tmp;
+
+	i = -1;
+	tmp = line;
+	while (tmp && tmp[++i])
+		if (tmp[i] == '\t' || tmp[i] == '\n')
+			tmp[i] = ' ';
+	line = ft_strtrim(tmp, " ");
+	free(tmp);
+	return (line);
+}
+
+>>>>>>> 96c89d8363d67293422c321c115fa49b465a9042
 char	*ft_strjoin2(char *s1, char *s2)
 {
 	size_t	i;
@@ -67,3 +85,15 @@ char	*ft_strjoin2(char *s1, char *s2)
 	free(s1);
 	return (str);
 }
+<<<<<<< HEAD
+=======
+
+int	ft_print_error(char *err, t_window *w)
+{
+	write(STDERR_FILENO, "Error\n ", 7);
+	ft_putstr_fd(err, STDERR_FILENO);
+	write(STDERR_FILENO, "\n", 1);
+	win_close(NULL);
+	return (1);
+}
+>>>>>>> 96c89d8363d67293422c321c115fa49b465a9042

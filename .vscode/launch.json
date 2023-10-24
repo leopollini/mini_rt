@@ -4,7 +4,7 @@
         "name": "(gdb) Launch",
         "type": "cppdbg",
         "request": "launch",
-        "program": "/nfs/homes/iragusa/kickoff/gitoff/progetti/rank04/mini_rt/mini_rt",
+        "program": "/home/leonardo/Desktop/42_stuff_new/mini_rt/mini_rt",
         "args": ["mandatory.rt"],
         "stopAtEntry": false,
         "cwd": "${fileDirname}",

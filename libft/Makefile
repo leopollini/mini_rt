@@ -6,7 +6,7 @@
 #    By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/22 15:15:27 by iragusa           #+#    #+#              #
-#    Updated: 2023/08/02 16:53:49 by lpollini         ###   ########.fr        #
+#    Updated: 2023/10/22 13:26:01 by lpollini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ CC = gcc
 
 AR = ar -rcs
 
-FLAG = -Werror -Wall -Wextra
+FLAG = -g -Werror -Wall -Wextra
 
 SRC = ft_atoi.c ft_putchar_fd.c ft_strjoin.c ft_strtrim.c\
 	ft_bzero.c ft_putendl_fd.c ft_strlcat.c ft_substr.c\

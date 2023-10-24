@@ -6,12 +6,13 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 22:14:44 by lpollini          #+#    #+#             */
-/*   Updated: 2023/10/18 19:44:38 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/22 12:39:03 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/mini_rt.h"
 
+<<<<<<< HEAD
 int	win_close(t_window *win)
 {
 	win->do_exit = 1;
@@ -29,6 +30,8 @@ int	win_close(t_window *win)
 	return(0);
 }
 
+=======
+>>>>>>> 96c89d8363d67293422c321c115fa49b465a9042
 int	show_campos(t_camera ct)
 {
 	printf("called transform out.\n----------------------------------------------------\n");

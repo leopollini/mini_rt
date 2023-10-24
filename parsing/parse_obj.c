@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 17:09:12 by iragusa           #+#    #+#             */
-/*   Updated: 2023/10/18 16:29:16 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/22 15:48:42 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,12 @@ t_gameobject	*ft_metal_alb(t_gameobject *p, char **line, t_window *w)
 		{
 			p->metalness = -1;
 			(*line) = (*line) + 2;
+<<<<<<< HEAD
 			p->text = ft_copyadd(*line);
 			ft_check_path(p->text, w);
+=======
+			p->text = ft_strtrim(*line, " ");
+>>>>>>> 96c89d8363d67293422c321c115fa49b465a9042
 			return (p);
 		}
 		next_val(line);
@@ -54,13 +58,19 @@ int	parse_sphere(t_window *w, char **line)
 	next_val(line);
 	s->transform.scale.x = tofloat(line);
 	if (s->transform.scale.x <= 0)
-		ft_print_error("sphere diameter must be > 0", w);
+		ft_print_error("sphere radius must be > 0", w);
 	s->transform.scale.y = s->transform.scale.x;
 	s->transform.scale.z = s->transform.scale.x;
 	next_val(line);
 	s->color = color_parse(line, w);
+<<<<<<< HEAD
 	next_val(line);
 	s = ft_metal_alb(s, line, w);
+=======
+	s->defnum = w->obj_num++;
+	s->transform.rotation = (t_vec3_d){0, 0, 0};
+	s = ft_metal_alb(s, line);
+>>>>>>> 96c89d8363d67293422c321c115fa49b465a9042
 	ft_lstadd_front(&w->scene, ft_lstnew_dup(s, sizeof(t_sphere)));
 	w->obj_num++;
 	free(s);
@@ -84,20 +94,25 @@ int	parse_plane(t_window *w, char **line)
 	p->transform.rotation = v3d_normalize(pos_parse(line, w));
 	next_val(line);
 	p->color = color_parse(line, w);
+<<<<<<< HEAD
 	next_val(line);
 	p = ft_metal_alb(p, line, w);
+=======
+	p->defnum = w->obj_num++;
+	p = ft_metal_alb(p, line);
+>>>>>>> 96c89d8363d67293422c321c115fa49b465a9042
 	ft_lstadd_front(&w->scene, ft_lstnew_dup(p, sizeof(t_plane)));
 	w->obj_num++;
 	free(p);
 	return (0);
 }
 
-t_cylinder	*parse_cylinder_help(t_window *w, t_cylinder *p, char **line, int i)
+t_cylinder	*parse_cylinder_help(t_window *w, t_cylinder *c, char **line, int i)
 {
 	(*line)++;
-	p->type = CYLINDER;
+	c->type = CYLINDER;
 	next_val(line);
-	p->transform.position = pos_parse(line, w);
+	c->transform.position = pos_parse(line, w);
 	next_val(line);
 	while ((*line)[i] != 0 && (*line)[i] != 32 && (*line)[i] != 9)
 	{
@@ -110,34 +125,42 @@ t_cylinder	*parse_cylinder_help(t_window *w, t_cylinder *p, char **line, int i)
 	}
 	if (i == -1)
 	{
-		p->transform.rotation = v3d_normalize(pos_parse(line, w));
+		c->transform.rotation = v3d_normalize(pos_parse(line, w));
 		next_val(line);
 	}
-	return (p);
+	return (c);
 }
 
 int	parse_cylinder(t_window *w, char **line)
 {
-	t_cylinder	*p;
+	t_cylinder	*c;
 	int			i;
 
 	i = 0;
-	p = sux_malloc(sizeof(t_cylinder), w);
-	p->text = NULL;
-	p = parse_cylinder_help(w, p, line, i);
-	p->transform.scale.x = tofloat(line);
-	if (p->transform.scale.x <= 0)
+	c = sux_malloc(sizeof(t_cylinder), w);
+	c->text = NULL;
+	c = parse_cylinder_help(w, c, line, i);
+	c->transform.scale.x = tofloat(line);
+	if (c->transform.scale.x <= 0)
 		ft_print_error("cylinder radious must be > 0", w);
 	next_val(line);
-	p->transform.scale.y = tofloat(line);
-	if (p->transform.scale.y < 0)
+	c->transform.scale.y = tofloat(line);
+	if (c->transform.scale.y < 0)
 		ft_print_error("cylinder high must be >= 0", w);
+<<<<<<< HEAD
 	p->transform.scale.z = 0;
 	p->color = color_parse(line, w);
 	next_val(line);
 	p = ft_metal_alb(p, line, w);
 	ft_lstadd_front(&w->scene, ft_lstnew_dup(p, sizeof(t_cylinder)));
+=======
+	c->transform.scale.z = 0;
+	c->color = color_parse(line, w);
+	c->defnum = w->obj_num++;
+	c = ft_metal_alb(c, line);
+	ft_lstadd_front(&w->scene, ft_lstnew_dup(c, sizeof(t_cylinder)));
+>>>>>>> 96c89d8363d67293422c321c115fa49b465a9042
 	w->obj_num++;
-	free(p);
+	free(c);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iragusa <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 22:03:03 by iragusa           #+#    #+#             */
-/*   Updated: 2023/07/27 22:03:07 by iragusa          ###   ########.fr       */
+/*   Updated: 2023/10/22 15:54:33 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ float	tofloat(char **str)
 	return (d * neg);
 }
 
-//parse dei colori e shift dei valori R(x) G(y) e B(z)
-
+/*color parse and RGB shift*/
 t_vec3_d	color_parse(char **str, t_window *w)
 {
 	t_vec3_d	pos;
@@ -79,19 +78,26 @@ int	ft_line_parser(t_window *w, char *line)
 {
 	if (*line == 'R' && *line++)
 		return (parse_res(w, &line));
-	if (*line == 'A' && *line++)
+	else if (*line == 'A' && *line++)
 		return (parse_amb(w, &line));
-	if (*line == 'C' && *line++)
+	else if (*line == 'C' && *line++)
 		return (parse_cam(w, &line));
-	if (*line == 'L' && *line++)
+	else if (*line == 'L' && *line++)
 		return (parse_light(w, &line));
-	if (ft_strncmp(line, "sp", 2) == 0 && *line++)
+	else if (ft_strncmp(line, "sp", 2) == 0 && *line++)
 		return (parse_sphere(w, &line));
-	if (ft_strncmp(line, "pl", 2) == 0 && *line++)
+	else if (ft_strncmp(line, "pl", 2) == 0 && *line++)
 		return (parse_plane(w, &line));
-	if (ft_strncmp(line, "cy", 2) == 0 && *line++)
+	else if (ft_strncmp(line, "cy", 2) == 0 && *line++)
 		return (parse_cylinder(w, &line));
+<<<<<<< HEAD
 	if (strcmp(line, ""))
 		return (1);
+=======
+	else if (strcmp(line, ""))
+		return (1);
+	else
+		ft_print_error("unexpected identifier in scene file", w);
+>>>>>>> 96c89d8363d67293422c321c115fa49b465a9042
 	return (0);
 }

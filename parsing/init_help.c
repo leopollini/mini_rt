@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 10:08:34 by lpollini          #+#    #+#             */
-/*   Updated: 2023/10/18 15:46:47 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/22 14:51:46 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ void	camera_init(t_window *win)
 
 int	initw(t_window *win)
 {
-	win->size.x = 500;
-	win->size.y = 500;
+	win->size.x = IMGSIZE;
+	win->size.y = IMGSIZE;
 	if (win->size.x <= 0 || win->size.y <= 0)
 		return (write(1, "Window size error\n", 8));
 	win->anti_aliasing = START_AA_VAL;
@@ -48,6 +48,7 @@ int	initw(t_window *win)
 	win->step = 0.1;
 	win->selected = NULL;
 	win->do_exit = 0;
+<<<<<<< HEAD
 	rft_load_scene(win);
 	win->win = mlx_new_window(win->mlx, win->size.x, win->size.y,
 			"mini_rt");
@@ -58,6 +59,17 @@ int	initw(t_window *win)
 	win->img.img = mlx_new_image(win->mlx, win->size.x, win->size.y);
 	win->img.addr = mlx_get_data_addr(win->img.img,
 			&win->img.bps, &win->img.ll, &win->img.en);
+=======
+	win->win = mlx_new_window(win->mlx, win->size.x, win->size.y,
+			"mini_rt lol");
+	win->skybox.img.img = mlx_xpm_file_to_image(win->mlx,
+			SKYBOX, &win->skybox.size.x, &win->skybox.size.y);
+	win->skybox.img.addr = mlx_get_data_addr(win->skybox.img.img,
+			&win->skybox.img.bps, &win->skybox.img.ll, &win->skybox.img.en);
+	win->img.img = mlx_new_image(win->mlx, win->size.x, win->size.y);
+	win->img.addr = mlx_get_data_addr(win->img.img, &win->img.bps,
+			&win->img.ll, &win->img.en);
+>>>>>>> 96c89d8363d67293422c321c115fa49b465a9042
 	return (0);
 }
 
