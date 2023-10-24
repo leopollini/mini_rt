@@ -35,13 +35,17 @@ char	*ft_copyadd(char *str)
 	return (new);
 }
 
-void	ft_check_path(char *s, t_window *w)
+void	ft_check_path(t_gameobject *s, t_window *w)
 {
 	FILE	*file;
 
-	file = fopen(s, "r");
+	file = fopen(s->text, "r");
 	if (file == NULL)
-		ft_print_error("wrong path in the texture", w);
+	{
+		free(s->text);
+		ft_print_error("wrong path in the texture", w, (t_gameobject *)s);
+	}
+	fclose(file);
 }
 
 void	free_obj(t_window *w)
@@ -49,11 +53,11 @@ void	free_obj(t_window *w)
 	t_gameobject	*obj;
 	t_list			*tmp;
 
-	while (w->scene != NULL)
+	while (w->scene)
 	{
 		tmp = w->scene;
 		obj = (t_gameobject *)w->scene->content;
-		if (obj && obj->text != NULL)
+		if (obj && obj->text)
 		{
 			free(obj->text);
 			free(obj);
@@ -63,7 +67,7 @@ void	free_obj(t_window *w)
 	}
 }
 
-int	ft_print_error(char *err, t_window *w)
+int	ft_print_error(char *err, t_window *w, void *del)
 {
 	write(2, "Error\n ", 7);
 	ft_putstr_fd(err, 2);
@@ -72,6 +76,8 @@ int	ft_print_error(char *err, t_window *w)
 		free_mat(w->rt);
 	ft_lstclear((&w->lights), free);
 	free_obj(w);
-	win_close(w);
-	return (1);
+	if (del != NULL)
+		free(del);
+	exit (1);
 }
+

@@ -12,26 +12,6 @@
 
 #include "../include/mini_rt.h"
 
-<<<<<<< HEAD
-int	win_close(t_window *win)
-{
-	win->do_exit = 1;
-	//init_threads(NULL);
-	free_obj(win);
-	// if (win->rt != NULL)
-	// 	free_mat(win->rt);
-	ft_lstclear((&win->lights), free);
-	mlx_destroy_image(win->mlx, win->img.img);
-	mlx_destroy_window(win->mlx, win->win);
-	mlx_destroy_display(win->mlx);
-	free(win->mlx);
-	printf("called close window.\n");
-	exit(0);
-	return(0);
-}
-
-=======
->>>>>>> 96c89d8363d67293422c321c115fa49b465a9042
 int	show_campos(t_camera ct)
 {
 	printf("called transform out.\n----------------------------------------------------\n");
@@ -236,11 +216,11 @@ int	manage_mouse(int button, int x, int y, t_window *w)
 		w->selected = ray.data.hit_pointer;
 		if (w->selected)
 		{
-			printf("called id %i : ", w->selected->defnum);
+			ft_printf("called id %i : ", w->selected->defnum);
 			transform_out(w->selected->transform);
 		}
 		else
-			printf("called.\n");
+			ft_printf("called.\n");
 		reimage(w);
 	}
 	return (0);

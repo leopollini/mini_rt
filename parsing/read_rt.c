@@ -51,7 +51,7 @@ void	ft_read_rt(t_window *w, char *scene)
 	full_rt = ft_calloc(1, 1);
 	fd = open(scene, O_RDONLY);
 	if (fd < 0)
-		ft_print_error(NOFILE, w);
+		ft_print_error(NOFILE, w, full_rt);
 	line = get_next_line(fd);
 	while (line)
 	{
@@ -75,14 +75,13 @@ int	ft_open_rt(t_window *w, char **av)
 
 	fd = open(av[1], O_RDONLY);
 	if (fd == -1)
-		return (ft_print_error(NOFILE, w));
+		return (ft_print_error(NOFILE, w, NULL));
 	if (ft_check_file(av[1]) == 0)
-		return (ft_print_error(NO_RT, w));
+		return (ft_print_error(NO_RT, w, NULL));
 	rft_load_scene(w);
 	ft_read_rt(w, av[1]);
 	return (0);
 }
-<<<<<<< HEAD
 
 void	ft_initcam(t_window *w)
 {
@@ -91,5 +90,3 @@ void	ft_initcam(t_window *w)
 	w->cam.lookat = (t_vec3_d){0, 0, 1};
 	w->cam.id = 'C';
 }
-=======
->>>>>>> 96c89d8363d67293422c321c115fa49b465a9042

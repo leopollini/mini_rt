@@ -12,7 +12,7 @@
 
 #include "../include/mini_rt.h"
 
-t_gameobject	*ft_metal_alb(t_gameobject *p, char **line, t_window *w)
+t_gameobject	*ft_metal_alb(t_gameobject *p, char **line, t_window *w, t_gameobject *o)
 {
 	p->metalness = 0;
 	p->albedo = 0;
@@ -32,13 +32,24 @@ t_gameobject	*ft_metal_alb(t_gameobject *p, char **line, t_window *w)
 		{
 			p->metalness = -1;
 			(*line) = (*line) + 2;
-<<<<<<< HEAD
 			p->text = ft_copyadd(*line);
-			ft_check_path(p->text, w);
-=======
-			p->text = ft_strtrim(*line, " ");
->>>>>>> 96c89d8363d67293422c321c115fa49b465a9042
+			(*line) += ft_strlen(p->text);
+			while (**line != 0)
+			{
+				if (**line != 32 && **line != 9)
+				{
+					free(p->text);
+					ft_print_error("bad formatted parameter", w, o);
+				}
+				(*line)++;
+			}
+			ft_check_path(p, w);
 			return (p);
+		}
+		if (**line != 't' && **line != 'm' && **line != 'a')
+		{
+					free(p->text);
+					ft_print_error("bad formatted parameter", w, o);
 		}
 		next_val(line);
 	}
@@ -54,23 +65,18 @@ int	parse_sphere(t_window *w, char **line)
 	s->text = NULL;
 	s->type = SPHERE;
 	next_val(line);
-	s->transform.position = pos_parse(line, w);
+	s->transform.position = pos_parse(line, w, (t_gameobject *)s);
 	next_val(line);
 	s->transform.scale.x = tofloat(line);
 	if (s->transform.scale.x <= 0)
-		ft_print_error("sphere radius must be > 0", w);
+		ft_print_error("sphere radius must be > 0", w, (t_gameobject *)s);
 	s->transform.scale.y = s->transform.scale.x;
 	s->transform.scale.z = s->transform.scale.x;
 	next_val(line);
-	s->color = color_parse(line, w);
-<<<<<<< HEAD
-	next_val(line);
-	s = ft_metal_alb(s, line, w);
-=======
+	s->color = color_parse(line, w, s);
 	s->defnum = w->obj_num++;
 	s->transform.rotation = (t_vec3_d){0, 0, 0};
-	s = ft_metal_alb(s, line);
->>>>>>> 96c89d8363d67293422c321c115fa49b465a9042
+	s = ft_metal_alb(s, line, w, s);
 	ft_lstadd_front(&w->scene, ft_lstnew_dup(s, sizeof(t_sphere)));
 	w->obj_num++;
 	free(s);
@@ -89,18 +95,13 @@ int	parse_plane(t_window *w, char **line)
 	p->transform.scale.y = 0;
 	p->transform.scale.z = 0;
 	next_val(line);
-	p->transform.position = pos_parse(line, w);
+	p->transform.position = pos_parse(line, w, p);
 	next_val(line);
-	p->transform.rotation = v3d_normalize(pos_parse(line, w));
+	p->transform.rotation = v3d_normalize(pos_parse(line, w, p));
 	next_val(line);
-	p->color = color_parse(line, w);
-<<<<<<< HEAD
-	next_val(line);
-	p = ft_metal_alb(p, line, w);
-=======
+	p->color = color_parse(line, w, p);
 	p->defnum = w->obj_num++;
-	p = ft_metal_alb(p, line);
->>>>>>> 96c89d8363d67293422c321c115fa49b465a9042
+	p = ft_metal_alb(p, line, w, p);
 	ft_lstadd_front(&w->scene, ft_lstnew_dup(p, sizeof(t_plane)));
 	w->obj_num++;
 	free(p);
@@ -112,7 +113,7 @@ t_cylinder	*parse_cylinder_help(t_window *w, t_cylinder *c, char **line, int i)
 	(*line)++;
 	c->type = CYLINDER;
 	next_val(line);
-	c->transform.position = pos_parse(line, w);
+	c->transform.position = pos_parse(line, w, c);
 	next_val(line);
 	while ((*line)[i] != 0 && (*line)[i] != 32 && (*line)[i] != 9)
 	{
@@ -125,7 +126,7 @@ t_cylinder	*parse_cylinder_help(t_window *w, t_cylinder *c, char **line, int i)
 	}
 	if (i == -1)
 	{
-		c->transform.rotation = v3d_normalize(pos_parse(line, w));
+		c->transform.rotation = v3d_normalize(pos_parse(line, w, c));
 		next_val(line);
 	}
 	return (c);
@@ -142,24 +143,16 @@ int	parse_cylinder(t_window *w, char **line)
 	c = parse_cylinder_help(w, c, line, i);
 	c->transform.scale.x = tofloat(line);
 	if (c->transform.scale.x <= 0)
-		ft_print_error("cylinder radious must be > 0", w);
+		ft_print_error("cylinder radious must be > 0", w, c);
 	next_val(line);
 	c->transform.scale.y = tofloat(line);
 	if (c->transform.scale.y < 0)
-		ft_print_error("cylinder high must be >= 0", w);
-<<<<<<< HEAD
-	p->transform.scale.z = 0;
-	p->color = color_parse(line, w);
-	next_val(line);
-	p = ft_metal_alb(p, line, w);
-	ft_lstadd_front(&w->scene, ft_lstnew_dup(p, sizeof(t_cylinder)));
-=======
+		ft_print_error("cylinder high must be >= 0", w, c);
 	c->transform.scale.z = 0;
-	c->color = color_parse(line, w);
+	c->color = color_parse(line, w, c);
 	c->defnum = w->obj_num++;
-	c = ft_metal_alb(c, line);
+	c = ft_metal_alb(c, line, w, c);
 	ft_lstadd_front(&w->scene, ft_lstnew_dup(c, sizeof(t_cylinder)));
->>>>>>> 96c89d8363d67293422c321c115fa49b465a9042
 	w->obj_num++;
 	free(c);
 	return (0);

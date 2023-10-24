@@ -31,7 +31,7 @@ void	ft_img_obj(t_window *w)
 					&p->texture.img.bps, &p->texture.img.ll,
 					&p->texture.img.en);
 			if (p->texture.img.img == NULL || p->texture.img.addr == NULL)
-				ft_print_error("texture error", w);
+				ft_print_error("texture error", w, NULL);
 		}
 		ptr = ptr->next;
 	}
@@ -77,18 +77,15 @@ int	main(int argn, char *args[])
 {
 	t_window	w;
 
+	ft_memset(&w, 0, sizeof(t_window));
 	if (!(argn == 2 || argn == 3))
-		ft_print_error(NOARGS, &w);
+		ft_print_error(NOARGS, &w, NULL);
 	else if (argn == 3 && ft_char_digit(args[2]))
-		ft_print_error(NOSIZE, &w);
+		ft_print_error(NOSIZE, &w, NULL);
 	ft_open_rt(&w, args);
 	w.mlx = mlx_init();
 	if (initw(&w))
-		ft_print_error(NOINIT, &w);
-<<<<<<< HEAD
-	ft_open_rt(&w, args);
-=======
->>>>>>> 96c89d8363d67293422c321c115fa49b465a9042
+		ft_print_error(NOINIT, &w, NULL);
 	rft_cast(&w, NULL, 0);
 	ft_img_obj(&w);
 	my_image_creator(&w);

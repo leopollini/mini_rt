@@ -32,13 +32,13 @@ void	*sux_malloc(unsigned int size, t_window *w)
 
 	ptr = malloc(size);
 	if (ptr == NULL)
-		ft_print_error(MALLOC, w);
+		ft_print_error(MALLOC, w, NULL);
 	return (ptr);
 }
 
 void	next_val(char **str)
 {
-	while (**str == 32 || **str == 9)
+	while (*str && (**str == 32 || **str == 9))
 		(*str)++;
 }
 
@@ -57,9 +57,9 @@ int	my_atoi(char **str)
 	return (i * neg);
 }
 
-void	ft_comma(char **str, t_window *w)
+void	ft_comma(char **str, t_window *w, void *s)
 {
 	if (**str != ',')
-		ft_print_error("parameters bad formatted\n", w);
+		ft_print_error("parameters bad formatted\n", w, s);
 	(*str)++;
 }

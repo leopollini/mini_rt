@@ -16,11 +16,14 @@ int	free_mat(char **matrix)
 	int	y;
 
 	y = 0;
-	while (matrix[y] != NULL)
+	if (matrix)
 	{
-		free(matrix[y]);
-		y++;
+		while (matrix[y] != NULL)
+		{
+			free(matrix[y]);
+			y++;
+		}
+		free (matrix);
 	}
-	free(matrix);
 	return (0);
 }

@@ -37,7 +37,7 @@ float	tofloat(char **str)
 }
 
 /*color parse and RGB shift*/
-t_vec3_d	color_parse(char **str, t_window *w)
+t_vec3_d	color_parse(char **str, t_window *w, void *s)
 {
 	t_vec3_d	pos;
 
@@ -46,19 +46,19 @@ t_vec3_d	color_parse(char **str, t_window *w)
 	pos.z = 0;
 	pos.x = my_atoi(str);
 	if (pos.x < 0 || pos.x > 255)
-		ft_print_error("colors R must be in range [0, 255]", w);
-	ft_comma(str, w);
+		ft_print_error("colors R must be in range [0, 255]", w, s);
+	ft_comma(str, w, s);
 	pos.y = my_atoi(str);
 	if (pos.y < 0 || pos.y > 255)
-		ft_print_error("colors R must be in range [0, 255]", w);
-	ft_comma(str, w);
+		ft_print_error("colors R must be in range [0, 255]", w, s);
+	ft_comma(str, w, s);
 	pos.z = my_atoi(str);
 	if (pos.z < 0 || pos.z > 255)
-		ft_print_error("colors R must be in range [0, 255]", w);
+		ft_print_error("colors R must be in range [0, 255]", w, s);
 	return (pos);
 }
 
-t_vec3_d	pos_parse(char **str, t_window *w)
+t_vec3_d	pos_parse(char **str, t_window *w, void *s)
 {
 	t_vec3_d	pos;
 
@@ -67,9 +67,9 @@ t_vec3_d	pos_parse(char **str, t_window *w)
 	pos.z = 0;
 	next_val(str);
 	pos.x = tofloat(str);
-	ft_comma(str, w);
+	ft_comma(str, w, (t_gameobject *)s);
 	pos.y = tofloat(str);
-	ft_comma(str, w);
+	ft_comma(str, w, (t_gameobject *)s);
 	pos.z = tofloat(str);
 	return (pos);
 }
@@ -90,14 +90,9 @@ int	ft_line_parser(t_window *w, char *line)
 		return (parse_plane(w, &line));
 	else if (ft_strncmp(line, "cy", 2) == 0 && *line++)
 		return (parse_cylinder(w, &line));
-<<<<<<< HEAD
-	if (strcmp(line, ""))
-		return (1);
-=======
 	else if (strcmp(line, ""))
 		return (1);
 	else
-		ft_print_error("unexpected identifier in scene file", w);
->>>>>>> 96c89d8363d67293422c321c115fa49b465a9042
+		ft_print_error("unexpected identifier in scene file", w, NULL);
 	return (0);
 }
