@@ -66,3 +66,25 @@ char	*ft_strjoin2(char *s1, char *s2)
 	free(s1);
 	return (str);
 }
+
+
+t_gameobject	*ft_get_text(t_gameobject *p, char **line, t_window *w,
+		t_gameobject *o)
+{
+	p->metalness = -1;
+	(*line) = (*line) + 2;
+	p->text = ft_copyadd(*line);
+	(*line) += ft_strlen(p->text);
+	while (**line != 0)
+	{
+		if (**line != 32 && **line != 9)
+		{
+			free(p->text);
+			ft_print_error("bad formatted parameter", w, o);
+		}
+		(*line)++;
+	}
+	ft_check_path(p, w);
+	return (p);
+}
+

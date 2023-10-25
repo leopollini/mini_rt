@@ -1,10 +1,10 @@
-A	1                		255,255,255
-C	-30,0,-80       0.4,0,1.0  	50
-L	0,0,-100		1				255,255,255
-L	50,100,20		0.7				255,230,240 
-L	0,70,10     	1		    	255,255,255 
+A	1                		            255,255,255 
+C	-30,0,-80       0.4,0,1.0  	    50 
+L	0,0,-100		1				    255,255,255
+L	50,100,20		0.7				    255,230,240
+L	0,70,10     	1		    	    255,255,255
 
-sp	0,0,0		    5			    0,0,0           t:planets/NewTennisBallColor.xpm
-sp	3,-10,0		    6			    0,0,0           t:planets/SoccerBall.xpm
-sp	-10,-5,0	    4			    0,0,0           t:planets/SoftballColor.xpm
-sp	10,5,0		    3			    0,0,0           t:planets/SoftballBump.xpm  
+sp	0,0,0		    5			        0,0,0           t:planets/NewTennisBallColor.xpm    
+sp	3,-10,0		    6			        0,0,0           t:planets/SoccerBall.xpm
+sp	-10,-5,0	    4			        0,0,0           t:planets/SoftballColor.xpm
+sp	10,5,0		    3			        0,0,0           t:planets/SoftballBump.xpm

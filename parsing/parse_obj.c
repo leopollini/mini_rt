@@ -12,10 +12,12 @@
 
 #include "../include/mini_rt.h"
 
-t_gameobject	*ft_metal_alb(t_gameobject *p, char **line, t_window *w, t_gameobject *o)
+t_gameobject	*ft_metal_alb(t_gameobject *p, char **line,
+		t_window *w, t_gameobject *o)
 {
 	p->metalness = 0;
 	p->albedo = 0;
+	next_val(line);
 	while (**line != 0)
 	{
 		if (**line == 'a')
@@ -23,33 +25,17 @@ t_gameobject	*ft_metal_alb(t_gameobject *p, char **line, t_window *w, t_gameobje
 			(*line) = (*line) + 2;
 			p->albedo = tofloat(line);
 		}
-		if ((**line) == 'm')
+		else if ((**line) == 'm')
 		{
 			(*line) = (*line) + 2;
 			p->metalness = tofloat(line);
 		}
-		if ((**line) == 't')
+		else if ((**line) == 't')
+			return (ft_get_text(p, line, w, o));
+		else if (**line != 't' && **line != 'm' && **line != 'a')
 		{
-			p->metalness = -1;
-			(*line) = (*line) + 2;
-			p->text = ft_copyadd(*line);
-			(*line) += ft_strlen(p->text);
-			while (**line != 0)
-			{
-				if (**line != 32 && **line != 9)
-				{
-					free(p->text);
-					ft_print_error("bad formatted parameter", w, o);
-				}
-				(*line)++;
-			}
-			ft_check_path(p, w);
-			return (p);
-		}
-		if (**line != 't' && **line != 'm' && **line != 'a')
-		{
-					free(p->text);
-					ft_print_error("bad formatted parameter", w, o);
+			free(p->text);
+			ft_print_error("bad formatted parameter in obj", w, o);
 		}
 		next_val(line);
 	}

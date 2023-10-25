@@ -48,23 +48,18 @@ void	ft_check_path(t_gameobject *s, t_window *w)
 	fclose(file);
 }
 
-void	free_obj(t_window *w)
+void	free_obj(t_list *scene)
 {
-	t_gameobject	*obj;
-	t_list			*tmp;
-
-	while (w->scene)
+	if (!scene)
+		return ;
+	if (scene && scene->content)
 	{
-		tmp = w->scene;
-		obj = (t_gameobject *)w->scene->content;
-		if (obj && obj->text)
-		{
-			free(obj->text);
-			free(obj);
-		}
-		w->scene = w->scene->next;
-		free(tmp);
+		if (((t_gameobject *)scene->content)->metalness == -1)
+			free(((t_gameobject *)scene->content)->text);
+		free(scene->content);
 	}
+	free_obj(scene->next);
+	free(scene);
 }
 
 int	ft_print_error(char *err, t_window *w, void *del)
@@ -75,7 +70,7 @@ int	ft_print_error(char *err, t_window *w, void *del)
 	if (w->rt != NULL)
 		free_mat(w->rt);
 	ft_lstclear((&w->lights), free);
-	free_obj(w);
+	free_obj(w->scene);
 	if (del != NULL)
 		free(del);
 	exit (1);

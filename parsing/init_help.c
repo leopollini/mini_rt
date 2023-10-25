@@ -20,9 +20,10 @@ int	rft_load_scene(t_window *w)
 	return (0);
 }
 
-void	camera_update(t_window *w)
+int	camera_update(t_window *w)
 {
 	w->cam.scene_window = new_v2d(w->cam.fov, w->cam.fov);
+	return (0);
 }
 
 void	camera_init(t_window *win)

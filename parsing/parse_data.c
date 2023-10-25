@@ -24,6 +24,9 @@ int	parse_res(t_window *w, char **line)
 	w->size.y = my_atoi(line);
 	if (w->size.y < 1 || w->size.y > INFINITY)
 		ft_print_error("resolution y out of range!", w, NULL);
+	next_val(line);
+	if (**line != '\0')
+		ft_print_error("bad formatted parameter in parse data", w, NULL);
 	return (0);
 }
 
@@ -36,6 +39,9 @@ int	parse_amb(t_window *w, char **line)
 	if (w->ambient.value < 0 || w->ambient.value > 1)
 		ft_print_error("ambient light out of range!", w, NULL);
 	w->ambient.color = color_parse(line, w, NULL);
+	next_val(line);
+	if (**line != '\0')
+		ft_print_error("bad formatted parameter in parse data", w, NULL);
 	return (0);
 }
 
@@ -84,8 +90,10 @@ int	parse_cam(t_window *w, char **line)
 		ft_print_error("cam FOV out of range", w, NULL);
 	w->cam.scene_window = new_v2d(w->cam.fov, w->cam.fov);
 	w->cam.rotation = ft_get_rot(w->cam.lookat);
-	camera_update(w);
-	return (0);
+	next_val(line);
+	if (**line != '\0')
+		ft_print_error("bad formatted parameter in parse data", w, NULL);
+	return (camera_update(w));
 }
 
 int	parse_light(t_window *w, char **line)
@@ -100,6 +108,9 @@ int	parse_light(t_window *w, char **line)
 		ft_print_error("light intensity out of range!", w, new);
 	next_val(line);
 	new->color = color_parse(line, w, (t_lantern *)new);
+	next_val(line);
+	if (**line != '\0')
+		ft_print_error("bad formatted parameter in parse data", w, new);
 	ft_lstadd_front(&w->lights, ft_lstnew_dup(new, sizeof(t_lantern)));
 	free(new);
 	return (0);

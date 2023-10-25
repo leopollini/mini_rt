@@ -214,7 +214,6 @@ t_vec3_d		create_argb(int r, int g, int b);
 t_vec3_d		create_argb_s(double r, double g, double b);
 int				create_trgb(int a, int r, int g, int b);
 int				create_trgb_s(double a, double r, double g, double b);
-void			camera_update(t_window *w);
 int				pull_argb(t_vec3_d c, int div);
 char			rft_hitter(t_list *scene, t_ray *r, t_tracing_mode mode);
 t_vec3_d		skybox_calc(t_ray r, t_texture t);
@@ -226,6 +225,7 @@ int				rft_anti_aliasing(const t_vec2_i c,
 void			rft_window_cast(t_window *w);
 void			my_image_creator(t_window *w);
 void			v3d_rotate(t_vec3_d *v, t_axises a, double rot);
+void			clean_scene_list(t_list *lst, t_window *win, char mode);
 
 /*file color_opers.c*/
 t_vec3_d		create_argb_s(double r, double g, double b);
@@ -272,9 +272,9 @@ t_vec3_d		ray_at(t_ray r, double t);
 
 /*file check_rt.c*/
 int				contchar(t_window *w);
-char			*ft_clean_str(char *line);
-int				win_close(t_window *w);
 char			*ft_strjoin2(char *s1, char *s2);
+t_gameobject	*ft_get_text(t_gameobject *p, char **line, t_window *w,
+					t_gameobject *o);
 
 
 /*file read_rt.c*/
@@ -316,19 +316,19 @@ void			ft_comma(char **str, t_window *w, void *s);
 
 char			*ft_copyadd(char *str);
 void			ft_check_path(t_gameobject *s, t_window *w);
-void			free_obj(t_window *w);
+void			free_obj(t_list *scene);
 int				ft_print_error(char *err, t_window *w, void *del);
 int				ft_checkset(char c, char *s);
 
 
 /*file parse_data.c*/
-void			camera_update(t_window *w);
+int			camera_update(t_window *w);
 int				parse_res(t_window *w, char **line);
 int				parse_amb(t_window *w, char **line);
 int				parse_cam(t_window *w, char **line);
 int				parse_light(t_window *w, char **line);
 
-/*file parse_data.c*/
+/*file parse_obj.c*/
 int				parse_sphere(t_window *w, char **line);
 int				parse_plane(t_window *w, char **line);
 int				parse_cylinder(t_window *w, char **line);

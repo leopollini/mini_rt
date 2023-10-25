@@ -41,7 +41,7 @@ void	clean_scene_list(t_list *lst, t_window *win, char mode)
 {
 	if (!lst)
 		return ;
-	if (lst->content)
+	if (lst && lst->content)
 	{
 		if (mode && ((t_gameobject *)lst->content)->metalness == -1)
 		{

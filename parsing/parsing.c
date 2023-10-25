@@ -90,8 +90,6 @@ int	ft_line_parser(t_window *w, char *line)
 		return (parse_plane(w, &line));
 	else if (ft_strncmp(line, "cy", 2) == 0 && *line++)
 		return (parse_cylinder(w, &line));
-	else if (strcmp(line, ""))
-		return (1);
 	else
 		ft_print_error("unexpected identifier in scene file", w, NULL);
 	return (0);
