@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 22:14:44 by lpollini          #+#    #+#             */
-/*   Updated: 2023/10/22 12:39:03 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/31 10:51:58 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,8 @@ static int	keys_manager_2(t_window *win, int keypressed)
 		show_campos(win->cam);
 	}
 		// end cam rotation
+	else if (keypressed == 65535 && win->selected)
+		win->selected->is_invisible ^= 1;
 	else
 		return (0);
 	if (win->selected)
@@ -196,9 +198,7 @@ int	manage_keys(int keypressed, t_window *win)
 
 int	manage_mouse(int button, int x, int y, t_window *w)
 {
-	//t_vec2_i	t;
 	t_ray		ray;
-	//int	a;
 
 	if (button == 5)
 		manage_keys(98, w);
@@ -218,6 +218,8 @@ int	manage_mouse(int button, int x, int y, t_window *w)
 		{
 			ft_printf("called id %i : ", w->selected->defnum);
 			transform_out(w->selected->transform);
+			if (w->selected->type == CYLINDER)
+				v3d_out(ray.data.point_normal);
 		}
 		else
 			ft_printf("called.\n");

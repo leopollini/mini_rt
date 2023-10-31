@@ -1,18 +1,18 @@
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   check_rt.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/03 17:09:12 by iragusa           #+#    #+#             */
-/*   Updated: 2023/10/22 12:41:43 by lpollini         ###   ########.fr       */
+/*   Created: 2023/10/22 12:41:43 by lpollini          #+#    #+#             */
+/*   Updated: 2023/10/29 10:49:53 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/mini_rt.h"
 
-/*trasmormo i tab in spazi e dopo trimmo*/
-
+/*turns tabs into spaces and then trim trimmo*/
 int	contchar(t_window *w)
 {
 	int	a;
@@ -67,7 +67,6 @@ char	*ft_strjoin2(char *s1, char *s2)
 	return (str);
 }
 
-
 t_gameobject	*ft_get_text(t_gameobject *p, char **line, t_window *w,
 		t_gameobject *o)
 {
@@ -87,4 +86,3 @@ t_gameobject	*ft_get_text(t_gameobject *p, char **line, t_window *w,
 	ft_check_path(p, w);
 	return (p);
 }
-

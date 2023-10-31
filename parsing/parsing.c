@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 22:03:03 by iragusa           #+#    #+#             */
-/*   Updated: 2023/10/22 15:54:33 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/29 11:03:36 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,19 +78,18 @@ int	ft_line_parser(t_window *w, char *line)
 {
 	if (*line == 'R' && *line++)
 		return (parse_res(w, &line));
-	else if (*line == 'A' && *line++)
+	if (*line == 'A' && *line++)
 		return (parse_amb(w, &line));
-	else if (*line == 'C' && *line++)
+	if (*line == 'C' && *line++)
 		return (parse_cam(w, &line));
-	else if (*line == 'L' && *line++)
+	if (*line == 'L' && *line++)
 		return (parse_light(w, &line));
-	else if (ft_strncmp(line, "sp", 2) == 0 && *line++)
+	if (ft_strncmp(line, "sp", 2) == 0 && *line++)
 		return (parse_sphere(w, &line));
-	else if (ft_strncmp(line, "pl", 2) == 0 && *line++)
+	if (ft_strncmp(line, "pl", 2) == 0 && *line++)
 		return (parse_plane(w, &line));
-	else if (ft_strncmp(line, "cy", 2) == 0 && *line++)
+	if (ft_strncmp(line, "cy", 2) == 0 && *line++)
 		return (parse_cylinder(w, &line));
-	else
-		ft_print_error("unexpected identifier in scene file", w, NULL);
+	ft_print_error("unexpected identifier in scene file", w, NULL);
 	return (0);
 }

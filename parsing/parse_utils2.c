@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iragusa <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 17:09:12 by iragusa           #+#    #+#             */
-/*   Updated: 2023/08/03 17:09:14 by iragusa          ###   ########.fr       */
+/*   Updated: 2023/10/29 10:48:59 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/mini_rt.h"
-
 
 char	*ft_copyadd(char *str)
 {
@@ -75,4 +74,3 @@ int	ft_print_error(char *err, t_window *w, void *del)
 		free(del);
 	exit (1);
 }
-

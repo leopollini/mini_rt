@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 18:57:52 by lpollini          #+#    #+#             */
-/*   Updated: 2023/10/22 15:47:48 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/31 11:13:34 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # define NEGATIVE_LIM -0.0000000001
 # define POSITIVE_LIM 0.0000000001
 # define M_PI 3.141592653589793238462643383279502884L
-# define MAX_REF_DEPTH 5
+# define MAX_REF_DEPTH 4
 # define ROT_CONST 3
 
 # define THREADS 0
@@ -46,12 +46,12 @@
 # define NOSIZE "the last two args are size of win, so they can be only digits!"
 # define NOINIT "something's wrong during initialization, try again"
 # define NOFILE "no such file!"
-# define NO_RT "ehy dude, only rt file!"
+# define NO_RT "ehy dude, only .rt file!"
 # define MALLOC "oh no, error in malloc() on memory allocation"
 # define ACL_ERR "check file rt! need 1 A, 1 C, at least 1 L and at most 1 R!"
 # define CHECK_RT ",check your params!"
 
-# include "mlx.h"
+# include "../.mlx/mlx.h"
 # include "libft.h"
 # include "vectors.h"
 # include <math.h>
@@ -144,6 +144,7 @@ typedef struct s_gameobject
 	int			defnum;
 	char		*text;
 	t_texture	texture;
+	char		is_invisible;
 }				t_gameobject;
 
 typedef t_gameobject	t_sphere;
@@ -276,7 +277,6 @@ char			*ft_strjoin2(char *s1, char *s2);
 t_gameobject	*ft_get_text(t_gameobject *p, char **line, t_window *w,
 					t_gameobject *o);
 
-
 /*file read_rt.c*/
 int				ft_check_file(char *scene);
 int				ft_check_data(t_window *w);
@@ -320,9 +320,8 @@ void			free_obj(t_list *scene);
 int				ft_print_error(char *err, t_window *w, void *del);
 int				ft_checkset(char c, char *s);
 
-
 /*file parse_data.c*/
-int			camera_update(t_window *w);
+int				camera_update(t_window *w);
 int				parse_res(t_window *w, char **line);
 int				parse_amb(t_window *w, char **line);
 int				parse_cam(t_window *w, char **line);

@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 17:09:12 by iragusa           #+#    #+#             */
-/*   Updated: 2023/10/22 15:48:42 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/29 11:04:48 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	parse_sphere(t_window *w, char **line)
 	s->color = color_parse(line, w, s);
 	s->defnum = w->obj_num++;
 	s->transform.rotation = (t_vec3_d){0, 0, 0};
+	s->is_invisible = 0;
 	s = ft_metal_alb(s, line, w, s);
 	ft_lstadd_front(&w->scene, ft_lstnew_dup(s, sizeof(t_sphere)));
 	w->obj_num++;
@@ -87,6 +88,7 @@ int	parse_plane(t_window *w, char **line)
 	next_val(line);
 	p->color = color_parse(line, w, p);
 	p->defnum = w->obj_num++;
+	p->is_invisible = 0;
 	p = ft_metal_alb(p, line, w, p);
 	ft_lstadd_front(&w->scene, ft_lstnew_dup(p, sizeof(t_plane)));
 	w->obj_num++;
@@ -137,6 +139,7 @@ int	parse_cylinder(t_window *w, char **line)
 	c->transform.scale.z = 0;
 	c->color = color_parse(line, w, c);
 	c->defnum = w->obj_num++;
+	c->is_invisible = 0;
 	c = ft_metal_alb(c, line, w, c);
 	ft_lstadd_front(&w->scene, ft_lstnew_dup(c, sizeof(t_cylinder)));
 	w->obj_num++;

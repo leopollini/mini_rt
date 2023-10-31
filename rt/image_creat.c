@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:37:06 by lpollini          #+#    #+#             */
-/*   Updated: 2023/10/22 12:10:58 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/10/31 11:32:38 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,20 +49,12 @@ t_vec3_d rft_refract(const t_vec3_d uv, const t_vec3_d n, double etai_over_etat)
 	return (v3d_normalize(v3d_sum_2(r_out_perp, r_out_parallel)));
 }
 
-int	test_over(t_vec3_d rot, t_vec3_d dst, double dt)
-{
-	if(v3d_dot(dst, rot) < 0 || v3d_sqr_mod(dst) > dt)
-		return (1);
-	return (0);
-}
-
 int	metal_manager(t_ray *r, t_gameobject *gm)
 {
 	t_ray		refl;
 	
 	if (r->depth > MAX_REF_DEPTH)
-		return (r->data.color = (t_vec3_d){0, 0, 0}, 1);
-	r->data.ismetal = 1;
+		return (r->data.color = gm->color, 1);
 	refl.source = r->data.hit_point;
 	refl.max_sqr_len = INFINITY;
 	refl.direction = v3d_specular(v3d_anti(r->direction),
@@ -73,20 +65,47 @@ int	metal_manager(t_ray *r, t_gameobject *gm)
 	return (1);
 }
 
+t_vec3_d	cylinder_normal(t_transform tr, t_vec3_d pt)
+{
+	double	t;
+	t_ray	temp;
+
+	t = v3d_dot(v3d_sum_2(pt, v3d_anti(tr.position)), tr.rotation);
+	temp.source = tr.position;
+	temp.direction = tr.rotation;
+	return (v3d_normalize(v3d_sum_2(pt, v3d_anti(ray_at(temp, t)))));
+}
+
+int	test_over(t_vec3_d rot, t_vec3_d dst, double dt, char fg)
+{
+	static char	outmode;
+
+	// if (fg)
+	// {
+	// 	if ((v3d_dot(dst, rot) < 0 ^ outmode > dt) || v3d_sqr_mod(dst) > dt)
+	// 		return (1);
+	// 	else
+	// 		return (0);
+	// }
+	outmode = v3d_sqr_mod(dst);
+	if(v3d_dot(dst, rot) < 0 || outmode > dt)
+		return (1);
+	return (0);
+}
+
 int	hit_cylinder(t_cylinder *cylinder, t_ray *r, t_tracing_mode mode)
 {
 	t_vec3_d	delta;
-	t_ray		new_ray;
+	t_vec3_d	temp;
 	t_vec3_d	c_to_o;
 	t_vec3_d	t;
 
 	(void) mode;
 	r->data.sqr_distance = INFINITY;
-	new_ray.source = r->source;
-	new_ray.direction = v3d_cross(r->direction, cylinder->transform.rotation);
+	temp = v3d_cross(r->direction, cylinder->transform.rotation);
 	c_to_o = v3d_sum_2(r->source, v3d_anti(cylinder->transform.position));
-	delta.x = v3d_dot(new_ray.direction, new_ray.direction);
-	delta.y = 2 * v3d_dot(new_ray.direction, v3d_cross(c_to_o, cylinder->transform.rotation));
+	delta.x = v3d_dot(temp, temp);
+	delta.y = 2 * v3d_dot(temp, v3d_cross(c_to_o, cylinder->transform.rotation));
 	delta.z = v3d_dot(v3d_cross(c_to_o, cylinder->transform.rotation), v3d_cross(c_to_o, cylinder->transform.rotation)) - pow(cylinder->transform.scale.x / 2, 2);
 	t.z = pow(delta.y, 2) - 4 * delta.z * delta.x;
 	if (t.z < 0)
@@ -104,18 +123,22 @@ int	hit_cylinder(t_cylinder *cylinder, t_ray *r, t_tracing_mode mode)
 		return (0);
 
 	t.z = pow(cylinder->transform.scale.x / 2, 2) + pow(cylinder->transform.scale.y, 2);
-	r->data.hit_point = v3d_scal(r->direction, t.x);
-	r->data.point_normal = v3d_cross(cylinder->transform.rotation, r->direction);
-	if (test_over(cylinder->transform.rotation, v3d_sum_2(r->data.hit_point, v3d_anti(cylinder->transform.position)), t.z))
+	r->data.hit_point = ray_at(*r, t.x);
+	r->data.point_normal = cylinder_normal(cylinder->transform, r->data.hit_point);
+	if (test_over(cylinder->transform.rotation, v3d_sum_2(r->data.hit_point, v3d_anti(cylinder->transform.position)), t.z, 0))
 	{
 		t.x = t.y;
-		r->data.hit_point = v3d_scal(r->direction, t.x);
+		r->data.hit_point = ray_at(*r, t.x);
 		r->data.point_normal = v3d_anti(cylinder->transform.rotation);
-		if (test_over(cylinder->transform.rotation, v3d_sum_2(r->data.hit_point, v3d_anti(cylinder->transform.position)), t.z))
+		if (test_over(cylinder->transform.rotation, v3d_sum_2(r->data.hit_point, v3d_anti(cylinder->transform.position)), t.z, 1))
 			return (0);
 	}
+	if (mode == OCCLUSION)
+		return (1);
 	r->data.hit_pointer = cylinder;
 	r->data.sqr_distance = t.x * t.x;
+	if (mode == REFERENCE)
+		return (1);
 	if (cylinder->metalness > 0 && metal_manager(r, cylinder))
 		return (1);
 	r->data.color = cylinder->color;
@@ -201,6 +224,8 @@ int hit_plane(t_plane *plane, t_ray *r, t_tracing_mode mode)
 
 int	type_sorter(t_objtype t, t_gameobject *obj, t_ray *r, t_tracing_mode mode)
 {
+	if (obj->is_invisible && mode == ALL)
+		return (0);
 	if (t == SPHERE)
 		return (hit_sphere((t_sphere *)obj, r, mode));
 	if (t == PLANE)
