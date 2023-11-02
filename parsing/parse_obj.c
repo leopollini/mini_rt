@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 17:09:12 by iragusa           #+#    #+#             */
-/*   Updated: 2023/10/29 11:04:48 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/11/01 01:01:07 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int	parse_sphere(t_window *w, char **line)
 		ft_print_error("sphere radius must be > 0", w, (t_gameobject *)s);
 	s->transform.scale.y = s->transform.scale.x;
 	s->transform.scale.z = s->transform.scale.x;
+	s->transform.rotation = (t_vec3_d){0, 0, 0};
 	next_val(line);
 	s->color = color_parse(line, w, s);
 	s->defnum = w->obj_num++;

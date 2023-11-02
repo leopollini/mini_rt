@@ -6,13 +6,13 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:37:06 by lpollini          #+#    #+#             */
-/*   Updated: 2023/10/31 11:32:38 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/11/01 01:17:58 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/mini_rt.h"
 
-t_vec3_d	skybox_calc(t_ray r, t_texture t)
+t_vec3_d	skybox_calc(t_ray r, t_texture t, t_vec3_d *offset)
 {
 	t_vec3_d		d;
 	t_vec2_i		on_pg;
@@ -21,6 +21,8 @@ t_vec3_d	skybox_calc(t_ray r, t_texture t)
 	d = r.direction;
 	on_pg.x = (0.5 + atan2(d.z, d.x) / (2 * M_PI)) * t.size.x;
 	on_pg.y = (0.5 - asin(d.y) / (M_PI)) * t.size.y;
+	if (offset)
+		on_pg.x = (on_pg.x + (int)offset->x) % t.size.x;
 	found_col = my_mlx_pixel_get(t.img, on_pg.x, on_pg.y);
 	return (create_argb((found_col >> 16) & 0xff,
 			(found_col >> 8) & 0xff, found_col & 0xff));
@@ -76,21 +78,54 @@ t_vec3_d	cylinder_normal(t_transform tr, t_vec3_d pt)
 	return (v3d_normalize(v3d_sum_2(pt, v3d_anti(ray_at(temp, t)))));
 }
 
-int	test_over(t_vec3_d rot, t_vec3_d dst, double dt, char fg)
+int	test_over(t_transform tr, t_vec3_d pt, double dt)
 {
-	static char	outmode;
-
-	// if (fg)
-	// {
-	// 	if ((v3d_dot(dst, rot) < 0 ^ outmode > dt) || v3d_sqr_mod(dst) > dt)
-	// 		return (1);
-	// 	else
-	// 		return (0);
-	// }
-	outmode = v3d_sqr_mod(dst);
-	if(v3d_dot(dst, rot) < 0 || outmode > dt)
+	pt = v3d_sum_2(pt, v3d_anti(tr.position));
+	if (v3d_dot(pt, tr.rotation) < 0)
+		return (-1);
+	if (v3d_sqr_mod(pt) > dt)
 		return (1);
 	return (0);
+}
+
+t_vec3_d	plain_ray_int(t_ray *r, t_transform tr, char where)
+{
+	t_vec3_d	origin;
+	t_vec3_d	temp;
+	double		t;
+
+	origin = v3d_sum_2(tr.position, v3d_anti(r->data.hit_point));
+	if (where)
+		origin = v3d_sum_2(origin, v3d_scal(tr.rotation, tr.scale.y));
+	t = v3d_dot(tr.rotation, origin) / v3d_dot(tr.rotation, r->direction);
+	return (ray_at(*r, t));
+}
+
+char	cyl_collisions(t_gameobject *c, t_ray *r, t_vec3_d t)
+{
+	char		temp;
+	
+	t.z = pow(c->transform.scale.x / 2, 2) + pow(c->transform.scale.y, 2);
+	r->data.hit_point = ray_at(*r, t.x);
+	r->data.point_normal = cylinder_normal(c->transform, r->data.hit_point);
+	r->data.sqr_distance = t.x * t.x;
+	temp = test_over(c->transform, r->data.hit_point, t.z);
+	if (temp)
+	{
+		t.x = t.y;
+		r->data.hit_point = ray_at(*r, t.x);
+		if (temp > 0)
+			r->data.point_normal = v3d_anti(c->transform.rotation);
+		else
+			r->data.point_normal = c->transform.rotation; 
+		if (test_over(c->transform, r->data.hit_point, t.z) * temp > 0)
+			return (0);
+		if (temp < 0)
+			r->data.hit_point = plain_ray_int(r, c->transform, 0);
+		if (temp > 0)
+			r->data.hit_point = plain_ray_int(r, c->transform, 1);
+	}
+	return (1);
 }
 
 int	hit_cylinder(t_cylinder *cylinder, t_ray *r, t_tracing_mode mode)
@@ -121,22 +156,11 @@ int	hit_cylinder(t_cylinder *cylinder, t_ray *r, t_tracing_mode mode)
 	}
 	if (t.x < NEGATIVE_LIM)
 		return (0);
-
-	t.z = pow(cylinder->transform.scale.x / 2, 2) + pow(cylinder->transform.scale.y, 2);
-	r->data.hit_point = ray_at(*r, t.x);
-	r->data.point_normal = cylinder_normal(cylinder->transform, r->data.hit_point);
-	if (test_over(cylinder->transform.rotation, v3d_sum_2(r->data.hit_point, v3d_anti(cylinder->transform.position)), t.z, 0))
-	{
-		t.x = t.y;
-		r->data.hit_point = ray_at(*r, t.x);
-		r->data.point_normal = v3d_anti(cylinder->transform.rotation);
-		if (test_over(cylinder->transform.rotation, v3d_sum_2(r->data.hit_point, v3d_anti(cylinder->transform.position)), t.z, 1))
-			return (0);
-	}
+	if (!cyl_collisions(cylinder, r, t))
+		return (0);
 	if (mode == OCCLUSION)
 		return (1);
 	r->data.hit_pointer = cylinder;
-	r->data.sqr_distance = t.x * t.x;
 	if (mode == REFERENCE)
 		return (1);
 	if (cylinder->metalness > 0 && metal_manager(r, cylinder))
@@ -181,7 +205,7 @@ int hit_sphere(t_sphere *sphere, t_ray *r, t_tracing_mode mode)
 	{
 		refl = *r;
 		refl.direction = r->data.point_normal;
-		r->data.color = skybox_calc(refl, sphere->texture);
+		r->data.color = skybox_calc(refl, sphere->texture, &sphere->transform.rotation);
 	}
 	else
 		r->data.color = sphere->color;
@@ -224,7 +248,7 @@ int hit_plane(t_plane *plane, t_ray *r, t_tracing_mode mode)
 
 int	type_sorter(t_objtype t, t_gameobject *obj, t_ray *r, t_tracing_mode mode)
 {
-	if (obj->is_invisible && mode == ALL)
+	if (obj->is_invisible)// && mode == ALL)
 		return (0);
 	if (t == SPHERE)
 		return (hit_sphere((t_sphere *)obj, r, mode));
@@ -329,5 +353,5 @@ t_vec3_d rft_cast(t_window *w, t_ray *r, t_tracing_mode mode)
 			return (r->data.color);
 		return (rft_search_light(aw, r, mode));
 	}
-	return (skybox_calc(*r, aw->skybox));
+	return (skybox_calc(*r, aw->skybox, NULL));
 }

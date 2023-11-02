@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 22:14:44 by lpollini          #+#    #+#             */
-/*   Updated: 2023/10/31 10:51:58 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/11/01 01:18:13 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,14 @@ static int	keys_manager_1(t_window *win, int keypressed)
 	return (1);
 }
 
+void	rotate_sphere(t_sphere *o, t_axises a, double rot)
+{
+	const int	temp = rot * 100;
+	printf("called. rotating sphere by %i\n", temp);
+	if (a == aX)
+		o->transform.rotation.x = o->transform.rotation.x + temp;
+}
+
 void	rt_rotate_object(t_gameobject *o, t_axises a, double rot)
 {
 	const double	cf[2] = {cos(rot / ROT_CONST), sin(rot / ROT_CONST)};
@@ -75,7 +83,8 @@ void	rt_rotate_object(t_gameobject *o, t_axises a, double rot)
 	double	*temp2;
 	double	temp3;
 
-printf("called. %lf rotating using %lf %lf\n", rot, cf[0], cf[1]);
+	if (o->type == SPHERE)
+		return (rotate_sphere(o, a, rot));
 	if (a == aX)
 	{
 		temp1 = &o->transform.rotation.y;
@@ -168,7 +177,8 @@ static int	keys_manager_2(t_window *win, int keypressed)
 		return (0);
 	if (win->selected)
 	{
-		win->selected->transform.rotation = v3d_normalize(win->selected->transform.rotation);
+		if (win->selected->type != SPHERE)
+			win->selected->transform.rotation = v3d_normalize(win->selected->transform.rotation);
 		transform_out(win->selected->transform);
 	}
 	return (1);

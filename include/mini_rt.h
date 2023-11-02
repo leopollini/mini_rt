@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 18:57:52 by lpollini          #+#    #+#             */
-/*   Updated: 2023/10/31 11:13:34 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/11/01 01:02:06 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,7 +217,7 @@ int				create_trgb(int a, int r, int g, int b);
 int				create_trgb_s(double a, double r, double g, double b);
 int				pull_argb(t_vec3_d c, int div);
 char			rft_hitter(t_list *scene, t_ray *r, t_tracing_mode mode);
-t_vec3_d		skybox_calc(t_ray r, t_texture t);
+t_vec3_d		skybox_calc(t_ray r, t_texture t, t_vec3_d *offset);
 t_vec3_d		rft_cast(t_window *w, t_ray *r, t_tracing_mode mode);
 unsigned int	my_mlx_pixel_get(t_data data, int x, int y);
 t_vec3_d		rft_cast(t_window *w, t_ray *r, t_tracing_mode mode);
