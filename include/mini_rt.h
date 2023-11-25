@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 18:57:52 by lpollini          #+#    #+#             */
-/*   Updated: 2023/11/01 01:02:06 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/11/25 15:56:56 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,9 @@
 # define MAX_REF_DEPTH 4
 # define ROT_CONST 3
 
-# define THREADS 0
-# define THREADSN 10
-
 # define CREAT_GB_SWITCH 0
 
-# define IMGSIZE 500
+# define IMGSIZE 400
 # define SKYBOX "skybox/universe.xpm"
 
 # define NOARGS "check input, write:./minirt scenes/mandatory.rt"
@@ -228,6 +225,11 @@ void			my_image_creator(t_window *w);
 void			v3d_rotate(t_vec3_d *v, t_axises a, double rot);
 void			clean_scene_list(t_list *lst, t_window *win, char mode);
 
+/*utils_1.c*/
+
+t_vec3_d		rft_refract(const t_vec3_d uv, const t_vec3_d n, double t);
+int				metal_manager(t_ray *r, t_gameobject *gm);
+
 /*file color_opers.c*/
 t_vec3_d		create_argb_s(double r, double g, double b);
 int				create_trgb_s(double a, double r, double g, double b);
@@ -255,14 +257,12 @@ t_vec3_d		rft_cast(t_window *w, t_ray *r, t_tracing_mode mode);
 int				win_close(t_window *win);
 int				manage_keys(int keypressed, t_window *win);
 int				manage_mouse(int button, int x, int y, t_window *w);
-int				show_campos(t_camera ct);
+void			rt_rotate_object(t_gameobject *o, t_axises a, double rot);
 
 /*file palle.c*/
 int				rft_anti_aliasing(const t_vec2_i c, const t_vec3_d div_temp,
 					t_ray *r, t_window *w);
 void			*build_pt(t_window *w, int i, int j);
-void			*thread_lol(void *a);
-void			init_threads(t_window *w);
 void			rft_window_cast(t_window *w);
 void			my_image_creator(t_window *w);
 
@@ -331,5 +331,13 @@ int				parse_light(t_window *w, char **line);
 int				parse_sphere(t_window *w, char **line);
 int				parse_plane(t_window *w, char **line);
 int				parse_cylinder(t_window *w, char **line);
+
+/*checker_color.c*/
+int				checker_disr_plane(t_transform tr, t_ray *r, t_vec3_d pt);
+char			checker_cases(double lol, t_vec3_d tempx, t_vec3_d tempy,
+					t_vec3_d pt);
+char			checker_disr_sphere(t_vec3_d offset, t_ray *r);
+double			modulus(double a);
+char			checker_disr_cyl(t_transform tr, t_ray *r);
 
 #endif

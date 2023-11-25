@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 22:21:11 by lpollini          #+#    #+#             */
-/*   Updated: 2023/10/22 15:49:26 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/11/25 14:28:54 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	rft_anti_aliasing(const t_vec2_i c, const t_vec3_d div_temp,
 		while (b++ < div_temp.z)
 		{
 			r->direction = v3d_normalize(new_v3d((c.x + a / div_temp.z)
-				* div_temp.x, (c.y + b / div_temp.z) * div_temp.y, 1));
+						* div_temp.x, (c.y + b / div_temp.z) * div_temp.y, 1));
 			v3d_rotate(&r->direction, aX, w->cam.rotation.x);
 			v3d_rotate(&r->direction, aY, w->cam.rotation.y);
 			temp = color_add(temp, rft_cast(w, r, ALL));
@@ -66,26 +66,35 @@ int	rft_anti_aliasing(const t_vec2_i c, const t_vec3_d div_temp,
 	return (pull_argb(temp, div));
 }
 
-void rft_window_cast(t_window *w)
+void	rft_window_cast(t_window *w)
 {
-	t_vec3_d div_temp = {w->cam.scene_window.x / w->size.x,
-				w->cam.scene_window.y / w->size.y, 1};
-	t_ray	ray;
+	t_vec3_d	div_temp;
+	t_ray		ray;
+	int			i;
+	int			j;
 
+	div_temp = (t_vec3_d){w->cam.scene_window.x / w->size.x,
+		w->cam.scene_window.y / w->size.y, 1};
 	ray.source = w->cam.pos;
 	ray.max_sqr_len = INFINITY;
 	ray.depth = 0;
 	if (w->toggle_hd)
 		div_temp.z = w->anti_aliasing;
-	for (int i = -w->size.x / 2; i < w->size.x / 2; i++)
-		for (int j = -w->size.y / 2; j < w->size.y / 2; j++)
+	i = -w->size.x / 2;
+	while (i < w->size.x / 2)
+	{
+		j = -w->size.y / 2 - 1;
+		while (++j < w->size.y / 2)
 			my_mlx_pixel_put(&w->img, i + w->size.x / 2, w->size.x / 2 - j - 1,
-					rft_anti_aliasing((t_vec2_i){i, j}, div_temp, &ray, w));
+				rft_anti_aliasing((t_vec2_i){i, j}, div_temp, &ray, w));
+		i++;
+	}
 }
 
-void my_image_creator(t_window *w)
+void	my_image_creator(t_window *w)
 {
-	printf("info. step = %f, fov = %f, %i-%i\n", w->step, w->cam.fov, w->anti_aliasing, w->toggle_hd);
-		rft_window_cast(w);
+	printf("info. step = %f, fov = %f, %i-%i\n", w->step,
+		w->cam.fov, w->anti_aliasing, w->toggle_hd);
+	rft_window_cast(w);
 	reimage(w);
 }

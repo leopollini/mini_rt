@@ -20,11 +20,11 @@
 # -s = silent
 # @echo = stampa quello che viene dopo
 
-NAME = mini_rt
+NAME = miniRT
 
 CC = gcc 
 
-CFLAGS = -g
+CFLAGS = -g -Wall -Wextra -Werror
 
 LIBFT = libft/libft.a
 
@@ -38,6 +38,8 @@ SRC = main.c \
 		rt/color_opers.c rt/input.c \
 		rt/image_creat.c rt/palle.c rt/utils.c \
 		rt/stuff_printer.c rt/pixel_stuff.c \
+		rt/checker_color.c rt/input_keys.c \
+		rt/utils_1.c \
 		parsing/read_rt.c \
 		parsing/check_rt.c \
 		parsing/parsing.c \
@@ -51,7 +53,7 @@ vectors/miscellaneous_2.c \
 vectors/miscellaneous.c \
 vectors/vector3_ops_2.c \
 vectors/vector3_ops.c \
-vectors/vectors_new.c
+vectors/vectors_new.c \
 
 OBJ = $(SRC:.c=.o)
 
