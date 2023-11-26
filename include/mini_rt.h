@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 18:57:52 by lpollini          #+#    #+#             */
-/*   Updated: 2023/11/25 15:56:56 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/11/26 20:25:38 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,10 +95,11 @@ typedef enum e_objtype
 	SPHERE = 0,
 	PLANE,
 	CYLINDER,
+	CONE,
 	METAL,
 	METALPLANE,
 	METALSPHERE,
-	EQ
+	METALCONE
 }				t_objtype;
 
 typedef enum e_axises
@@ -147,6 +148,7 @@ typedef struct s_gameobject
 typedef t_gameobject	t_sphere;
 typedef t_gameobject	t_cylinder;
 typedef t_gameobject	t_plane;
+typedef t_gameobject	t_cone;
 
 /*    //RAY STRUCTURES\\    */
 typedef struct s_raydata
@@ -248,7 +250,7 @@ int				hit_cylinder(t_cylinder *cylinder, t_ray *r,
 int				type_sorter(t_objtype t, t_gameobject *obj,
 					t_ray *r, t_tracing_mode mode);
 char			rft_hitter(t_list *scene, t_ray *r, t_tracing_mode mode);
-t_color_3		rft_specular(t_ray *r, t_ray *lr, t_lantern *l, double lambda);
+t_color_3		rft_specular(t_ray *r, t_ray *lr, t_lantern *l);
 t_color_3		rft_diffuse(t_ray *r, t_ray *o, t_lantern *l);
 t_vec3_d		rft_search_light(t_window *w, t_ray *r, t_tracing_mode mode);
 t_vec3_d		rft_cast(t_window *w, t_ray *r, t_tracing_mode mode);
@@ -333,11 +335,12 @@ int				parse_plane(t_window *w, char **line);
 int				parse_cylinder(t_window *w, char **line);
 
 /*checker_color.c*/
-int				checker_disr_plane(t_transform tr, t_ray *r, t_vec3_d pt);
+int				checker_disr_plane(t_transform tr, t_ray *r,
+					t_vec3_d pt, t_vec3_d col);
 char			checker_cases(double lol, t_vec3_d tempx, t_vec3_d tempy,
 					t_vec3_d pt);
-char			checker_disr_sphere(t_vec3_d offset, t_ray *r);
+char			checker_disr_sphere(t_vec3_d offset, t_ray *r, t_vec3_d col);
 double			modulus(double a);
-char			checker_disr_cyl(t_transform tr, t_ray *r);
+char			checker_disr_cyl(t_transform tr, t_ray *r, t_vec3_d col);
 
 #endif

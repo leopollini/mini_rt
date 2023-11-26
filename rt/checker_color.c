@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:37:06 by lpollini          #+#    #+#             */
-/*   Updated: 2023/11/25 15:44:24 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/11/26 20:15:56 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ double	modulus(double a)
 	return (1 + (a - (double)(long long)a));
 }
 
-char	checker_disr_cyl(t_transform tr, t_ray *r)
+char	checker_disr_cyl(t_transform tr, t_ray *r, t_vec3_d col)
 {
 	int			temp;
 	t_vec3_d	d;
@@ -35,13 +35,13 @@ char	checker_disr_cyl(t_transform tr, t_ray *r)
 					v3d_anti(tr.position)))) > 0.5)
 		i = -i;
 	if (i == 1)
-		r->data.color = (t_vec3_d){0, 0, 0};
+		r->data.color = v3d_sum_2((t_vec3_d){255, 255, 255}, v3d_anti(col));
 	else
-		r->data.color = (t_vec3_d){255, 255, 255};
+		r->data.color = col;
 	return (1);
 }
 
-char	checker_disr_sphere(t_vec3_d offset, t_ray *r)
+char	checker_disr_sphere(t_vec3_d offset, t_ray *r, t_vec3_d col)
 {
 	t_vec3_d	d;
 	t_vec2_i	on_pg;
@@ -49,17 +49,42 @@ char	checker_disr_sphere(t_vec3_d offset, t_ray *r)
 
 	i = 1;
 	d = r->data.point_normal;
-	on_pg.x = (0.5 + atan2(d.z, d.x) / (2 * M_PI)) * 500;
-	on_pg.y = (0.5 - asin(d.y) / (M_PI)) * 250;
+	on_pg.x = (0.5 + atan2(d.z, d.x) / (2 * M_PI)) * 200;
+	on_pg.y = (0.5 - asin(d.y) / (M_PI)) * 100;
 	on_pg.x += offset.x / 2;
 	if (on_pg.x % 20 >= 10)
 		i = -i;
 	if (on_pg.y % 20 >= 10)
 		i = -i;
 	if (i == 1)
-		r->data.color = (t_vec3_d){0, 0, 0};
+		r->data.color = v3d_sum_2((t_vec3_d){255, 255, 255}, v3d_anti(col));
 	else
-		r->data.color = (t_vec3_d){255, 255, 255};
+		r->data.color = col;
+	return (1);
+}
+
+int	checker_disr_plane(t_transform tr, t_ray *r, t_vec3_d pt, t_vec3_d col)
+{
+	t_vec3_d	tempx;
+	t_vec3_d	tempy;
+	char		i;
+	double		lol;
+
+	i = 0;
+	if (tr.rotation.y)
+		tempx = v3d_normalize((t_vec3_d){0.01,
+				-tr.rotation.z / tr.rotation.y, 1});
+	else
+		tempx = (t_vec3_d){0, 1, 0};
+	tempy = v3d_cross(tr.rotation, tempx);
+	i = 1;
+	pt = v3d_sum_2(pt, v3d_anti(tr.position));
+	lol = tempx.y * tempy.z - tempx.z * tempy.y;
+	i = checker_cases(lol, tempx, tempy, pt);
+	if (i == 1)
+		r->data.color = v3d_sum_2((t_vec3_d){255, 255, 255}, v3d_anti(col));
+	else
+		r->data.color = col;
 	return (1);
 }
 
@@ -88,29 +113,4 @@ char	checker_cases(double lol, t_vec3_d tempx, t_vec3_d tempy, t_vec3_d pt)
 			i = -i;
 	}
 	return (i);
-}
-
-int	checker_disr_plane(t_transform tr, t_ray *r, t_vec3_d pt)
-{
-	t_vec3_d	tempx;
-	t_vec3_d	tempy;
-	char		i;
-	double		lol;
-
-	i = 0;
-	if (tr.rotation.y)
-		tempx = v3d_normalize((t_vec3_d){0.01,
-				-tr.rotation.z / tr.rotation.y, 1});
-	else
-		tempx = (t_vec3_d){0, 1, 0};
-	tempy = v3d_cross(tr.rotation, tempx);
-	i = 1;
-	pt = v3d_sum_2(pt, v3d_anti(tr.position));
-	lol = tempx.y * tempy.z - tempx.z * tempy.y;
-	i = checker_cases(lol, tempx, tempy, pt);
-	if (i == 1)
-		r->data.color = (t_vec3_d){0, 0, 0};
-	else
-		r->data.color = (t_vec3_d){255, 255, 255};
-	return (1);
 }

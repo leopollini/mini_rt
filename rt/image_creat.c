@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:37:06 by lpollini          #+#    #+#             */
-/*   Updated: 2023/11/25 16:23:01 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/11/26 20:25:49 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,30 +103,29 @@ char	cylinder_calcs(t_gameobject *c, t_ray *r, t_vec3_d *t)
 	return (0);
 }
 
-int	hit_cylinder(t_cylinder *cylinder, t_ray *r, t_tracing_mode mode)
+int	hit_cylinder(t_cylinder *c, t_ray *r, t_tracing_mode mode)
 {
 	t_vec3_d	t;
 	char		top;
 
-	if (cylinder_calcs(cylinder, r, &t))
+	if (cylinder_calcs(c, r, &t))
 		return (1);
 	if (t.x < NEGATIVE_LIM)
 		return (0);
-	if (!cyl_collisions(cylinder, r, t, &top))
+	if (!cyl_collisions(c, r, t, &top))
 		return (0);
 	if (mode == OCCLUSION)
 		return (1);
-	r->data.hit_pointer = cylinder;
+	r->data.hit_pointer = c;
 	if (mode == REFERENCE)
 		return (1);
-	if (cylinder->metalness > 0 && metal_manager(r, cylinder))
+	if (c->metalness > 0 && metal_manager(r, c))
 		return (1);
-	if (cylinder->metalness == -2 && ((!top
-				&& checker_disr_cyl(cylinder->transform, r))
-			|| checker_disr_plane(cylinder->transform, r,
-				r->data.hit_point)))
+	if (c->metalness == -2 && ((!top && checker_disr_cyl(c->transform, r,
+					c->color)) || checker_disr_plane(c->transform, r,
+				r->data.hit_point, c->color)))
 		return (1);
-	r->data.color = cylinder->color;
+	r->data.color = c->color;
 	return (1);
 }
 
@@ -141,7 +140,8 @@ void	sphere_stuff(t_gameobject *s, t_ray *r, t_tracing_mode mode, double x)
 				v3d_anti(s->transform.position)));
 	if (s->metalness > 0 && metal_manager(r, s))
 		return ;
-	if (s->metalness == -2 && checker_disr_sphere(s->transform.rotation, r))
+	if (s->metalness == -2 && checker_disr_sphere(s->transform.rotation,
+			r, s->color))
 		return ;
 	if (s->metalness == -1)
 		r->data.color = skybox_calc(*r, s->texture, &s->transform.rotation);
@@ -183,7 +183,8 @@ char	plane_stuff(t_gameobject *plane, t_ray *r, t_tracing_mode md, double t)
 		return (1);
 	r->data.hit_point = ray_at(*r, t);
 	if (plane->metalness == -2)
-		return (checker_disr_plane(plane->transform, r, r->data.hit_point));
+		return (checker_disr_plane(plane->transform, r,
+				r->data.hit_point, plane->color));
 	if (plane->metalness > 0 && metal_manager(r, plane))
 		return (1);
 	return (0);
@@ -226,6 +227,8 @@ int	type_sorter(t_objtype t, t_gameobject *obj, t_ray *r, t_tracing_mode mode)
 		return (hit_plane((t_sphere *)obj, r, mode));
 	if (t == CYLINDER)
 		return (hit_cylinder((t_cylinder *)obj, r, mode));
+	if (t == CONE)
+		return (hit_cone((t_cone *)obj, r, mode));
 	return (0);
 }
 
@@ -256,11 +259,10 @@ char	rft_hitter(t_list *scene, t_ray *r, t_tracing_mode mode)
 	return (did_hit);
 }
 
-t_color_3	rft_specular(t_ray *r, t_ray *lr, t_lantern *l, double lambda)
+t_color_3	rft_specular(t_ray *r, t_ray *lr, t_lantern *l)
 {
 	const t_vec3_d	res = v3d_specular(lr->direction, r->data.point_normal);
 
-	(void)lambda;
 	if (r->data.hit_pointer->type == PLANE)
 		return (color_3_merge((v3d_scal(r->data.color, pow(v3d_dot(res,
 								v3d_anti(r->direction)), 200)
@@ -299,7 +301,7 @@ t_vec3_d	rft_search_light(t_window *w, t_ray *r, t_tracing_mode mode)
 			rft_cast(NULL, &lr, OCCLUSION);
 			if (!lr.data.hit_something)
 				temp = v3d_sum(3, temp, rft_diffuse(r, &lr, l),
-						rft_specular(r, &lr, l, r->data.hit_pointer->albedo));
+						rft_specular(r, &lr, l));
 		}
 		lant = lant->next;
 	}
