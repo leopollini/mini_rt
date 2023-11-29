@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 22:14:44 by lpollini          #+#    #+#             */
-/*   Updated: 2023/11/25 14:56:26 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/11/29 20:41:18 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,8 @@ static int	keys_manager_3(t_window *win, int keypressed)
 		tr->position.z += win->step;
 	else if (keypressed == 65438)
 		tr->position.z -= win->step;
-	else if (keypressed == 65453)
-		tr->scale = v3d_sum_2(tr->scale,
-				(t_vec3_d){-win->step, -win->step, -win->step});
-	else if (keypressed == 65451)
-		tr->scale = v3d_sum_2(tr->scale,
-				(t_vec3_d){win->step, win->step, win->step});
+	else if (keys_manager_5(win, keypressed, tr))
+		return (1);
 	else
 		return (0);
 	return (1);

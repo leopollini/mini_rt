@@ -6,24 +6,11 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:37:06 by lpollini          #+#    #+#             */
-/*   Updated: 2023/11/29 19:29:59 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/11/29 21:29:56 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/mini_rt.h"
-
-int	type_sorter(t_objtype t, t_gameobject *obj, t_ray *r, t_tracing_mode mode)
-{
-	if (obj->is_invisible)
-		return (0);
-	if (t == SPHERE)
-		return (hit_sphere((t_sphere *)obj, r, mode));
-	if (t == PLANE)
-		return (hit_plane((t_sphere *)obj, r, mode));
-	if (t == CYLINDER)
-		return (hit_cylinder((t_cylinder *)obj, r, mode));
-	return (0);
-}
 
 char	rft_hitter(t_list *scene, t_ray *r, t_tracing_mode mode)
 {
@@ -79,10 +66,10 @@ t_vec3_d	rft_search_light(t_window *w, t_ray *r, t_tracing_mode mode)
 	t_vec3_d	temp;
 	t_lantern	*l;
 
-	(void)mode;
 	lant = w->lights;
 	lr.source = r->data.hit_point;
-	temp =v3d_scal(color_3_merge(r->data.color, w->ambient.color), w->ambient.intensity);
+	temp = v3d_scal(color_3_merge(r->data.color,
+				w->ambient.color), w->ambient.intensity);
 	while (lant->content)
 	{
 		l = (t_lantern *)lant->content;
@@ -99,6 +86,19 @@ t_vec3_d	rft_search_light(t_window *w, t_ray *r, t_tracing_mode mode)
 		lant = lant->next;
 	}
 	return (v3d_scal(temp, 0.6));
+}
+
+int	type_sorter(t_objtype t, t_gameobject *obj, t_ray *r, t_tracing_mode mode)
+{
+	if (obj->is_invisible)
+		return (0);
+	if (t == SPHERE)
+		return (hit_sphere((t_sphere *)obj, r, mode));
+	if (t == PLANE)
+		return (hit_plane((t_sphere *)obj, r, mode));
+	if (t == CYLINDER)
+		return (hit_cylinder((t_cylinder *)obj, r, mode));
+	return (0);
 }
 
 t_vec3_d	rft_cast(t_window *w, t_ray *r, t_tracing_mode mode)

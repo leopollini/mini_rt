@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 17:09:12 by iragusa           #+#    #+#             */
-/*   Updated: 2023/10/29 10:48:59 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/11/29 21:17:37 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,21 @@ void	free_obj(t_list *scene)
 	}
 	free_obj(scene->next);
 	free(scene);
+}
+
+int	ft_print_error_free(char *err, t_window *w, void *del, char *s)
+{
+	free(s);
+	write(2, "Error\n ", 7);
+	ft_putstr_fd(err, 2);
+	write(2, "\n", 1);
+	if (w->rt != NULL)
+		free_mat(w->rt);
+	ft_lstclear((&w->lights), free);
+	free_obj(w->scene);
+	if (del != NULL)
+		free(del);
+	exit (1);
 }
 
 int	ft_print_error(char *err, t_window *w, void *del)

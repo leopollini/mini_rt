@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 12:41:43 by lpollini          #+#    #+#             */
-/*   Updated: 2023/10/29 10:49:53 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/11/29 21:56:50 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	contchar(t_window *w)
 			l++;
 		i++;
 	}
-	if (a != 1 || c != 1 || l < 1)
+	if (a != 1 || c != 1 || !l)
 		ft_print_error(ACL_ERR, w, NULL);
 	return (0);
 }
@@ -67,9 +67,32 @@ char	*ft_strjoin2(char *s1, char *s2)
 	return (str);
 }
 
+static void	ft_isok_path(char *s, t_window *w, t_gameobject *p)
+{
+	int		i;
+	int		fd;
+	char	temp[9];
+
+	i = 0;
+	while (s[i])
+		i++;
+	if (i < 5 || s[--i] != 'm' || s[--i] != 'p'
+		|| s[--i] != 'x' || s[--i] != '.')
+		ft_print_error_free("path must be a .xmp map", w, p, p->text);
+	fd = open(p->text, O_RDONLY);
+	if (fd <= 0)
+		ft_print_error_free("no file found at given path", w, p, p->text);
+	if (read(fd, temp, 9) < 9 || ft_strncmp(temp, "/* XPM */", 9))
+		ft_print_error_free("invalid file header", w, p, p->text);
+	close(fd);
+	return ;
+}
+
 t_gameobject	*ft_get_text(t_gameobject *p, char **line, t_window *w,
 		t_gameobject *o)
 {
+	int	fd;
+
 	p->metalness = -1;
 	(*line) = (*line) + 2;
 	p->text = ft_copyadd(*line);
@@ -83,6 +106,6 @@ t_gameobject	*ft_get_text(t_gameobject *p, char **line, t_window *w,
 		}
 		(*line)++;
 	}
-	ft_check_path(p, w);
+	ft_isok_path(p->text, w, p);
 	return (p);
 }

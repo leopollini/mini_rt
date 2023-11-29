@@ -6,11 +6,38 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 22:14:44 by lpollini          #+#    #+#             */
-/*   Updated: 2023/11/29 19:32:48 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/11/29 21:26:44 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/mini_rt.h"
+
+static void	lolhelp(double *var, double step)
+{
+	*var = *var - step;
+	if (*var < POSITIVE_LIM)
+		*var = POSITIVE_LIM;
+	return ;
+}
+
+int	keys_manager_5(t_window *win, int keypressed, t_transform *tr)
+{
+	if (keypressed == 105)
+		tr->scale.x += win->step;
+	else if (keypressed == 111)
+		tr->scale.y = win->step;
+	else if (keypressed == 112)
+		tr->scale.z += win->step;
+	else if (keypressed == 106)
+		lolhelp(&tr->scale.x, win->step);
+	else if (keypressed == 107)
+		lolhelp(&tr->scale.y, win->step);
+	else if (keypressed == 108)
+		lolhelp(&tr->scale.z, win->step);
+	else
+		return (0);
+	return (1);
+}
 
 void	rotate_sphere(t_sphere *o, t_axises a, double rot)
 {
@@ -67,9 +94,6 @@ int	manage_mouse(int button, int x, int y, t_window *w)
 		ray.data.hit_pointer = NULL;
 		ray.max_sqr_len = INFINITY;
 		rft_cast(w, &ray, REFERENCE);
-		printf("point, normal, distance = %lf.\n", sqrt(ray.data.sqr_distance));
-		v3d_out(ray.data.hit_point);
-		v3d_out(ray.data.point_normal);
 		w->selected = ray.data.hit_pointer;
 		if (w->selected)
 			transform_out(w->selected->transform);

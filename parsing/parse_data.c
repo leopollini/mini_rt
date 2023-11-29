@@ -85,7 +85,7 @@ int	parse_cam(t_window *w, char **line)
 	w->cam.lookat = v3d_normalize(w->cam.lookat);
 	next_val(line);
 	w->cam.fov = pow(my_atoi(line) / (double )70, 2);
-	if (w->cam.fov < 0 || w->cam.fov > 180)
+	if (w->cam.fov < 0 || w->cam.fov > 6.65)
 		ft_print_error("cam FOV out of range", w, NULL);
 	w->cam.scene_window = new_v2d(w->cam.fov, w->cam.fov);
 	w->cam.rotation = ft_get_rot(w->cam.lookat);

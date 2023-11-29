@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 15:22:59 by lpollini          #+#    #+#             */
-/*   Updated: 2023/11/29 19:44:08 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/11/29 21:27:38 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,29 +33,26 @@ char	plane_isover(t_transform tr, t_vec3_d pt)
 	return (0);
 }
 
-void	plane_where(t_transform tr, t_ray *r, char where)
+char	plane_where(t_transform tr, t_ray *r, char where)
 {
-	t_vec3_d	norm;
 	double		denom;
 	double		t;
 
-	norm = tr.rotation;
-	denom = v3d_dot(r->direction, norm);
+	denom = v3d_dot(r->direction, tr.rotation);
 	if (where)
-	{
-		r->data.point_normal = tr.rotation;
-		r->data.color = (t_vec3_d){0,255,0};
-	}
+		r->data.point_normal = v3d_anti(tr.rotation);
 	else
 	{
 		tr.position = v3d_sum_2(tr.position, v3d_scal(tr.rotation, tr.scale.y));
-		r->data.point_normal = v3d_anti(tr.rotation);
-		r->data.color = (t_vec3_d){0,0,255};
+		r->data.point_normal = tr.rotation;
 	}
 	t = v3d_dot(v3d_sum_2(tr.position,
-				v3d_anti(r->source)), norm) / -denom;
+				v3d_anti(r->source)), tr.rotation) / denom;
+	if (t < POSITIVE_LIM)
+		return (0);
 	r->data.hit_point = ray_at(*r, t);
 	r->data.sqr_distance = t * t;
+	return (1);
 }
 
 char	cyl_collisions(t_cylinder *c, t_ray *r, t_vec3_d t, char lol)
@@ -73,18 +70,14 @@ char	cyl_collisions(t_cylinder *c, t_ray *r, t_vec3_d t, char lol)
 	{
 		r->data.sqr_distance = t.x * t.x;
 		r->data.point_normal = cylinder_normal(c->transform, r->data.hit_point);
-		r->data.color = c->color;
 		return (1);
 	}
 	t.x = t.y;
 	r->data.hit_point = ray_at(*r, t.x);
 	wh1 = plane_isover(c->transform, r->data.hit_point);
-	if ((!wh1 || wh - wh1))
-	{
-		printf("called. %i # %i # %i\n", wh, wh1, lol);
+	if ((!wh1 || wh - wh1) || (!wh && !wh1))
 		return (plane_where(c->transform, r,
-				wh * lol < 0 || (!wh && wh1 > 0)), 1);
-	}
+				v3d_dot(r->direction, c->transform.rotation) > 0));
 	return (0);
 }
 
@@ -116,12 +109,9 @@ char	cylinder_calcs(t_gameobject *c, t_ray *r, t_vec3_d *t)
 int	hit_cylinder(t_cylinder *c, t_ray *r, t_tracing_mode mode)
 {
 	t_vec3_d	t;
-	char		top = 1;
 
 	if (cylinder_calcs(c, r, &t))
 		return (1);
-	// if (mode == LIGHT)
-	// 	r->direction = v3d_anti(r->direction);
 	if (!cyl_collisions(c, r, t, -1))
 		return (0);
 	if (mode == OCCLUSION)
@@ -131,10 +121,10 @@ int	hit_cylinder(t_cylinder *c, t_ray *r, t_tracing_mode mode)
 		return (1);
 	if (c->metalness > 0 && metal_manager(r, c))
 		return (1);
-	if (c->metalness == -2 && ((!top && checker_disr_cyl(c->transform, r,
-					c->color)) || checker_disr_plane(c->transform, r,
+	if (c->metalness == -2 && (checker_disr_cyl(c->transform, r,
+				c->color) || checker_disr_plane(c->transform, r,
 				r->data.hit_point, c->color)))
 		return (1);
-	//r->data.color = c->color;
+	r->data.color = c->color;
 	return (1);
 }

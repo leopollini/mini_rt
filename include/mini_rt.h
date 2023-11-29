@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 18:57:52 by lpollini          #+#    #+#             */
-/*   Updated: 2023/11/29 19:30:24 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/11/29 22:05:58 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 
 # define CREAT_GB_SWITCH 0
 
-# define IMGSIZE 400
+# define IMGSIZE 80
 # define SKYBOX "skybox/universe.xpm"
 
 # define NOARGS "check input, write:./minirt scenes/mandatory.rt"
@@ -45,7 +45,7 @@
 # define NOFILE "no such file!"
 # define NO_RT "ehy dude, only .rt file!"
 # define MALLOC "oh no, error in malloc() on memory allocation"
-# define ACL_ERR "check file rt! need 1 A, 1 C, at least 1 L and at most 1 R!"
+# define ACL_ERR "check file rt! need 1 A, 1 C and at least 1 L!"
 # define CHECK_RT ",check your params!"
 
 # include "../.mlx/mlx.h"
@@ -254,6 +254,7 @@ int				win_close(t_window *win);
 int				manage_keys(int keypressed, t_window *win);
 int				manage_mouse(int button, int x, int y, t_window *w);
 void			rt_rotate_object(t_gameobject *o, t_axises a, double rot);
+int				keys_manager_5(t_window *win, int keypressed, t_transform *tr);
 
 /*file palle.c*/
 int				rft_anti_aliasing(const t_vec2_i c, const t_vec3_d div_temp,
@@ -314,6 +315,7 @@ char			*ft_copyadd(char *str);
 void			ft_check_path(t_gameobject *s, t_window *w);
 void			free_obj(t_list *scene);
 int				ft_print_error(char *err, t_window *w, void *del);
+int				ft_print_error_free(char *err, t_window *w, void *del, char *s);
 int				ft_checkset(char c, char *s);
 
 /*file parse_data.c*/
