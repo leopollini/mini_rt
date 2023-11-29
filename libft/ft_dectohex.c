@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_dectohex.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iragusa <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 15:10:24 by iragusa           #+#    #+#             */
-/*   Updated: 2022/11/12 15:13:02 by iragusa          ###   ########.fr       */
+/*   Updated: 2023/11/28 16:58:46 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ char	*ft_dectohex_upper(unsigned long num)
 	hex = (char *)malloc(sizeof(char) * (j + 1));
 	j = 0;
 	if (num == 0)
-	{	
+	{
 		hex[j] = '0';
 		j++;
 	}
@@ -66,7 +66,7 @@ char	*ft_dectohex_low(unsigned long num)
 	hex = (char *)malloc(sizeof(char) * (j + 1));
 	j = 0;
 	if (num == 0)
-	{	
+	{
 		hex[j] = '0';
 		j++;
 	}

@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_put_x.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iragusa <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 20:47:05 by iragusa           #+#    #+#             */
-/*   Updated: 2022/11/15 20:47:08 by iragusa          ###   ########.fr       */
+/*   Updated: 2023/11/28 16:55:41 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+
+#include "../include/libft.h"
 
 char	*ft_struint(char *ptr, unsigned long u)
 {
@@ -17,7 +18,7 @@ char	*ft_struint(char *ptr, unsigned long u)
 
 	i = 0;
 	if (u == 0)
-	{	
+	{
 		ptr[i] = '0';
 		i++;
 	}
@@ -32,7 +33,7 @@ char	*ft_struint(char *ptr, unsigned long u)
 }
 
 void	ft_print_lowhex(unsigned long x, t_flags *flag)
-{	
+{
 	char	*hex;
 
 	if (x == 0 && flag->prec == 0 && flag->punto)
@@ -54,7 +55,7 @@ void	ft_print_lowhex(unsigned long x, t_flags *flag)
 }
 
 void	ft_print_uphex(unsigned long X, t_flags *flag)
-{	
+{
 	char	*hex;
 
 	if (X == 0 && flag->prec == 0 && flag->punto & !flag->zero)

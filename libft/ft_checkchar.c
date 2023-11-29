@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_checkchar.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iragusa <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/29 20:05:03 by iragusa           #+#    #+#             */
-/*   Updated: 2022/11/01 15:39:54 by iragusa          ###   ########.fr       */
+/*   Updated: 2023/11/28 17:15:21 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+
+#include "../include/libft.h"
 
 const char	*ft_isflag(t_flags *flag, const char *src)
 {
@@ -31,7 +32,7 @@ const char	*ft_isflag(t_flags *flag, const char *src)
 }
 
 const char	*ft_convchar(t_flags *flag, const char *src)
-{	
+{
 	if (*src == 'c')
 		ft_put_c(va_arg(flag->next, int), flag);
 	if (*src == 's')

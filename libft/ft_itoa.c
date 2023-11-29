@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iragusa <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 16:00:54 by iragusa           #+#    #+#             */
-/*   Updated: 2022/10/22 16:01:43 by iragusa          ###   ########.fr       */
+/*   Updated: 2023/11/28 16:57:25 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+
+#include "../include/libft.h"
 
 static char	*ft_array(char *x, unsigned int number, long int len)
 {
@@ -58,7 +59,7 @@ char	*ft_itoa(int n)
 		number = n;
 	x = ft_array(x, number, len);
 	return (x);
-}	
+}
 /*
 int    main(void)
 {

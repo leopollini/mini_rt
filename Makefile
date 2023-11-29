@@ -24,7 +24,7 @@ NAME = miniRT
 
 CC = gcc 
 
-CFLAGS = -g -Wall -Wextra -Werror
+CFLAGS = -g #-Wall -Wextra -Werror
 
 LIBFT = libft/libft.a
 
@@ -39,7 +39,8 @@ SRC = main.c \
 		rt/image_creat.c rt/palle.c rt/utils.c \
 		rt/stuff_printer.c rt/pixel_stuff.c \
 		rt/checker_color.c rt/input_keys.c \
-		rt/utils_1.c \
+		rt/utils_1.c rt/sphere_rt.c rt/plane_rt.c \
+		rt/cyl_rt.c rt/cone_rt.c\
 		parsing/read_rt.c \
 		parsing/check_rt.c \
 		parsing/parsing.c \

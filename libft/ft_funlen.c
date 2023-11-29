@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_funlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iragusa <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 20:26:03 by iragusa           #+#    #+#             */
-/*   Updated: 2022/11/06 20:29:07 by iragusa          ###   ########.fr       */
+/*   Updated: 2023/11/28 16:57:29 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+
+#include "../include/libft.h"
 
 size_t	ft_ptr_len(unsigned long int ptr, t_flags *flag)
 {
@@ -19,7 +20,7 @@ size_t	ft_ptr_len(unsigned long int ptr, t_flags *flag)
 	if (ptr == 0)
 		return (1);
 	while (ptr > 0)
-	{	
+	{
 		len++;
 		ptr = ptr / 16;
 	}

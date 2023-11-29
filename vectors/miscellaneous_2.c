@@ -6,13 +6,11 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:56:59 by lpollini          #+#    #+#             */
-/*   Updated: 2023/11/04 11:10:26 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/11/28 17:29:09 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/vectors.h"
-
-/* ray direction MUST be normalized!!! */
 
 t_vec3_d	color_add(t_vec3_d a, const t_vec3_d b)
 {

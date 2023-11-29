@@ -6,19 +6,17 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:37:06 by lpollini          #+#    #+#             */
-/*   Updated: 2023/11/25 15:41:34 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/11/28 17:22:10 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/mini_rt.h"
 
-t_vec3_d	skybox_calc(t_ray r, t_texture t, t_vec3_d *offset)
+t_vec3_d	skybox_calc(t_vec3_d d, t_texture t, t_vec3_d *offset)
 {
-	t_vec3_d		d;
-	t_vec2_i		on_pg;
-	unsigned int	found_col;
+	t_vec2_i			on_pg;
+	unsigned int		found_col;
 
-	d = r.direction;
 	on_pg.x = (0.5 + atan2(d.z, d.x) / (2 * M_PI)) * t.size.x;
 	on_pg.y = (0.5 - asin(d.y) / (M_PI)) * t.size.y;
 	if (offset)

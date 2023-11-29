@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 18:57:52 by lpollini          #+#    #+#             */
-/*   Updated: 2023/11/26 20:25:38 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/11/29 12:14:02 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,7 +216,7 @@ int				create_trgb(int a, int r, int g, int b);
 int				create_trgb_s(double a, double r, double g, double b);
 int				pull_argb(t_vec3_d c, int div);
 char			rft_hitter(t_list *scene, t_ray *r, t_tracing_mode mode);
-t_vec3_d		skybox_calc(t_ray r, t_texture t, t_vec3_d *offset);
+t_vec3_d		skybox_calc(t_vec3_d r, t_texture t, t_vec3_d *offset);
 t_vec3_d		rft_cast(t_window *w, t_ray *r, t_tracing_mode mode);
 unsigned int	my_mlx_pixel_get(t_data data, int x, int y);
 t_vec3_d		rft_cast(t_window *w, t_ray *r, t_tracing_mode mode);
@@ -231,6 +231,7 @@ void			clean_scene_list(t_list *lst, t_window *win, char mode);
 
 t_vec3_d		rft_refract(const t_vec3_d uv, const t_vec3_d n, double t);
 int				metal_manager(t_ray *r, t_gameobject *gm);
+double			double_swp(double *a, double *b);
 
 /*file color_opers.c*/
 t_vec3_d		create_argb_s(double r, double g, double b);
@@ -342,5 +343,11 @@ char			checker_cases(double lol, t_vec3_d tempx, t_vec3_d tempy,
 char			checker_disr_sphere(t_vec3_d offset, t_ray *r, t_vec3_d col);
 double			modulus(double a);
 char			checker_disr_cyl(t_transform tr, t_ray *r, t_vec3_d col);
+
+/*obj_rt.c*/
+int				hit_cylinder(t_cylinder *c, t_ray *r, t_tracing_mode mode);
+int				hit_plane(t_plane *plane, t_ray *r, t_tracing_mode mode);
+int				hit_sphere(t_sphere *sphere, t_ray *r, t_tracing_mode mode);
+int				hit_cone(t_cone *cone, t_ray *r, t_tracing_mode mode);
 
 #endif

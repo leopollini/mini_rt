@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iragusa <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/29 18:47:08 by iragusa           #+#    #+#             */
-/*   Updated: 2022/10/29 19:27:05 by iragusa          ###   ########.fr       */
+/*   Updated: 2023/11/28 16:59:32 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+
+#include "../include/libft.h"
 
 t_flags	*ft_inizializza_flag(t_flags *flag)
 /*imposta tutte le flags su falso*/
@@ -49,7 +50,7 @@ int	ft_printf(const char *src, ...)
 		if (*src != '%')
 			ft_printsrc(src, flag);
 		else
-		{	
+		{
 			flag = ft_inizializza_flag(flag);
 			src = ft_checkchar(flag, src + 1);
 		}

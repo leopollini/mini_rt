@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putdiu.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iragusa <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 16:51:34 by iragusa           #+#    #+#             */
-/*   Updated: 2022/11/10 19:50:42 by iragusa          ###   ########.fr       */
+/*   Updated: 2023/11/28 16:59:39 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+
+#include "../include/libft.h"
 
 void	ft_print_numzero(t_flags *flag)
 {
@@ -91,7 +92,7 @@ void	ft_put_di(int d, t_flags *flag)
 	}
 	ft_putint(d, flag);
 	if (!flag->zero && flag->meno)
-	{	
+	{
 		if (((flag->sign || flag->sp) && d >= 0))
 			flag->wdt--;
 		ft_print_space(flag);
@@ -112,7 +113,7 @@ void	ft_put_u(unsigned long u, t_flags *flag)
 	if (u == 0)
 		ft_print_numzero(flag);
 	else
-	{	
+	{
 		ft_printprec(flag);
 		ft_putnstr_fd(uint, flag->len, 1);
 		flag->ret += flag->len;

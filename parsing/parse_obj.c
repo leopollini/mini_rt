@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 17:09:12 by iragusa           #+#    #+#             */
-/*   Updated: 2023/11/01 01:01:07 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/11/28 19:16:59 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ int	parse_cylinder(t_window *w, char **line)
 	c = sux_malloc(sizeof(t_cylinder), w);
 	c->text = NULL;
 	c = parse_cylinder_help(w, c, line, i);
-	c->transform.scale.x = tofloat(line);
+	c->transform.scale.x = tofloat(line) * 2;
 	if (c->transform.scale.x <= 0)
 		ft_print_error("cylinder radious must be > 0", w, c);
 	next_val(line);
