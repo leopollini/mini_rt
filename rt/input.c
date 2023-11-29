@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 22:14:44 by lpollini          #+#    #+#             */
-/*   Updated: 2023/11/29 13:13:56 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/11/29 19:32:48 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	manage_mouse(int button, int x, int y, t_window *w)
 		ray.data.hit_pointer = NULL;
 		ray.max_sqr_len = INFINITY;
 		rft_cast(w, &ray, REFERENCE);
-		printf("point, normal, distance = %lf.\n", ray.data.sqr_distance);
+		printf("point, normal, distance = %lf.\n", sqrt(ray.data.sqr_distance));
 		v3d_out(ray.data.hit_point);
 		v3d_out(ray.data.point_normal);
 		w->selected = ray.data.hit_pointer;

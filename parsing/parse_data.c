@@ -32,11 +32,10 @@ int	parse_res(t_window *w, char **line)
 
 int	parse_amb(t_window *w, char **line)
 {
-	w->ambient.id = 'A';
 	next_val(line);
-	w->ambient.value = tofloat(line);
+	w->ambient.intensity = tofloat(line);
 	next_val(line);
-	if (w->ambient.value < 0 || w->ambient.value > 1)
+	if (w->ambient.intensity < 0 || w->ambient.intensity > 1)
 		ft_print_error("ambient light out of range!", w, NULL);
 	w->ambient.color = color_parse(line, w, NULL);
 	next_val(line);

@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 18:57:52 by lpollini          #+#    #+#             */
-/*   Updated: 2023/11/29 12:14:02 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/11/29 19:30:24 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,13 +109,6 @@ typedef enum e_axises
 	aZ
 }				t_axises;
 
-typedef struct s_ambient
-{
-	float			value;
-	char			id;
-	t_vec3_d		color;
-}				t_ambient;
-
 /*    //SCENE OBJECTS\\    */
 typedef struct s_lantern
 {
@@ -182,7 +175,7 @@ typedef struct s_window
 	t_texture		skybox;
 	t_vec2_i		size;
 	t_camera		cam;
-	t_ambient		ambient;
+	t_lantern		ambient;
 	t_list			*scene;
 	int				obj_num;
 	t_list			*lights;
@@ -246,13 +239,13 @@ unsigned int	my_mlx_pixel_get(t_data data, int x, int y);
 /*file image_creat.c*/
 int				hit_sphere(t_sphere *sphere, t_ray *r, t_tracing_mode mode);
 int				hit_plane(t_plane *plane, t_ray *r, t_tracing_mode mode);
-int				hit_cylinder(t_cylinder *cylinder, t_ray *r,
+int				hit_cFylinder(t_cylinder *cylinder, t_ray *r,
 					t_tracing_mode mode);
 int				type_sorter(t_objtype t, t_gameobject *obj,
 					t_ray *r, t_tracing_mode mode);
 char			rft_hitter(t_list *scene, t_ray *r, t_tracing_mode mode);
 t_color_3		rft_specular(t_ray *r, t_ray *lr, t_lantern *l);
-t_color_3		rft_diffuse(t_ray *r, t_ray *o, t_lantern *l);
+//t_color_3		rft_diffuse(t_ray *r, t_ray *o, t_lantern *l);
 t_vec3_d		rft_search_light(t_window *w, t_ray *r, t_tracing_mode mode);
 t_vec3_d		rft_cast(t_window *w, t_ray *r, t_tracing_mode mode);
 

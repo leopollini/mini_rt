@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 15:22:59 by lpollini          #+#    #+#             */
-/*   Updated: 2023/11/29 13:24:20 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/11/29 19:44:08 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,82 +23,69 @@ t_vec3_d	cylinder_normal(t_transform tr, t_vec3_d pt)
 	return (v3d_normalize(v3d_sum_2(pt, v3d_anti(ray_at(temp, t)))));
 }
 
-t_vec3_d	plain_ray_int(t_ray *r, t_transform tr)
+char	plane_isover(t_transform tr, t_vec3_d pt)
 {
-	double	denom;
-	double	t;
-
-	if (v3d_dot(r->direction, tr.rotation) < 0)
-	{
-		tr.position = v3d_sum_2(tr.position, v3d_scal(tr.rotation, tr.scale.y));
-		tr.rotation = v3d_anti(tr.rotation);
-	}
-	denom = v3d_dot(r->direction, tr.rotation);
-	t = v3d_dot(v3d_sum_2(tr.position, v3d_anti(r->source)), tr.rotation) / denom;
-	r->data.sqr_distance = t * t;
-	return (ray_at(*r, t));
-}
-
-int	test_over(t_transform tr, t_vec3_d pt, double dt)
-{
-	pt = v3d_sum_2(pt, v3d_anti(tr.position));
-	if (v3d_dot(pt, tr.rotation) < 0)
-		return (-1);
-	if (v3d_sqr_mod(pt) > dt)
+	if (v3d_dot(tr.rotation, v3d_sum_2(pt, v3d_anti(tr.position))) < 0)
 		return (1);
+	if (v3d_dot(tr.rotation, v3d_sum(3, v3d_anti(pt), tr.position,
+				v3d_scal(tr.rotation, tr.scale.y))) < 0)
+		return (-1);
 	return (0);
 }
 
-char	parallel_case(t_gameobject *c, t_ray *r)
+void	plane_where(t_transform tr, t_ray *r, char where)
 {
-	printf("called. %i\n", 0);
-	r->data.sqr_distance = v3d_sqr_mod(v3d_sum_2(c->transform.position, v3d_anti(r->source)));
-	return (1);
+	t_vec3_d	norm;
+	double		denom;
+	double		t;
+
+	norm = tr.rotation;
+	denom = v3d_dot(r->direction, norm);
+	if (where)
+	{
+		r->data.point_normal = tr.rotation;
+		r->data.color = (t_vec3_d){0,255,0};
+	}
+	else
+	{
+		tr.position = v3d_sum_2(tr.position, v3d_scal(tr.rotation, tr.scale.y));
+		r->data.point_normal = v3d_anti(tr.rotation);
+		r->data.color = (t_vec3_d){0,0,255};
+	}
+	t = v3d_dot(v3d_sum_2(tr.position,
+				v3d_anti(r->source)), norm) / -denom;
+	r->data.hit_point = ray_at(*r, t);
+	r->data.sqr_distance = t * t;
 }
 
-char	cyl_collisions(t_gameobject *c, t_ray *r, t_vec3_d t, char *top)
+char	cyl_collisions(t_cylinder *c, t_ray *r, t_vec3_d t, char lol)
 {
-	char	temp;
-	char	lol;
+	char	wh;
+	char	wh1;
 
-	if (t.x != t.x && t.y != t.y)
-		return (*top = 1, parallel_case(c, r));
-// if (t.x < 0)
-// printf("AAAAAAAAAAAAAA");
 	if (t.x < POSITIVE_LIM && t.y >= POSITIVE_LIM)
-	{
-		double_swp(&t.x, &t.y);
-		return (cyl_collisions(c, r, t, top));
-	}
+		return (double_swp(&t.x, &t.y), cyl_collisions(c, r, t, -lol));
 	if (t.x < POSITIVE_LIM)
 		return (0);
-	*top = 0;
 	r->data.hit_point = ray_at(*r, t.x);
-	t.z = pow(c->transform.scale.x / 2, 2) + pow(c->transform.scale.y, 2);
-	// if (t.x * t.y < 0)
-	// 	printf("called. %i\n", 0);
-	temp = test_over(c->transform, r->data.hit_point, t.z);
-	if (temp || (t.x * t.y < 0))
+	wh = plane_isover(c->transform, r->data.hit_point);
+	if (!wh && t.y > POSITIVE_LIM)
 	{
-		*top = 1;
-		t.x = t.y;
-		r->data.hit_point = ray_at(*r, t.x);
-		t.z = pow(c->transform.scale.x / 2, 2) + pow(c->transform.scale.y, 2);
-		lol = test_over(c->transform, r->data.hit_point, t.z);
-		if (lol * temp > 0)
-			return (0);
-		r->data.hit_point = plain_ray_int(r, c->transform);
-	}
-	else
 		r->data.sqr_distance = t.x * t.x;
-	if (temp > 0)
-		r->data.point_normal = c->transform.rotation;
-	else if (temp < 0)
-		r->data.point_normal = v3d_anti(c->transform.rotation);
-	else
 		r->data.point_normal = cylinder_normal(c->transform, r->data.hit_point);
-	
-	return (1);
+		r->data.color = c->color;
+		return (1);
+	}
+	t.x = t.y;
+	r->data.hit_point = ray_at(*r, t.x);
+	wh1 = plane_isover(c->transform, r->data.hit_point);
+	if ((!wh1 || wh - wh1))
+	{
+		printf("called. %i # %i # %i\n", wh, wh1, lol);
+		return (plane_where(c->transform, r,
+				wh * lol < 0 || (!wh && wh1 > 0)), 1);
+	}
+	return (0);
 }
 
 char	cylinder_calcs(t_gameobject *c, t_ray *r, t_vec3_d *t)
@@ -121,7 +108,6 @@ char	cylinder_calcs(t_gameobject *c, t_ray *r, t_vec3_d *t)
 	t->z = sqrt(t->z);
 	t->x = (-delta.y - t->z) / (2 * delta.x);
 	t->y = (-delta.y + t->z) / (2 * delta.x);
-	//printf("called. %lf # %lf ## %i\n", t->x, t->y, t->x < 0);
 	if ((t->x > t->y && t->y > 0))
 		double_swp(&t->x, &t->y);
 	return (0);
@@ -130,12 +116,13 @@ char	cylinder_calcs(t_gameobject *c, t_ray *r, t_vec3_d *t)
 int	hit_cylinder(t_cylinder *c, t_ray *r, t_tracing_mode mode)
 {
 	t_vec3_d	t;
-	char		top;
+	char		top = 1;
 
 	if (cylinder_calcs(c, r, &t))
 		return (1);
-		//printf("called. %lf\n", t.x);
-	if (!cyl_collisions(c, r, t, &top))
+	// if (mode == LIGHT)
+	// 	r->direction = v3d_anti(r->direction);
+	if (!cyl_collisions(c, r, t, -1))
 		return (0);
 	if (mode == OCCLUSION)
 		return (1);
@@ -148,6 +135,6 @@ int	hit_cylinder(t_cylinder *c, t_ray *r, t_tracing_mode mode)
 					c->color)) || checker_disr_plane(c->transform, r,
 				r->data.hit_point, c->color)))
 		return (1);
-	r->data.color = c->color;
+	//r->data.color = c->color;
 	return (1);
 }

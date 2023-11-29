@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 15:22:59 by lpollini          #+#    #+#             */
-/*   Updated: 2023/11/28 17:28:44 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/11/29 15:04:25 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	hit_plane(t_plane *plane, t_ray *r, t_tracing_mode mode)
 		return (0);
 	t = v3d_dot(v3d_sum_2(plane->transform.position,
 				v3d_anti(r->source)), norm) / denom;
-	if (t < POSITIVE_LIM)
+	if (t < POSITIVE_LIM || !(t == t))
 		return (0);
 	r->data.point_normal = norm;
 	if (plane_stuff(plane, r, mode, t))

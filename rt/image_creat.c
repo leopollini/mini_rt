@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:37:06 by lpollini          #+#    #+#             */
-/*   Updated: 2023/11/29 11:46:27 by lpollini         ###   ########.fr       */
+/*   Updated: 2023/11/29 19:29:59 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,10 @@ t_color_3	rft_specular(t_ray *r, t_ray *lr, t_lantern *l)
 					/ 2 * l->intensity)), l->color));
 }
 
-t_color_3	rft_diffuse(t_ray *r, t_ray *o, t_lantern *l)
+t_color_3	rft_diffuse(t_ray *r, t_vec3_d d, t_lantern *l)
 {
 	return (color_3_merge((v3d_scal(r->data.color,
-					v3d_dot(r->data.point_normal, o->direction) / 2
+					v3d_dot(r->data.point_normal, d)
 					* l->intensity)), l->color));
 }
 
@@ -80,9 +80,9 @@ t_vec3_d	rft_search_light(t_window *w, t_ray *r, t_tracing_mode mode)
 	t_lantern	*l;
 
 	(void)mode;
-	temp = v3d_scal(r->data.color, 0.25);
 	lant = w->lights;
 	lr.source = r->data.hit_point;
+	temp =v3d_scal(color_3_merge(r->data.color, w->ambient.color), w->ambient.intensity);
 	while (lant->content)
 	{
 		l = (t_lantern *)lant->content;
@@ -93,7 +93,7 @@ t_vec3_d	rft_search_light(t_window *w, t_ray *r, t_tracing_mode mode)
 			lr.data.hit_something = 0;
 			rft_cast(NULL, &lr, OCCLUSION);
 			if (!lr.data.hit_something)
-				temp = v3d_sum(3, temp, rft_diffuse(r, &lr, l),
+				temp = v3d_sum(3, temp, rft_diffuse(r, lr.direction, l),
 						rft_specular(r, &lr, l));
 		}
 		lant = lant->next;
