@@ -62,4 +62,6 @@ void	ft_comma(char **str, t_window *w, void *s)
 	if (**str != ',')
 		ft_print_error("parameters bad formatted\n", w, s);
 	(*str)++;
+	if (!(**str >= '0' && **str <= '9'))
+		ft_print_error("parameters bad formatted\n", w, s);
 }
