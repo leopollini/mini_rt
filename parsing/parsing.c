@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/27 22:03:03 by iragusa           #+#    #+#             */
-/*   Updated: 2023/10/29 11:03:36 by lpollini         ###   ########.fr       */
+/*   Updated: 2024/03/02 17:28:54 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,11 @@ t_vec3_d	pos_parse(char **str, t_window *w, void *s)
 	pos.y = 0;
 	pos.z = 0;
 	next_val(str);
-	pos.x = tofloat(str);
+	pos.x = tofloat(str) + E_N2;
 	ft_comma(str, w, (t_gameobject *)s);
-	pos.y = tofloat(str);
+	pos.y = tofloat(str) + E_N2;
 	ft_comma(str, w, (t_gameobject *)s);
-	pos.z = tofloat(str);
+	pos.z = tofloat(str) + E_N2;
 	return (pos);
 }
 

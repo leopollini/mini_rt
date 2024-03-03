@@ -89,7 +89,7 @@ int	parse_cam(t_window *w, char **line)
 	if (w->cam.fov < 0 || w->cam.fov > 180)
 		ft_print_error("cam FOV out of range", w, NULL);
 	w->cam.scene_window = new_v2d(w->cam.fov, w->cam.fov);
-	w->cam.rotation = ft_get_rot(w->cam.lookat);
+	w->cam.rtn = ft_get_rot(w->cam.lookat);
 	next_val(line);
 	if (**line != '\0')
 		ft_print_error("bad formatted parameter in parse data", w, NULL);

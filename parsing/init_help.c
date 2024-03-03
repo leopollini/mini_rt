@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 10:08:34 by lpollini          #+#    #+#             */
-/*   Updated: 2023/10/22 14:51:46 by lpollini         ###   ########.fr       */
+/*   Updated: 2024/03/02 13:01:35 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	camera_init(t_window *win)
 	tp->fov = 1;
 	tp->pos = (t_vec3_d){0, 0, 0};
 	tp->lookat = (t_vec3_d){0, 0, 1};
-	tp->rotation = (t_vec2_d){0, 0};
+	tp->rtn = (t_vec2_d){0, 0};
 	camera_update(win);
 }
 

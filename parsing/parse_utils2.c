@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 17:09:12 by iragusa           #+#    #+#             */
-/*   Updated: 2023/10/29 10:48:59 by lpollini         ###   ########.fr       */
+/*   Updated: 2024/03/03 20:45:16 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	free_obj(t_list *scene)
 		return ;
 	if (scene && scene->content)
 	{
-		if (((t_gameobject *)scene->content)->metalness == -1)
+		if (((t_gameobject *)scene->content)->mtlnss == -1)
 			free(((t_gameobject *)scene->content)->text);
 		free(scene->content);
 	}

@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/18 11:02:16 by lpollini          #+#    #+#             */
-/*   Updated: 2023/10/21 17:15:41 by lpollini         ###   ########.fr       */
+/*   Updated: 2024/02/26 18:39:11 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@ t_vec3_d	v3d_sumponder(t_vec3_d a, t_vec3_d b, double p)
 t_vec3_d	v3d_sum_2(t_vec3_d a, t_vec3_d b)
 {
 	return ((t_vec3_d){a.x + b.x, a.y + b.y, a.z + b.z});
+}
+
+t_vec3_d	v3d_sub(t_vec3_d a, t_vec3_d b)
+{
+	return ((t_vec3_d){a.x - b.x, a.y - b.y, a.z - b.z});
 }
 
 t_vec3_d	v3d_sum(int n, ...)

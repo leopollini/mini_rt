@@ -24,7 +24,7 @@ NAME = miniRT
 
 CC = gcc 
 
-CFLAGS = -g -Wall -Wextra -Werror
+CFLAGS = -g #-Wall -Wextra -Werror
 
 LIBFT = libft/libft.a
 
@@ -39,6 +39,8 @@ SRC = main.c \
 		rt/image_creat.c rt/palle.c rt/utils.c \
 		rt/stuff_printer.c rt/pixel_stuff.c \
 		rt/checker_color.c rt/input_keys.c \
+		rt/cylinder.c rt/caster_and_help.c \
+		rt/sphere_and_plane.c \
 		rt/utils_1.c \
 		parsing/read_rt.c \
 		parsing/check_rt.c \
@@ -61,7 +63,7 @@ debug: $(OBJ)
 	@echo "⌛ compiling...⌛"
 	$(CC) $(CFLAGS) $(OBJ) $(LIB) $(LIBFT) -o $(NAME)
 	@echo "🎉 mini_rt compiled! 🎉"
-	@rm -f $(OBJ)
+	#@rm -f $(OBJ)
 
 all: $(NAME)
 

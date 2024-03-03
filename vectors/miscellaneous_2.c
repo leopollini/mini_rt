@@ -6,13 +6,13 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:56:59 by lpollini          #+#    #+#             */
-/*   Updated: 2023/11/04 11:10:26 by lpollini         ###   ########.fr       */
+/*   Updated: 2024/03/03 14:05:51 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/vectors.h"
 
-/* ray direction MUST be normalized!!! */
+/* ray dir MUST be normalized!!! */
 
 t_vec3_d	color_add(t_vec3_d a, const t_vec3_d b)
 {
@@ -50,4 +50,9 @@ t_vec2_d	v2d_sum(int n, ...)
 	}
 	va_end(args);
 	return (res);
+}
+
+t_vec3_d	v3d_add(t_vec3_d *a, t_vec3_d b)
+{
+	*a = v3d_sum_2(*a, b);
 }

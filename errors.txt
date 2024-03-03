@@ -6,4 +6,4 @@ funziona ma
 "
 sp	0,0,0		1			0,0,0 t:planets/mercury.xpm m:-1
 "
-da segmentation fault?? Dovresti fare in modo che la presenza di t imponga che metalness = -1, ignorando ogni eventuale input
+da segmentation fault?? Dovresti fare in modo che la presenza di t imponga che mtlnss = -1, ignorando ogni eventuale input

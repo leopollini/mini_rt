@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 18:57:52 by lpollini          #+#    #+#             */
-/*   Updated: 2023/09/18 11:40:58 by lpollini         ###   ########.fr       */
+/*   Updated: 2024/03/03 14:06:20 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ double			v3d_mod(t_vec3_d a);
 /* vector3_ops_2.c */
 t_vec3_d		v3d_sumponder(t_vec3_d a, t_vec3_d b, double p);
 t_vec3_d		v3d_sum_2(t_vec3_d a, t_vec3_d b);
+t_vec3_d		v3d_sub(t_vec3_d a, t_vec3_d b);
 t_vec3_d		v3d_sum(int n, ...);
 t_vec3_d		v3d_anti(t_vec3_d a);
 
@@ -96,5 +97,6 @@ t_vec3_d		color_add(t_vec3_d a, const t_vec3_d b);
 t_color_3		color_3_merge(t_color_3 a, t_color_3 b);
 double			plian_module(double a);
 t_vec2_d		v2d_sum(int n, ...);
+t_vec3_d		v3d_add(t_vec3_d *a, t_vec3_d b);
 
 #endif

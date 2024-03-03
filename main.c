@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 10:08:34 by lpollini          #+#    #+#             */
-/*   Updated: 2023/10/22 15:48:32 by lpollini         ###   ########.fr       */
+/*   Updated: 2024/03/03 20:45:16 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	clean_scene_list(t_list *lst, t_window *win, char mode)
 		return ;
 	if (lst && lst->content)
 	{
-		if (mode && ((t_gameobject *)lst->content)->metalness == -1)
+		if (mode && ((t_gameobject *)lst->content)->mtlnss == -1)
 		{
 			mlx_destroy_image(win->mlx,
 				((t_gameobject *)lst->content)->texture.img.img);

@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 22:21:11 by lpollini          #+#    #+#             */
-/*   Updated: 2023/11/25 14:28:54 by lpollini         ###   ########.fr       */
+/*   Updated: 2024/03/02 13:16:01 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,25 @@ int	rft_anti_aliasing(const t_vec2_i c, const t_vec3_d div_temp,
 		b = 0;
 		while (b++ < div_temp.z)
 		{
-			r->direction = v3d_normalize(new_v3d((c.x + a / div_temp.z)
+			r->dir = v3d_normalize(new_v3d((c.x + a / div_temp.z)
 						* div_temp.x, (c.y + b / div_temp.z) * div_temp.y, 1));
-			v3d_rotate(&r->direction, aX, w->cam.rotation.x);
-			v3d_rotate(&r->direction, aY, w->cam.rotation.y);
+			v3d_rotate(&r->dir, aX, w->cam.rtn.x);
+			v3d_rotate(&r->dir, aY, w->cam.rtn.y);
 			temp = color_add(temp, rft_cast(w, r, ALL));
 		}
 		div += b - 1;
 	}
 	return (pull_argb(temp, div));
+}
+
+int	fast_test(const t_vec2_i c, const t_vec3_d div_temp,
+			t_ray *r, t_window *w)
+{
+	r->dir = v3d_normalize(new_v3d((c.x / div_temp.z)
+				* div_temp.x, (c.y / div_temp.z) * div_temp.y, 1));
+	v3d_rotate(&r->dir, aX, w->cam.rtn.x);
+	v3d_rotate(&r->dir, aY, w->cam.rtn.y);
+	return (pull_argb(rft_cast(w, r, ALL), 1));
 }
 
 void	rft_window_cast(t_window *w)
@@ -72,7 +82,11 @@ void	rft_window_cast(t_window *w)
 	t_ray		ray;
 	int			i;
 	int			j;
+	int			(*f)(const t_vec2_i, const t_vec3_d, t_ray *, t_window *);
 
+	f = fast_test;
+	if (w->toggle_hd)
+		f = rft_anti_aliasing;
 	div_temp = (t_vec3_d){w->cam.scene_window.x / w->size.x,
 		w->cam.scene_window.y / w->size.y, 1};
 	ray.source = w->cam.pos;
@@ -86,7 +100,7 @@ void	rft_window_cast(t_window *w)
 		j = -w->size.y / 2 - 1;
 		while (++j < w->size.y / 2)
 			my_mlx_pixel_put(&w->img, i + w->size.x / 2, w->size.x / 2 - j - 1,
-				rft_anti_aliasing((t_vec2_i){i, j}, div_temp, &ray, w));
+				f((t_vec2_i){i, j}, div_temp, &ray, w));
 		i++;
 	}
 }

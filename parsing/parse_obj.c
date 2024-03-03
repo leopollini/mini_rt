@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 17:09:12 by iragusa           #+#    #+#             */
-/*   Updated: 2023/11/01 01:01:07 by lpollini         ###   ########.fr       */
+/*   Updated: 2024/03/03 20:45:16 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 t_gameobject	*ft_metal_alb(t_gameobject *p, char **line,
 		t_window *w, t_gameobject *o)
 {
-	p->metalness = 0;
+	p->mtlnss = 0;
 	p->albedo = 0;
 	next_val(line);
 	while (**line != 0)
@@ -28,10 +28,10 @@ t_gameobject	*ft_metal_alb(t_gameobject *p, char **line,
 		else if ((**line) == 'm')
 		{
 			(*line) = (*line) + 2;
-			p->metalness = tofloat(line);
+			p->mtlnss = tofloat(line);
 		}
 		else if ((**line) == 't')
-			return (ft_get_text(p, line, w, o));
+			return (p->mtlnss = -1, ft_get_text(p, line, w, o));
 		else if (**line != 't' && **line != 'm' && **line != 'a')
 		{
 			free(p->text);
@@ -39,7 +39,7 @@ t_gameobject	*ft_metal_alb(t_gameobject *p, char **line,
 		}
 		next_val(line);
 	}
-	return (p);
+	return (lol_checkmetal(p, w, o), p);
 }
 
 int	parse_sphere(t_window *w, char **line)
@@ -51,18 +51,18 @@ int	parse_sphere(t_window *w, char **line)
 	s->text = NULL;
 	s->type = SPHERE;
 	next_val(line);
-	s->transform.position = pos_parse(line, w, (t_gameobject *)s);
+	s->trs.pos = pos_parse(line, w, (t_gameobject *)s);
 	next_val(line);
-	s->transform.scale.x = tofloat(line);
-	if (s->transform.scale.x <= 0)
-		ft_print_error("sphere radius must be > 0", w, (t_gameobject *)s);
-	s->transform.scale.y = s->transform.scale.x;
-	s->transform.scale.z = s->transform.scale.x;
-	s->transform.rotation = (t_vec3_d){0, 0, 0};
+	s->trs.scl.x = tofloat(line) / 2;
+	if (s->trs.scl.x <= 0)
+		ft_print_error("sphere diameter must be > 0", w, (t_gameobject *)s);
+	s->trs.scl.y = s->trs.scl.x;
+	s->trs.scl.z = s->trs.scl.x;
+	s->trs.rtn = (t_vec3_d){0, 0, 0};
 	next_val(line);
 	s->color = color_parse(line, w, s);
 	s->defnum = w->obj_num++;
-	s->transform.rotation = (t_vec3_d){0, 0, 0};
+	s->trs.rtn = (t_vec3_d){0, 0, 0};
 	s->is_invisible = 0;
 	s = ft_metal_alb(s, line, w, s);
 	ft_lstadd_front(&w->scene, ft_lstnew_dup(s, sizeof(t_sphere)));
@@ -79,13 +79,13 @@ int	parse_plane(t_window *w, char **line)
 	p = sux_malloc(sizeof(t_plane), w);
 	p->text = NULL;
 	p->type = PLANE;
-	p->transform.scale.x = 0;
-	p->transform.scale.y = 0;
-	p->transform.scale.z = 0;
+	p->trs.scl.x = 0;
+	p->trs.scl.y = 0;
+	p->trs.scl.z = 0;
 	next_val(line);
-	p->transform.position = pos_parse(line, w, p);
+	p->trs.pos = pos_parse(line, w, p);
 	next_val(line);
-	p->transform.rotation = v3d_normalize(pos_parse(line, w, p));
+	p->trs.rtn = v3d_normalize(pos_parse(line, w, p));
 	next_val(line);
 	p->color = color_parse(line, w, p);
 	p->defnum = w->obj_num++;
@@ -102,7 +102,7 @@ t_cylinder	*parse_cylinder_help(t_window *w, t_cylinder *c, char **line, int i)
 	(*line)++;
 	c->type = CYLINDER;
 	next_val(line);
-	c->transform.position = pos_parse(line, w, c);
+	c->trs.pos = pos_parse(line, w, c);
 	next_val(line);
 	while ((*line)[i] != 0 && (*line)[i] != 32 && (*line)[i] != 9)
 	{
@@ -115,7 +115,7 @@ t_cylinder	*parse_cylinder_help(t_window *w, t_cylinder *c, char **line, int i)
 	}
 	if (i == -1)
 	{
-		c->transform.rotation = v3d_normalize(pos_parse(line, w, c));
+		c->trs.rtn = v3d_normalize(pos_parse(line, w, c));
 		next_val(line);
 	}
 	return (c);
@@ -128,16 +128,17 @@ int	parse_cylinder(t_window *w, char **line)
 
 	i = 0;
 	c = sux_malloc(sizeof(t_cylinder), w);
+	c->trs.scl.y = INFINITY;
 	c->text = NULL;
 	c = parse_cylinder_help(w, c, line, i);
-	c->transform.scale.x = tofloat(line);
-	if (c->transform.scale.x <= 0)
-		ft_print_error("cylinder radious must be > 0", w, c);
+	c->trs.scl.x = tofloat(line) / 2;
+	if (c->trs.scl.x <= 0)
+		ft_print_error("cylinder diameter must be > 0", w, c);
 	next_val(line);
-	c->transform.scale.y = tofloat(line);
-	if (c->transform.scale.y < 0)
+	c->trs.scl.y = tofloat(line);
+	if (c->trs.scl.y < 0)
 		ft_print_error("cylinder high must be >= 0", w, c);
-	c->transform.scale.z = 0;
+	c->trs.scl.z = 0;
 	c->color = color_parse(line, w, c);
 	c->defnum = w->obj_num++;
 	c->is_invisible = 0;

@@ -6,13 +6,14 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 18:57:52 by lpollini          #+#    #+#             */
-/*   Updated: 2023/11/26 20:25:38 by lpollini         ###   ########.fr       */
+/*   Updated: 2024/03/03 20:53:47 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINI_RT_H
 # define MINI_RT_H
 
+# define UNI_SCAL_LIGHT 1
 # define EXITVAL 10
 # define LN_ACCURACY 50
 # define MAX_ITER 80
@@ -27,11 +28,11 @@
 # define SQRT2 1.414214
 # define SQRT3 1.732051
 # define MAX_INT 0x7fffffff
-# define START_AA_VAL 3
+# define START_AA_VAL 4
 # define NEGATIVE_LIM -0.0000000001
 # define POSITIVE_LIM 0.0000000001
 # define M_PI 3.141592653589793238462643383279502884L
-# define MAX_REF_DEPTH 4
+# define MAX_REF_DEPTH 3
 # define ROT_CONST 3
 
 # define CREAT_GB_SWITCH 0
@@ -74,7 +75,7 @@ typedef struct s_camera
 	t_vec3_d		pos;
 	t_vec3_d		lookat;
 	t_vec2_d		scene_window;
-	t_vec2_d		rotation;
+	t_vec2_d		rtn;
 	double			fov;
 }				t_camera;
 
@@ -127,17 +128,17 @@ typedef struct s_lantern
 /*    //GAMEOBJECTS\\    */
 typedef struct s_transform
 {
-	t_point_3	position;
-	t_vec3_d	rotation;
-	t_vec3_d	scale;
+	t_point_3	pos;
+	t_vec3_d	rtn;
+	t_vec3_d	scl;
 }				t_transform;
 
 typedef struct s_gameobject
 {
-	double		metalness;
+	double		mtlnss;
 	double		albedo;
 	t_color_3	color;
-	t_transform	transform;
+	t_transform	trs;
 	t_objtype	type;
 	int			defnum;
 	char		*text;
@@ -156,7 +157,7 @@ typedef struct s_raydata
 	t_vec3_d		color;
 	t_vec3_d		metalcolor;
 	t_vec3_d		hit_point;
-	t_gameobject	*hit_pointer;
+	t_gameobject	*hit_ptr;
 	char			hit_something;
 	t_vec3_d		point_normal;
 	double			sqr_distance;
@@ -166,7 +167,7 @@ typedef struct s_raydata
 typedef struct s_ray
 {
 	t_raydata		data;
-	t_vec3_d		direction;
+	t_vec3_d		dir;
 	t_tracing_mode	mode;
 	t_vec3_d		source;
 	double			max_sqr_len;
@@ -195,14 +196,6 @@ typedef struct s_window
 	char			**rt;
 }	t_window;
 
-/*    //THREAD STRUCTURE\\    */
-typedef struct s_thread
-{
-	int			i;
-	int			j;
-	t_window	*w;
-}				t_thread;
-
 /*    //FUNCTIONS\\    */
 int				win_close(t_window *win);
 int				manage_keys(int keypressed, t_window *win);
@@ -219,13 +212,18 @@ char			rft_hitter(t_list *scene, t_ray *r, t_tracing_mode mode);
 t_vec3_d		skybox_calc(t_ray r, t_texture t, t_vec3_d *offset);
 t_vec3_d		rft_cast(t_window *w, t_ray *r, t_tracing_mode mode);
 unsigned int	my_mlx_pixel_get(t_data data, int x, int y);
-t_vec3_d		rft_cast(t_window *w, t_ray *r, t_tracing_mode mode);
 int				rft_anti_aliasing(const t_vec2_i c,
 					const t_vec3_d div_temp, t_ray *r, t_window *w);
 void			rft_window_cast(t_window *w);
 void			my_image_creator(t_window *w);
 void			v3d_rotate(t_vec3_d *v, t_axises a, double rot);
 void			clean_scene_list(t_list *lst, t_window *win, char mode);
+
+/*collisions testers*/
+int				hit_cylinder(t_cylinder *c, t_ray *r, t_tracing_mode mode);
+int				hit_sphere(t_sphere *sphere, t_ray *r, t_tracing_mode mode);
+int				hit_sphere(t_sphere *sphere, t_ray *r, t_tracing_mode mode);
+t_vec3_d		cylinder_normal(t_transform tr, t_vec3_d pt);
 
 /*utils_1.c*/
 
@@ -271,13 +269,15 @@ void			my_image_creator(t_window *w);
 /*file utils.c*/
 t_raydata		unpack_ray(void *a);
 void			transform_out(t_transform t);
-t_vec3_d		ray_at(t_ray r, double t);
+t_vec3_d		ray_at(t_ray *r, double t);
 
 /*file check_rt.c*/
 int				contchar(t_window *w);
 char			*ft_strjoin2(char *s1, char *s2);
 t_gameobject	*ft_get_text(t_gameobject *p, char **line, t_window *w,
 					t_gameobject *o);
+
+void			lol_checkmetal(t_gameobject *p, t_window *w, t_gameobject *o);
 
 /*file read_rt.c*/
 int				ft_check_file(char *scene);
@@ -341,6 +341,5 @@ char			checker_cases(double lol, t_vec3_d tempx, t_vec3_d tempy,
 					t_vec3_d pt);
 char			checker_disr_sphere(t_vec3_d offset, t_ray *r, t_vec3_d col);
 double			modulus(double a);
-char			checker_disr_cyl(t_transform tr, t_ray *r, t_vec3_d col);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 10:08:34 by lpollini          #+#    #+#             */
-/*   Updated: 2023/10/22 12:24:40 by lpollini         ###   ########.fr       */
+/*   Updated: 2024/03/03 20:45:16 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_gameobject	new_object1(t_transform tr, t_color_3 cl, t_objtype type)
 {
 	t_gameobject	res;
 
-	res.transform = tr;
+	res.trs = tr;
 	res.color = cl;
 	res.type = type;
 	return (res);
@@ -28,10 +28,10 @@ t_gameobject	*new_gameobject(t_transform tr,
 	t_gameobject	*res;
 
 	res = malloc(sizeof(t_gameobject));
-	res->transform = tr;
+	res->trs = tr;
 	res->color = cl;
 	res->type = type;
-	res->metalness = sh;
+	res->mtlnss = sh;
 	return (res);
 }
 

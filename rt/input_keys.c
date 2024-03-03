@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 22:14:44 by lpollini          #+#    #+#             */
-/*   Updated: 2023/11/25 14:56:26 by lpollini         ###   ########.fr       */
+/*   Updated: 2024/03/03 20:43:27 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,13 @@ static int	keys_manager_4(t_window *win, int keypressed)
 	else if (keypressed == 65421 && win->selected)
 		rt_rotate_object(win->selected, aZ, -win->step);
 	else if (keypressed == 65362)
-		win->cam.rotation.x -= win->step / 3;
+		win->cam.rtn.x -= win->step / 3;
 	else if (keypressed == 65361)
-		win->cam.rotation.y -= win->step / 3;
+		win->cam.rtn.y -= win->step / 3;
 	else if (keypressed == 65364)
-		win->cam.rotation.x += win->step / 3;
+		win->cam.rtn.x += win->step / 3;
 	else if (keypressed == 65363)
-		win->cam.rotation.y += win->step / 3;
+		win->cam.rtn.y += win->step / 3;
 	else if (keypressed == 65535 && win->selected)
 		win->selected->is_invisible ^= 1;
 	else
@@ -45,24 +45,24 @@ static int	keys_manager_3(t_window *win, int keypressed)
 {
 	t_transform	*tr;
 
-	tr = &win->selected->transform;
+	tr = &win->selected->trs;
 	if (keypressed == 65432)
-		tr->position.x += win->step;
+		tr->pos.x += win->step;
 	else if (keypressed == 65430)
-		tr->position.x -= win->step;
+		tr->pos.x -= win->step;
 	else if (keypressed == 65431)
-		tr->position.y += win->step;
+		tr->pos.y += win->step;
 	else if (keypressed == 65433)
-		tr->position.y -= win->step;
+		tr->pos.y -= win->step;
 	else if (keypressed == 65437)
-		tr->position.z += win->step;
+		tr->pos.z += win->step;
 	else if (keypressed == 65438)
-		tr->position.z -= win->step;
+		tr->pos.z -= win->step;
 	else if (keypressed == 65453)
-		tr->scale = v3d_sum_2(tr->scale,
+		tr->scl = v3d_sum_2(tr->scl,
 				(t_vec3_d){-win->step, -win->step, -win->step});
 	else if (keypressed == 65451)
-		tr->scale = v3d_sum_2(tr->scale,
+		tr->scl = v3d_sum_2(tr->scl,
 				(t_vec3_d){win->step, win->step, win->step});
 	else
 		return (0);
@@ -86,9 +86,9 @@ static int	keys_manager_2(t_window *win, int keypressed)
 	if (win->selected)
 	{
 		if (win->selected->type != SPHERE)
-			win->selected->transform.rotation = v3d_normalize(
-					win->selected->transform.rotation);
-		transform_out(win->selected->transform);
+			win->selected->trs.rtn = v3d_normalize(
+					win->selected->trs.rtn);
+		transform_out(win->selected->trs);
 	}
 	return (1);
 }
