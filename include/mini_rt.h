@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 18:57:52 by lpollini          #+#    #+#             */
-/*   Updated: 2024/03/03 20:53:47 by lpollini         ###   ########.fr       */
+/*   Updated: 2024/03/03 21:19:03 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,7 @@ typedef struct s_ray
 	t_vec3_d		source;
 	double			max_sqr_len;
 	char			depth;
+	double			sqr_best;
 }				t_ray;
 
 /*    //ALL PURPOSE STRUCTURE\\    */
