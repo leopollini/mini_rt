@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:37:06 by lpollini          #+#    #+#             */
-/*   Updated: 2024/03/03 20:49:37 by lpollini         ###   ########.fr       */
+/*   Updated: 2024/03/03 21:37:18 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,14 @@ t_color_3	rft_diffuse(t_ray *r, t_ray *o, t_lantern *l)
 					* l->intensity)), l->color));
 }
 
-t_vec3_d	rft_search_light(t_window *w, t_ray *r, t_tracing_mode mode)
+t_vec3_d	rft_search_light(t_window *w, t_ray *r)
 {
 	t_ray		lr;
 	t_list		*lant;
 	t_vec3_d	temp;
 	t_lantern	*l;
 
-	(void)mode;
+	lr.depth = 0;
 	temp = v3d_scal(r->data.color, w->ambient.value);
 	lant = w->lights;
 	lr.source = r->data.hit_point;

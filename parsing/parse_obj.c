@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 17:09:12 by iragusa           #+#    #+#             */
-/*   Updated: 2024/03/03 20:45:16 by lpollini         ###   ########.fr       */
+/*   Updated: 2024/03/03 22:22:52 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ int	parse_cylinder(t_window *w, char **line)
 	c->trs.scl.y = INFINITY;
 	c->text = NULL;
 	c = parse_cylinder_help(w, c, line, i);
-	c->trs.scl.x = tofloat(line) / 2;
+	c->trs.scl.x = tofloat(line);
 	if (c->trs.scl.x <= 0)
 		ft_print_error("cylinder diameter must be > 0", w, c);
 	next_val(line);

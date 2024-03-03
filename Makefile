@@ -24,7 +24,7 @@ NAME = miniRT
 
 CC = gcc 
 
-CFLAGS = -g #-Wall -Wextra -Werror
+CFLAGS = -g -Wall -Wextra -Werror
 
 LIBFT = libft/libft.a
 

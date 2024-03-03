@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:37:06 by lpollini          #+#    #+#             */
-/*   Updated: 2024/03/02 13:01:35 by lpollini         ###   ########.fr       */
+/*   Updated: 2024/03/03 21:38:42 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	checker_disr_cyl(t_transform tr, t_ray *r, t_vec3_d col)
 	temp = (0.5 + atan2(d.z, d.x) / (2 * M_PI)) * 500;
 	if (temp % 20 >= 10)
 		i = -i;
-	if (abs(v3d_dot(tr.rtn, v3d_sub(r->data.hit_point,
+	if (fabs(v3d_dot(tr.rtn, v3d_sub(r->data.hit_point,
 					tr.pos))) > 0.5)
 		i = -i;
 	if (i == 1)

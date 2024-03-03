@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 14:56:59 by lpollini          #+#    #+#             */
-/*   Updated: 2024/03/03 14:05:51 by lpollini         ###   ########.fr       */
+/*   Updated: 2024/03/03 21:45:00 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ t_vec2_d	v2d_sum(int n, ...)
 	return (res);
 }
 
-t_vec3_d	v3d_add(t_vec3_d *a, t_vec3_d b)
+void	v3d_add(t_vec3_d *a, t_vec3_d b)
 {
 	*a = v3d_sum_2(*a, b);
 }

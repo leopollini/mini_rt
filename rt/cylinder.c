@@ -6,27 +6,13 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 20:49:05 by lpollini          #+#    #+#             */
-/*   Updated: 2024/03/03 20:53:13 by lpollini         ###   ########.fr       */
+/*   Updated: 2024/03/03 22:37:21 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/mini_rt.h"
 
-char	cyl_collisions_1(t_gameobject *c, t_ray *r, t_vec3_d t)
-{
-	t_vec3_d	rel_pt;
-
-	rel_pt = v3d_scal(c->trs.rtn, c->trs.scl.y);
-	c->trs.pos = v3d_sum_2(c->trs.pos, rel_pt);
-	hit_plane((t_plane *)c, r, ALL);
-	c->trs.pos = v3d_sub(c->trs.pos, rel_pt);
-	if (v3d_sqr_mod(v3d_sub(r->data.hit_point, v3d_sum_2(c->trs.pos,
-					rel_pt))) > pow(c->trs.scl.x / 2, 2))
-		return (0);
-	return (1);
-}
-
-char	cyl_collisions(t_gameobject *c, t_ray *r, t_vec3_d t)
+char	cyl_collisions_1(t_gameobject *c, t_ray *r)
 {
 	t_vec3_d	rel_pt;
 
@@ -42,7 +28,27 @@ char	cyl_collisions(t_gameobject *c, t_ray *r, t_vec3_d t)
 		return (1);
 	}
 	if (v3d_dot(rel_pt, c->trs.rtn) > c->trs.scl.y)
-		return (cyl_collisions_1(c, r, t));
+	{
+		rel_pt = v3d_scal(c->trs.rtn, c->trs.scl.y);
+		c->trs.pos = v3d_sum_2(c->trs.pos, rel_pt);
+		hit_plane((t_plane *)c, r, ALL);
+		c->trs.pos = v3d_sub(c->trs.pos, rel_pt);
+		if (v3d_sqr_mod(v3d_sub(r->data.hit_point, v3d_sum_2(c->trs.pos,
+						rel_pt))) > pow(c->trs.scl.x / 2, 2))
+			return (0);
+		return (1);
+	}
+	return (-1);
+}
+
+char	cyl_collisions(t_gameobject *c, t_ray *r, t_vec3_d t)
+{
+	char	res;
+
+
+	res = cyl_collisions_1(c, r);
+	if (res >= 0)
+		return (res);
 	r->data.hit_point = ray_at(r, t.x);
 	r->data.point_normal = cylinder_normal(c->trs, r->data.hit_point);
 	r->data.sqr_distance = t.x * t.x;
@@ -69,25 +75,7 @@ char	cylinder_calcs(t_gameobject *c, t_ray *r, t_vec3_d *t)
 	t->z = sqrt(t->z);
 	t->x = (-dt.y - t->z) / (2 * dt.x);
 	t->y = t->x + t->z / dt.x;
-	if (t->x > t->y)
-	{
-		t->z = t->x;
-		t->x = t->y;
-		t->y = t->z;
-	}
 	return (r->data.hit_point = ray_at(r, t->x), 0);
-}
-
-char	cyl_beinside(t_cylinder *c, t_ray *r, t_vec3_d *t, t_tracing_mode mode)
-{
-	double		a;
-	t_vec3_d	s;
-
-	a = v3d_dot(c->trs.rtn, v3d_sub(c->trs.pos, r->source));
-	s = v3d_sum_2(c->trs.pos, v3d_scal(c->trs.rtn, a));
-	if (v3d_mod(v3d_sub(r->source, s)) > c->trs.scl.y)
-		return (0);
-	return (1);
 }
 
 int	hit_cylinder(t_cylinder *c, t_ray *r, t_tracing_mode mode)
@@ -96,6 +84,8 @@ int	hit_cylinder(t_cylinder *c, t_ray *r, t_tracing_mode mode)
 
 	if (cylinder_calcs(c, r, &t))
 		return (1);
+	if (t.x < 0 && t.y > 0)
+		return (cyl_collisions_1(c, r));
 	if (t.x < NEGATIVE_LIM)
 		return (0);
 	if (!cyl_collisions(c, r, t))

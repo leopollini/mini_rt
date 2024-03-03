@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 18:57:52 by lpollini          #+#    #+#             */
-/*   Updated: 2024/03/03 21:19:03 by lpollini         ###   ########.fr       */
+/*   Updated: 2024/03/03 21:46:23 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,7 +251,7 @@ int				type_sorter(t_objtype t, t_gameobject *obj,
 char			rft_hitter(t_list *scene, t_ray *r, t_tracing_mode mode);
 t_color_3		rft_specular(t_ray *r, t_ray *lr, t_lantern *l);
 t_color_3		rft_diffuse(t_ray *r, t_ray *o, t_lantern *l);
-t_vec3_d		rft_search_light(t_window *w, t_ray *r, t_tracing_mode mode);
+t_vec3_d		rft_search_light(t_window *w, t_ray *r);
 t_vec3_d		rft_cast(t_window *w, t_ray *r, t_tracing_mode mode);
 
 /*file input.c*/

@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 20:47:46 by lpollini          #+#    #+#             */
-/*   Updated: 2024/03/03 21:22:54 by lpollini         ###   ########.fr       */
+/*   Updated: 2024/03/03 21:37:38 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,9 @@ t_vec3_d	rft_cast(t_window *w, t_ray *r, t_tracing_mode mode)
 	if (rft_hitter(aw->scene, r, mode))
 	{
 		if (r->data.hit_ptr->mtlnss <= 0)
-			return (rft_search_light(aw, r, mode));
+			return (rft_search_light(aw, r));
 		if (r->data.hit_ptr->mtlnss < 1 && (r->data.hit_ptr->mtlnss > -1))
-			return (v3d_sumponder(rft_search_light(aw, r, mode),
+			return (v3d_sumponder(rft_search_light(aw, r),
 					r->data.color, r->data.hit_ptr->mtlnss));
 		return (r->data.color);
 	}

@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 12:41:43 by lpollini          #+#    #+#             */
-/*   Updated: 2024/03/03 20:45:16 by lpollini         ###   ########.fr       */
+/*   Updated: 2024/03/03 21:40:40 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,6 @@ t_gameobject	*ft_get_text(t_gameobject *p, char **line, t_window *w,
 
 void	lol_checkmetal(t_gameobject *p, t_window *w, t_gameobject *o)
 {
-	if (p->mtlnss < 0 || p->mtlnss > 1)
-		return ((void)ft_print_error("invalid mtlnss", w, o));
+	if ((p->mtlnss < 0 || p->mtlnss > 1) && p->mtlnss != -2)
+		return ((void)ft_print_error("invalid metalness", w, o));
 }
