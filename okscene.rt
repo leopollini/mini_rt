@@ -1,0 +1,9 @@
+#This is an ok scene. Parser MUST be compliant to and MUST accept and recognise each variable inserted in a way similar to how this file is presented, and shall adehere to the following rules:
+#	-there CAN be a readable 'm' input value, expressed at the end of a line, which MUST be stored inside t_gameobject::metalness. 'm' shall be so that 0 <= m <= 1 OR m = -2 (checkerboard pattern); any other case must throw an error. The default value for metalness MUST be 0 (non mirror)
+#	-the '#' character indicates a comment: anything that follows a '#' must be ignored (OPTINOAL)
+#	-each value in the input file MUST be separated by AT LEAST ONE whitespace (' ', '\t', ...), '\n' excluded. Vector values MUST be formatted as follows: "x,y,z" where x, y and z are signed float values
+#	-each line MUST contain no more than ONE object declaration
+#	-in any circumstance the parser doesn't have to be case-sensitive. If it is case sensitive, it MUST follow a reasonable pattern (a sphere declared as 'Sp' or 'sP' is NOT accepted)
+#	-everything else already said in the subject.pdf file
+
+#The interpretation of the 'm' variable by the parser shall be arbitrary but clear.
