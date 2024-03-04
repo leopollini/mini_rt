@@ -7,3 +7,7 @@
 #	-everything else already said in the subject.pdf file
 
 #The interpretation of the 'm' variable by the parser shall be arbitrary but clear.
+
+#Abput the creation of gameobjects:
+#	-when the list t_window::scene is returned, EVERY variable MUST be initialized either to 0 or the input value (double check!!!)
+#	-in general, every static and non-static variable SHOULD be initialized to a defalt value and then set to any input value.
