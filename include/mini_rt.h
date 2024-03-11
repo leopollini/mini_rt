@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_rt.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 18:57:52 by lpollini          #+#    #+#             */
-/*   Updated: 2024/03/03 21:46:23 by lpollini         ###   ########.fr       */
+/*   Updated: 2024/03/11 15:34:25 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 
 # define CREAT_GB_SWITCH 0
 
-# define IMGSIZE 400
+# define IMGSIZE 800
 # define SKYBOX "skybox/universe.xpm"
 
 # define NOARGS "check input, write:./minirt scenes/mandatory.rt"
@@ -46,8 +46,17 @@
 # define NOFILE "no such file!"
 # define NO_RT "ehy dude, only .rt file!"
 # define MALLOC "oh no, error in malloc() on memory allocation"
-# define ACL_ERR "check file rt! need 1 A, 1 C, at least 1 L and at most 1 R!"
+# define ACL_ERR "Need 1A, 1C, at least 1L and at most 1R!"
+# define SPC_ERR "Incorrect SP, PL or CY definition!"
 # define CHECK_RT ",check your params!"
+# define ERR_ID "unexpected identifier in scene file"
+# define ERR_FPARAM "bad formatted parameter in parse data"
+# define ERR_LIGHT "Light intensity out of range!"
+# define ERR_COLOR "colors must be in range [0, 255]"
+# define ERR_RANGE "values out of range!"
+# define ERR_FOBJ "bad formatted object in parse data"
+# define ERR_SPHERE "sphere diameter must be > 0"
+
 
 # include "../.mlx/mlx.h"
 # include "libft.h"
@@ -61,6 +70,7 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <sys/wait.h>
+# include "parsing.h"
 
 typedef struct s_texture
 {

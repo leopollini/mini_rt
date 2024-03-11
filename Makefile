@@ -34,6 +34,8 @@ MLX = .mlx/
 
 FLAG = -lXext -lX11 -lm -lz
 
+PARSER_DIR = parsing2
+
 SRC = main.c \
 		rt/color_opers.c rt/input.c \
 		rt/image_creat.c rt/palle.c rt/utils.c \
@@ -42,15 +44,20 @@ SRC = main.c \
 		rt/cylinder.c rt/caster_and_help.c \
 		rt/sphere_and_plane.c \
 		rt/utils_1.c \
-		parsing/read_rt.c \
-		parsing/check_rt.c \
-		parsing/parsing.c \
-		parsing/parse_utils2.c \
-		parsing/init.c \
-		parsing/init_help.c \
-		parsing/parse_utils.c \
-		parsing/parse_data.c \
-		parsing/parse_obj.c \
+		$(PARSER_DIR)/ambient.c \
+		$(PARSER_DIR)/basic_utils.c \
+		$(PARSER_DIR)/camera.c \
+		$(PARSER_DIR)/check_functions.c \
+		$(PARSER_DIR)/check_prepars.c \
+		$(PARSER_DIR)/convert.c \
+		$(PARSER_DIR)/cylinder.c \
+		$(PARSER_DIR)/extra.c \
+		$(PARSER_DIR)/light.c \
+		$(PARSER_DIR)/parsing_utils.c \
+		$(PARSER_DIR)/parsing.c \
+		$(PARSER_DIR)/plane.c \
+		$(PARSER_DIR)/read_rt.c \
+		$(PARSER_DIR)/sphere.c \
 vectors/miscellaneous_2.c \
 vectors/miscellaneous.c \
 vectors/vector3_ops_2.c \

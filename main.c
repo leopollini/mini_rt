@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 10:08:34 by lpollini          #+#    #+#             */
-/*   Updated: 2024/03/03 20:45:16 by lpollini         ###   ########.fr       */
+/*   Updated: 2024/03/07 15:42:24 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,14 @@ int	main(int argn, char *args[])
 {
 	t_window	w;
 
+	(void)argn;
 	ft_memset(&w, 0, sizeof(t_window));
-	if (!(argn == 2 || argn == 3))
+	/*if (!(argn == 2 || argn == 3))
 		ft_print_error(NOARGS, &w, NULL);
 	else if (argn == 3 && ft_char_digit(args[2]))
-		ft_print_error(NOSIZE, &w, NULL);
+		ft_print_error(NOSIZE, &w, NULL);*/
 	ft_open_rt(&w, args);
-	w.mlx = mlx_init();
+	/*w.mlx = mlx_init();
 	if (initw(&w))
 		ft_print_error(NOINIT, &w, NULL);
 	rft_cast(&w, NULL, 0);
@@ -94,5 +95,6 @@ int	main(int argn, char *args[])
 	mlx_hook(w.win, 2, 1L << 0, manage_keys, &w);
 	mlx_mouse_hook(w.win, manage_mouse, &w);
 	mlx_loop_hook(w.mlx, loop_rt, &w);
-	mlx_loop(w.mlx);
+	mlx_loop(w.mlx);*/
+	return (0);
 }
