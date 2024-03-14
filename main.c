@@ -6,7 +6,7 @@
 /*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 10:08:34 by lpollini          #+#    #+#             */
-/*   Updated: 2024/03/07 15:42:24 by sdel-gra         ###   ########.fr       */
+/*   Updated: 2024/03/14 14:37:14 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ int	win_close(t_window *win)
 	exit(0);
 	return (0);
 }
+void	ft_print_window(t_window *w);
 
 int	main(int argn, char *args[])
 {
@@ -84,6 +85,7 @@ int	main(int argn, char *args[])
 	else if (argn == 3 && ft_char_digit(args[2]))
 		ft_print_error(NOSIZE, &w, NULL);*/
 	ft_open_rt(&w, args);
+	ft_print_window(&w);
 	/*w.mlx = mlx_init();
 	if (initw(&w))
 		ft_print_error(NOINIT, &w, NULL);

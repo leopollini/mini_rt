@@ -6,7 +6,7 @@
 /*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 18:57:52 by lpollini          #+#    #+#             */
-/*   Updated: 2024/03/11 15:34:25 by sdel-gra         ###   ########.fr       */
+/*   Updated: 2024/03/14 16:39:21 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@
 # define ERR_RANGE "values out of range!"
 # define ERR_FOBJ "bad formatted object in parse data"
 # define ERR_SPHERE "sphere diameter must be > 0"
+# define ERR_METAL "bad formatted metal in parse data"
 
 
 # include "../.mlx/mlx.h"

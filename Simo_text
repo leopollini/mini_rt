@@ -1,0 +1,8 @@
+typedef struct s_transform
+{
+	t_point_3	pos;
+	t_vec3_d	rtn; -> rotazione oggetto
+						inizializzo a 0,0,0
+	t_vec3_d	scl; -> scala valori oggetto
+						inizializzo a 
+}				t_transform;

@@ -6,7 +6,7 @@
 /*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 14:35:59 by sdel-gra          #+#    #+#             */
-/*   Updated: 2024/03/11 17:47:48 by sdel-gra         ###   ########.fr       */
+/*   Updated: 2024/03/12 19:00:30 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,16 @@ void	ft_parse_cam(t_window *w, char *l)
 	double			fov; (?)
 	*/
 	w->cam.id = 'C';
-	bypass_space(&l, w);
-	w->cam.pos = ft_ato3d(&l, w);
-	bypass_space(&l, w);
-	w->cam.lookat = ft_ato3d(&l, w);
+	l++;
+	bypass_space(&l, w, NULL);
+	w->cam.pos = ft_ato3d(&l, w, NULL);
+	bypass_space(&l, w, NULL);
+	w->cam.lookat = ft_ato3d(&l, w, NULL);
 	if (w->cam.lookat.x < -1 || w->cam.lookat.x > 1
 		|| w->cam.lookat.y < -1 || w->cam.lookat.y > 1
 		|| w->cam.lookat.z < -1 || w->cam.lookat.z > 1)
 		ft_print_error(ERR_RANGE, w, NULL);
-	bypass_space(&l, w);
+	bypass_space(&l, w, NULL);
 	w->cam.fov = ft_atod_shift(&l);
 	if (w->cam.fov < 0 || w->cam.fov > 180)
 		ft_print_error(ERR_RANGE, w, NULL);

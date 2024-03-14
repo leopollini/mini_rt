@@ -6,7 +6,7 @@
 /*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:11:48 by sdel-gra          #+#    #+#             */
-/*   Updated: 2024/03/11 17:51:38 by sdel-gra         ###   ########.fr       */
+/*   Updated: 2024/03/14 16:32:36 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,13 @@ void		ft_parse_line(t_window *w, char *rt_line);
 void		ft_check_parse_data(t_window *w);
 
 /* parsing_utils.c */
-void		bypass_space(char **str, t_window *w);
+void		bypass_space(char **str, t_window *w, void *data);
 
 /* convert.c */
-t_vec3_d	ft_ato3d(char **l, t_window *w);
+t_vec3_d	ft_ato3d(char **l, t_window *w, void *data);
 double		ft_atod_shift(char **l);
-t_vec3_d	ft_rgb_convert(char **l, t_window *w);
+t_vec3_d	ft_rgb_convert(char **l, t_window *w, void *data);
+double		ft_metalness_convert(char **l, t_window *w, void *data);
 
 
 /* parsing_ambient.c */
@@ -46,7 +47,7 @@ void		ft_parse_ambient(t_window *w, char *l);
 void		ft_parse_cam(t_window *w, char *l);
 
 /* parsing_light.c */
-void		ft_parse_light(t_window *w, char **l);
+void		ft_parse_light(t_window *w, char *l);
 
 /* parsing_sphere.c */
 void		ft_parse_sp(t_window *w, char *l);
