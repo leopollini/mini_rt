@@ -6,7 +6,7 @@
 /*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 15:57:16 by sdel-gra          #+#    #+#             */
-/*   Updated: 2024/03/14 16:36:09 by sdel-gra         ###   ########.fr       */
+/*   Updated: 2024/03/14 17:06:00 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	ft_parse_pl(t_window *w, char *l)
 	pl->mtlnss = ft_metalness_convert(&l, w, pl);
 	ft_lstadd_front(&w->scene, ft_lstnew_dup(pl, sizeof(t_plane)));
 	w->obj_num++;
-	ft_free((void **)pl);
+	ft_free((void **)&pl);
 	if (l[0] != 0)
 		ft_print_error(ERR_ID, w, NULL);
 }

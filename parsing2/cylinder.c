@@ -6,7 +6,7 @@
 /*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 16:02:00 by sdel-gra          #+#    #+#             */
-/*   Updated: 2024/03/14 16:36:13 by sdel-gra         ###   ########.fr       */
+/*   Updated: 2024/03/14 17:04:09 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	ft_parse_cy(t_window *w, char *l)
 	cy->mtlnss = ft_metalness_convert(&l, w, cy);
 	ft_lstadd_front(&w->scene, ft_lstnew_dup(cy, sizeof(t_cylinder)));
 	w->obj_num++;
-	ft_free((void **)cy);
+	ft_free((void **)&cy);
 	if (l[0] != 0)
 		ft_print_error(ERR_ID, w, NULL);
 }

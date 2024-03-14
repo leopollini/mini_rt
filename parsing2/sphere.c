@@ -6,7 +6,7 @@
 /*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 15:16:26 by sdel-gra          #+#    #+#             */
-/*   Updated: 2024/03/14 16:36:03 by sdel-gra         ###   ########.fr       */
+/*   Updated: 2024/03/14 17:06:06 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	ft_parse_sp(t_window *w, char *l)
 	sp->mtlnss = ft_metalness_convert(&l, w, sp);
 	ft_lstadd_front(&w->scene, ft_lstnew_dup(sp, sizeof(t_sphere)));
 	w->obj_num++;
-	ft_free((void **)sp);
+	ft_free((void **)&sp);
 	if (l[0] != 0)
 		ft_print_error(ERR_ID, w, NULL);
 }
