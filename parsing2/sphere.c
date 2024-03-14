@@ -6,37 +6,17 @@
 /*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 15:16:26 by sdel-gra          #+#    #+#             */
-/*   Updated: 2024/03/14 19:44:10 by sdel-gra         ###   ########.fr       */
+/*   Updated: 2024/03/14 22:51:09 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/mini_rt.h"
-
 
 // to add free in object
 void	ft_parse_sp(t_window *w, char *l)
 {
 	t_sphere	*sp;
 
-
-	//handle object initialisation
-	/*
-		double		mtlnss;
-	double		albedo;
-	t_color_3	color;
-	t_transform	trs;
-	int			defnum;
-	char		*text;
-	t_texture	texture;
-	char		is_invisible;
-
-	typedef struct s_transform
-{
-	t_point_3	pos;
-	t_vec3_d	rtn;
-	t_vec3_d	scl;
-}				t_transform;
-	*/
 	l += 2;
 	sp = ft_calloc(1, sizeof(t_sphere));
 	sp->type = SPHERE;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lpollini <lpollini@student.42firenze.it>   +#+  +:+       +#+        */
+/*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 11:03:52 by rchallie          #+#    #+#             */
-/*   Updated: 2022/10/21 16:09:56 by rchallie         ###   ########.fr       */
+/*   Updated: 2024/03/14 22:48:58 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ typedef struct s_flags
 /*list_struct*/
 
 typedef struct s_list
-{	
+{
 	void			*content;
 	struct s_list	*next;
-}t_list;
+}	t_list;
 
 /*libft*/
 

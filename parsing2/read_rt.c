@@ -6,7 +6,7 @@
 /*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 10:45:33 by sdel-gra          #+#    #+#             */
-/*   Updated: 2024/03/14 19:32:53 by sdel-gra         ###   ########.fr       */
+/*   Updated: 2024/03/14 22:50:07 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ void	ft_read_filert(t_window *w, char *filert)
 	line = get_next_line(fd);
 	while (line)
 	{
-		fullfile = ft_strjoin_free(fullfile, line);
+		if (line[0] != '#')
+			fullfile = ft_strjoin_free(fullfile, line);
 		ft_free((void **)&line);
 		line = get_next_line(fd);
 	}
@@ -83,9 +84,6 @@ int	ft_open_rt(t_window *w, char **av)
 		return (ft_print_error(NO_RT, w, NULL));
 	ft_init_scene(w);
 	ft_read_filert(w, av[1]);
-	//da rimuovere
-	//for (int i = 0; w->rt[i]; i++)
-	//	printf("%s\n", w->rt[i]);
 	ft_check_parse_data(w);
 	return (0);
 }

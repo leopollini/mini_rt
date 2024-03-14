@@ -6,7 +6,7 @@
 /*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/31 20:13:00 by iragusa           #+#    #+#             */
-/*   Updated: 2024/03/07 14:40:02 by sdel-gra         ###   ########.fr       */
+/*   Updated: 2024/03/14 22:50:23 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,6 @@ int	ft_check_data(t_window *w)
 	}
 	return (0);
 }
-
-
 
 /*read line, clean and check parameters correctness*/
 void	ft_read_rt(t_window *w, char *scene)

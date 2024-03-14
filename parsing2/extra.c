@@ -6,7 +6,7 @@
 /*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 16:18:14 by sdel-gra          #+#    #+#             */
-/*   Updated: 2024/03/14 20:31:31 by sdel-gra         ###   ########.fr       */
+/*   Updated: 2024/03/14 21:43:53 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,22 +43,24 @@ void	ft_print_window(t_window *w)
 		printf("rt:%s\n", w->rt[i]);
 	if (w && w->ambient.id)
 	{
-		printf("%sambient id [%c]:",KRED, w->ambient.id);
-		printf("%svalue:[%.1f] ",KNRM, w->ambient.value);
+		printf("%sambient id [%c]:", KRED, w->ambient.id);
+		printf("%svalue:[%.1f] ", KNRM, w->ambient.value);
 		printf("color:");
 		ft_print_vec3d(w->ambient.color);
 		printf("\n");
 	}
 	if (w && w->cam.id)
 	{
-		printf("%scamera id %d:",KCYN, w->cam.id);
-		printf("%spos:",KNRM);
+		printf("%scamera id %d:", KCYN, w->cam.id);
+		printf("%spos:", KNRM);
 		ft_print_vec3d(w->cam.pos);
 		printf("lookat:");
 		ft_print_vec3d(w->cam.lookat);
 		printf("rtn:");
 		ft_print_vec2d(w->cam.rtn);
-		printf("fov:%.1f\n", w->cam.fov);
+		printf("fov:%.1f ", w->cam.fov);
+		printf("scene_window:");
+		ft_print_vec2d(w->cam.scene_window);
 	}
 	for (t_list *tmp = w->lights; tmp; tmp = tmp->next)
 	{
@@ -94,7 +96,7 @@ void	ft_print_window(t_window *w)
 			default:
 				break;
 			}
-			printf("%spos:",KNRM);
+			printf("%spos:", KNRM);
 			ft_print_vec3d(go->trs.pos);
 			printf("rtn:");
 			ft_print_vec3d(go->trs.rtn);

@@ -6,7 +6,7 @@
 /*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:11:48 by sdel-gra          #+#    #+#             */
-/*   Updated: 2024/03/14 16:32:36 by sdel-gra         ###   ########.fr       */
+/*   Updated: 2024/03/14 22:49:10 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ void		bypass_space(char **str, t_window *w, void *data);
 t_vec3_d	ft_ato3d(char **l, t_window *w, void *data);
 double		ft_atod_shift(char **l);
 t_vec3_d	ft_rgb_convert(char **l, t_window *w, void *data);
-double		ft_metalness_convert(char **l, t_window *w, void *data);
-
+double		ft_metalness_convert(char **l, t_window *w, void *data);	
 
 /* parsing_ambient.c */
 void		ft_parse_ambient(t_window *w, char *l);

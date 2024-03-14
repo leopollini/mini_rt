@@ -6,7 +6,7 @@
 /*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 22:14:44 by lpollini          #+#    #+#             */
-/*   Updated: 2024/03/07 14:11:09 by sdel-gra         ###   ########.fr       */
+/*   Updated: 2024/03/14 22:43:41 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ int	manage_keys(int keypressed, t_window *win)
 		(void)win;
 	else
 		return (0);
-//	camera_update(win);
+	camera_update(win);
 	my_image_creator(win);
 	return (0);
 }

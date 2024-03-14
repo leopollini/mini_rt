@@ -44,6 +44,7 @@ SRC = main.c \
 		rt/cylinder.c rt/caster_and_help.c \
 		rt/sphere_and_plane.c \
 		rt/utils_1.c \
+		rt/camera_handler.c \
 		$(PARSER_DIR)/ambient.c \
 		$(PARSER_DIR)/basic_utils.c \
 		$(PARSER_DIR)/camera.c \
@@ -58,7 +59,6 @@ SRC = main.c \
 		$(PARSER_DIR)/plane.c \
 		$(PARSER_DIR)/read_rt.c \
 		$(PARSER_DIR)/sphere.c \
-		$(PARSER_DIR)/init_help.c \
 vectors/miscellaneous_2.c \
 vectors/miscellaneous.c \
 vectors/vector3_ops_2.c \

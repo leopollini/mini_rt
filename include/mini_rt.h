@@ -6,7 +6,7 @@
 /*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 18:57:52 by lpollini          #+#    #+#             */
-/*   Updated: 2024/03/14 21:10:30 by sdel-gra         ###   ########.fr       */
+/*   Updated: 2024/03/14 22:47:48 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@
 # define ERR_FOBJ "bad formatted object in parse data"
 # define ERR_SPHERE "sphere diameter must be > 0"
 # define ERR_METAL "bad formatted metal in parse data"
-
 
 # include "../.mlx/mlx.h"
 # include "libft.h"
@@ -353,5 +352,9 @@ char			checker_cases(double lol, t_vec3_d tempx, t_vec3_d tempy,
 					t_vec3_d pt);
 char			checker_disr_sphere(t_vec3_d offset, t_ray *r, t_vec3_d col);
 double			modulus(double a);
+
+/*camera_hadnler.c*/
+int				camera_update(t_window *w);
+t_vec2_d		ft_get_rot(t_vec3_d v);
 
 #endif

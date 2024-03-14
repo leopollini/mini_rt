@@ -6,7 +6,7 @@
 /*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 15:24:42 by sdel-gra          #+#    #+#             */
-/*   Updated: 2024/03/12 17:56:49 by sdel-gra         ###   ########.fr       */
+/*   Updated: 2024/03/14 22:49:54 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	bypass_space(char **str, t_window *w, void *data)
 	else
 		ft_print_error(ERR_FPARAM, w, data);
 }
-
 
 t_list	*ft_lstnew_dup(const void *a, int size)
 {

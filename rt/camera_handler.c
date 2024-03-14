@@ -1,41 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_help.c                                        :+:      :+:    :+:   */
+/*   camera_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/24 10:08:34 by lpollini          #+#    #+#             */
-/*   Updated: 2024/03/14 19:21:42 by sdel-gra         ###   ########.fr       */
+/*   Created: 2024/03/03 20:47:46 by lpollini          #+#    #+#             */
+/*   Updated: 2024/03/14 22:37:46 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/mini_rt.h"
 
-int	rft_load_scene(t_window *w)
-{
-	w->scene = ft_lstnew(NULL);
-	w->lights = ft_lstnew(NULL);
-	w->obj_num = 0;
-	return (0);
-}
-
 int	camera_update(t_window *w)
 {
 	w->cam.scene_window = new_v2d(w->cam.fov, w->cam.fov);
 	return (0);
-}
-
-void	camera_init(t_window *win)
-{
-	t_camera	*tp;
-
-	tp = &win->cam;
-	tp->fov = 1;
-	tp->pos = (t_vec3_d){0, 0, 0};
-	tp->lookat = (t_vec3_d){0, 0, 1};
-	tp->rtn = (t_vec2_d){0, 0};
-	camera_update(win);
 }
 
 int	initw(t_window *win)
@@ -49,10 +29,8 @@ int	initw(t_window *win)
 	win->step = 0.1;
 	win->selected = NULL;
 	win->do_exit = 0;
-	win->skybox.size.x = 400;
-	win->skybox.size.y = 400;
 	win->win = mlx_new_window(win->mlx, win->size.x, win->size.y,
-			"PUGNO DI POLLICE");
+			"mini_rt lol");
 	win->skybox.img.img = mlx_xpm_file_to_image(win->mlx,
 			SKYBOX, &win->skybox.size.x, &win->skybox.size.y);
 	win->skybox.img.addr = mlx_get_data_addr(win->skybox.img.img,
@@ -68,4 +46,26 @@ int	loop_rt(t_window *w)
 	usleep(2000);
 	reimage(w);
 	return (0);
+}
+
+t_vec2_d	ft_get_rot(t_vec3_d v)
+{
+	double		tz;
+	double		cosy;
+	double		cosx;
+	t_vec2_d	res;
+
+	tz = sqrt(v.x * v.x + v.z * v.z);
+	cosy = tz * v.z / (v.x * v.x + v.z * v.z);
+	cosx = tz / (v.y * v.y + tz * tz);
+	if (!(cosx <= 1 && cosx >= -1))
+		cosx = 1;
+	if (!(cosy <= 1 && cosy >= -1))
+		cosy = 1;
+	res = (t_vec2_d){acos(cosx), acos(cosy)};
+	if (v.y > 0)
+		res.x = -res.x;
+	if (v.x < 0)
+		res.y = -res.y;
+	return (res);
 }
