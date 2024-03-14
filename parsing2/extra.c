@@ -6,7 +6,7 @@
 /*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 16:18:14 by sdel-gra          #+#    #+#             */
-/*   Updated: 2024/03/14 16:17:33 by sdel-gra         ###   ########.fr       */
+/*   Updated: 2024/03/14 20:31:31 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,11 @@ void	ft_print_window(t_window *w)
 		ft_print_vec2d(w->cam.rtn);
 		printf("fov:%.1f\n", w->cam.fov);
 	}
-	for (; w->lights; w->lights = w->lights->next)
+	for (t_list *tmp = w->lights; tmp; tmp = tmp->next)
 	{
-		if (w->lights->content)
+		if (tmp->content)
 		{
-			t_lantern *l = (t_lantern*)w->lights->content;
+			t_lantern *l = (t_lantern*)tmp->content;
 			printf("%slight:",KYEL);
 			printf("%spos:",KNRM);
 			ft_print_vec3d(l->pos);
@@ -74,11 +74,11 @@ void	ft_print_window(t_window *w)
 			printf("\n");
 		}
 	}	
-	for (; w->scene; w->scene = w->scene->next)
+	for (t_list *tmp = w->scene; tmp; tmp = tmp->next)
 	{
-		if (w->scene->content)
+		if (tmp->content)
 		{
-			t_gameobject *go = w->scene->content;
+			t_gameobject *go = tmp->content;
 			printf("%stype:",KGRN);
 			switch (go->type)
 			{
@@ -107,6 +107,7 @@ void	ft_print_window(t_window *w)
 			else
 				printf("is_invisible:NO ");
 			printf("metalness:%.1f \n", go->mtlnss);
+			printf("defnum:%d\n", go->defnum);
 		}
 	}
 }

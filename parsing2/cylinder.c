@@ -6,7 +6,7 @@
 /*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 16:02:00 by sdel-gra          #+#    #+#             */
-/*   Updated: 2024/03/14 17:04:09 by sdel-gra         ###   ########.fr       */
+/*   Updated: 2024/03/14 19:40:40 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	ft_1(double n)
 void	ft_parse_cy(t_window *w, char *l)
 {
 	t_cylinder	*cy;
+	t_vec3_d	tmp;
 
 	cy = ft_calloc(1, sizeof(t_cylinder));
 	cy->type = CYLINDER;
@@ -30,9 +31,10 @@ void	ft_parse_cy(t_window *w, char *l)
 	bypass_space(&l, w, cy);
 	cy->trs.pos = ft_ato3d(&l, w, cy);
 	bypass_space(&l, w, cy);
-	cy->trs.rtn = ft_ato3d(&l, w, cy);
+	tmp = ft_ato3d(&l, w, cy);
 	if (ft_1(cy->trs.rtn.x) || ft_1(cy->trs.rtn.y) || ft_1(cy->trs.rtn.z))
 		ft_print_error("ERR_CYLINDER -1<x<1", w, cy);
+	cy->trs.rtn = v3d_normalize(tmp);
 	bypass_space(&l, w, cy);
 	cy->trs.scl.x = ft_atod_shift(&l);
 	if (cy->trs.scl.x <= 0)
@@ -43,6 +45,7 @@ void	ft_parse_cy(t_window *w, char *l)
 		ft_print_error("ERR_CYLINDER altezza must be > 0", w, cy);
 	bypass_space(&l, w, cy);
 	cy->color = ft_rgb_convert(&l, w, cy);
+	cy->defnum = w->obj_num++;
 	cy->mtlnss = ft_metalness_convert(&l, w, cy);
 	ft_lstadd_front(&w->scene, ft_lstnew_dup(cy, sizeof(t_cylinder)));
 	w->obj_num++;

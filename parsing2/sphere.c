@@ -6,7 +6,7 @@
 /*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 15:16:26 by sdel-gra          #+#    #+#             */
-/*   Updated: 2024/03/14 17:06:06 by sdel-gra         ###   ########.fr       */
+/*   Updated: 2024/03/14 19:44:10 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	ft_parse_sp(t_window *w, char *l)
 	bypass_space(&l, w, sp);
 	sp->color = ft_rgb_convert(&l, w, sp);
 	sp->mtlnss = ft_metalness_convert(&l, w, sp);
+	sp->defnum = w->obj_num++;
 	ft_lstadd_front(&w->scene, ft_lstnew_dup(sp, sizeof(t_sphere)));
 	w->obj_num++;
 	ft_free((void **)&sp);

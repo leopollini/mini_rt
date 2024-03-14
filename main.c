@@ -6,7 +6,7 @@
 /*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 10:08:34 by lpollini          #+#    #+#             */
-/*   Updated: 2024/03/14 14:37:14 by sdel-gra         ###   ########.fr       */
+/*   Updated: 2024/03/14 19:19:11 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,19 +74,33 @@ int	win_close(t_window *win)
 }
 void	ft_print_window(t_window *w);
 
+int	ft_char_digit(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != 0)
+	{
+		if (!(str[i] >= '0' && str[i] <= '9'))
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 int	main(int argn, char *args[])
 {
 	t_window	w;
 
 	(void)argn;
 	ft_memset(&w, 0, sizeof(t_window));
-	/*if (!(argn == 2 || argn == 3))
+	if (!(argn == 2 || argn == 3))
 		ft_print_error(NOARGS, &w, NULL);
 	else if (argn == 3 && ft_char_digit(args[2]))
-		ft_print_error(NOSIZE, &w, NULL);*/
+		ft_print_error(NOSIZE, &w, NULL);
 	ft_open_rt(&w, args);
 	ft_print_window(&w);
-	/*w.mlx = mlx_init();
+	w.mlx = mlx_init();
 	if (initw(&w))
 		ft_print_error(NOINIT, &w, NULL);
 	rft_cast(&w, NULL, 0);
@@ -97,6 +111,6 @@ int	main(int argn, char *args[])
 	mlx_hook(w.win, 2, 1L << 0, manage_keys, &w);
 	mlx_mouse_hook(w.win, manage_mouse, &w);
 	mlx_loop_hook(w.mlx, loop_rt, &w);
-	mlx_loop(w.mlx);*/
+	mlx_loop(w.mlx);
 	return (0);
 }

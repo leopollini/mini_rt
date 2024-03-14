@@ -6,7 +6,7 @@
 /*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 18:57:52 by lpollini          #+#    #+#             */
-/*   Updated: 2024/03/14 16:39:21 by sdel-gra         ###   ########.fr       */
+/*   Updated: 2024/03/14 21:10:30 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 
 # define CREAT_GB_SWITCH 0
 
-# define IMGSIZE 800
+# define IMGSIZE 400
 # define SKYBOX "skybox/universe.xpm"
 
 # define NOARGS "check input, write:./minirt scenes/mandatory.rt"

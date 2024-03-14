@@ -58,6 +58,7 @@ SRC = main.c \
 		$(PARSER_DIR)/plane.c \
 		$(PARSER_DIR)/read_rt.c \
 		$(PARSER_DIR)/sphere.c \
+		$(PARSER_DIR)/init_help.c \
 vectors/miscellaneous_2.c \
 vectors/miscellaneous.c \
 vectors/vector3_ops_2.c \
