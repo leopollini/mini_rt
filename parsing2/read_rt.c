@@ -6,7 +6,7 @@
 /*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 10:45:33 by sdel-gra          #+#    #+#             */
-/*   Updated: 2024/03/08 14:18:46 by sdel-gra         ###   ########.fr       */
+/*   Updated: 2024/03/14 18:13:05 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,27 @@ int	ft_print_error(char *err, t_window *w, void *del)
 	write(2, "Error\n ", 7);
 	ft_putstr_fd(err, 2);
 	write(2, "\n", 1);
-	//if (w->rt != NULL)
-		//free_mat(w->rt);
+	if (w->rt != NULL)
+		free_mat(w->rt);
 	ft_lstclear((&w->lights), free);
-	//free_obj(w->scene);
+	free_obj(w->scene);
 	if (del != NULL)
 		free(del);
 	exit (1);
+}
+
+void	free_obj(t_list *scene)
+{
+	if (!scene)
+		return ;
+	if (scene && scene->content)
+	{
+		if (((t_gameobject *)scene->content)->mtlnss == -1)
+			free(((t_gameobject *)scene->content)->text);
+		free(scene->content);
+	}
+	free_obj(scene->next);
+	free(scene);
 }
 
 void	ft_init_scene(t_window *w)
