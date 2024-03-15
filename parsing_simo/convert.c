@@ -6,7 +6,7 @@
 /*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 16:25:20 by sdel-gra          #+#    #+#             */
-/*   Updated: 2024/03/15 14:30:17 by sdel-gra         ###   ########.fr       */
+/*   Updated: 2024/03/15 15:27:35 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,12 @@ double	ft_metalness_convert(char **l, t_window *w, void *data)
 	if (l[0][0] == 0)
 		return (0);
 	bypass_space(l, w, data);
-	if (l[0][0] != 'm' && l[0][1] != ':')
+	//if (!*l && !**l && l[0][0] != 'm' && !l[0][1] && l[0][1] != ':')
+	if (*l == NULL || **l == 0 || l[0][1] == 0 || **l != 'm' || l[0][1] != ':')
 		ft_print_error(ERR_FPARAM, w, data);
 	*l += 2;
+	if (!ft_isdigit(**l) && **l != '-' && **l != '+')
+		ft_print_error(ERR_FPARAM, w, data);
 	mtlnss = ft_atod_shift(l);
 	if ((mtlnss < 0 || mtlnss > 1) && mtlnss != -2)
 		ft_print_error(ERR_METAL, w, data);
