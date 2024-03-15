@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iragusa <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 14:27:27 by iragusa           #+#    #+#             */
-/*   Updated: 2022/11/20 14:30:43 by iragusa          ###   ########.fr       */
+/*   Updated: 2024/03/15 12:34:49 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
 int	ft_line_help(char *ret, char *ptr, int i)
@@ -101,7 +102,7 @@ char	*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, NULL, 0))
 	{
 		if (ret != NULL)
-		{	
+		{
 			free(ret);
 			ret = NULL;
 		}

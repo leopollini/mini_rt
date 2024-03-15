@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putcs.c                                         :+:      :+:    :+:   */
+/*   ft_putcsp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iragusa <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 16:51:34 by iragusa           #+#    #+#             */
-/*   Updated: 2022/11/10 19:50:42 by iragusa          ###   ########.fr       */
+/*   Updated: 2024/03/15 12:36:26 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
 void	ft_print_space_s(t_flags *flag)
-{	
+{
 	int	diff;
 
 	if (flag->len < flag->wdt)
@@ -72,7 +73,7 @@ void	ft_put_s(char *s, t_flags *flag)
 
 //if p 
 void	ft_put_p(unsigned long p, t_flags *flag)
-{	
+{
 	if (!p)
 	{
 		flag->len = 5;
@@ -87,7 +88,7 @@ void	ft_put_p(unsigned long p, t_flags *flag)
 	ft_putstr_fd("0x", 1);
 	ft_print_lowhex(p, flag);
 	if (flag->meno)
-	{	
+	{
 		flag->len += 2;
 		flag->ret -= 2;
 		ft_print_space(flag);

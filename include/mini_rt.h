@@ -6,7 +6,7 @@
 /*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 18:57:52 by lpollini          #+#    #+#             */
-/*   Updated: 2024/03/14 22:47:48 by sdel-gra         ###   ########.fr       */
+/*   Updated: 2024/03/15 13:57:53 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@
 # define ERR_FOBJ "bad formatted object in parse data"
 # define ERR_SPHERE "sphere diameter must be > 0"
 # define ERR_METAL "bad formatted metal in parse data"
+# define ERR_CYLINDER "cylinder parameter must be > 0"
 
 # include "../.mlx/mlx.h"
 # include "libft.h"
@@ -281,69 +282,8 @@ void			my_image_creator(t_window *w);
 t_raydata		unpack_ray(void *a);
 void			transform_out(t_transform t);
 t_vec3_d		ray_at(t_ray *r, double t);
-
-/*file check_rt.c*/
-int				contchar(t_window *w);
-char			*ft_strjoin2(char *s1, char *s2);
-t_gameobject	*ft_get_text(t_gameobject *p, char **line, t_window *w,
-					t_gameobject *o);
-
-void			lol_checkmetal(t_gameobject *p, t_window *w, t_gameobject *o);
-
-/*file read_rt.c*/
-int				ft_check_file(char *scene);
-int				ft_check_data(t_window *w);
-void			ft_read_rt(t_window *w, char *scene);
-int				ft_open_rt(t_window *w, char **av);
-void			ft_initcam(t_window *w);
-
-/*file parsing.c*/
-float			tofloat(char **str);
-t_vec3_d		color_parse(char **str, t_window *w, void *s);
-t_vec3_d		pos_parse(char **str, t_window *w, void *s);
-int				ft_line_parser(t_window *w, char *line);
-
-/*file init.c*/
-void			rft_add_gameobject_to_scene(t_window *w,
-					t_gameobject *elem, char *texture);
 t_list			*ft_lstnew_dup(const void *a, int size);
-t_transform		new_transform(t_vec3_d p, t_vec3_d r, t_vec3_d s);
-t_gameobject	*new_gameobject(t_transform tr, t_color_3 cl,
-					t_objtype type, double sh);
-t_gameobject	new_object1(t_transform tr, t_color_3 cl, t_objtype type);
-
-/*file init_help.c*/
-int				rft_load_scene(t_window *w);
-int				initw(t_window *win);
-int				loop_rt(t_window *w);
-void			camera_init(t_window *win);
-
-/*file parse_utils.c*/
-int				ft_char_digit(char *str);
-void			*sux_malloc(unsigned int size, t_window *w);
-void			next_val(char **str);
-int				my_atoi(char **str);
-void			ft_comma(char **str, t_window *w, void *s);
-
-/*file parse_utils2.c*/
-
-char			*ft_copyadd(char *str);
-void			ft_check_path(t_gameobject *s, t_window *w);
-void			free_obj(t_list *scene);
 int				ft_print_error(char *err, t_window *w, void *del);
-int				ft_checkset(char c, char *s);
-
-/*file parse_data.c*/
-int				camera_update(t_window *w);
-int				parse_res(t_window *w, char **line);
-int				parse_amb(t_window *w, char **line);
-int				parse_cam(t_window *w, char **line);
-int				parse_light(t_window *w, char **line);
-
-/*file parse_obj.c*/
-int				parse_sphere(t_window *w, char **line);
-int				parse_plane(t_window *w, char **line);
-int				parse_cylinder(t_window *w, char **line);
 
 /*checker_color.c*/
 int				checker_disr_plane(t_transform tr, t_ray *r,
@@ -353,8 +293,10 @@ char			checker_cases(double lol, t_vec3_d tempx, t_vec3_d tempy,
 char			checker_disr_sphere(t_vec3_d offset, t_ray *r, t_vec3_d col);
 double			modulus(double a);
 
-/*camera_hadnler.c*/
+/*camera_handler.c*/
 int				camera_update(t_window *w);
 t_vec2_d		ft_get_rot(t_vec3_d v);
+int				initw(t_window *win);
+int				loop_rt(t_window *w);
 
 #endif

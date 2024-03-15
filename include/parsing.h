@@ -6,7 +6,7 @@
 /*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:11:48 by sdel-gra          #+#    #+#             */
-/*   Updated: 2024/03/14 22:49:10 by sdel-gra         ###   ########.fr       */
+/*   Updated: 2024/03/15 13:56:32 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 # include "mini_rt.h"
 
 typedef struct s_window	t_window;
+
+/*	read_rt.c	*/
+int	ft_open_rt(t_window *w, char **av);
 
 /* basic_utils.c */
 int			ft_isspace(char c);
@@ -56,6 +59,5 @@ void		ft_parse_pl(t_window *w, char *l);
 
 /* parsing_cylinder.c */
 void		ft_parse_cy(t_window *w, char *l);
-
 
 #endif

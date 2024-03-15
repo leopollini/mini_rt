@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_wdt_prec.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iragusa <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 17:27:55 by iragusa           #+#    #+#             */
-/*   Updated: 2022/11/02 17:28:12 by iragusa          ###   ########.fr       */
+/*   Updated: 2024/03/15 12:37:11 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
 char	*ft_strncpy(char *dest, const char *src, unsigned int n)
@@ -39,7 +40,7 @@ const char	*ft_wdt(t_flags *flag, const char *src)
 	flag->wdt = ft_atoi(ptr_w);
 	free(ptr_w);
 	return (src + i);
-}		
+}
 
 const char	*ft_prec(t_flags *flag, const char *src)
 {
@@ -48,7 +49,7 @@ const char	*ft_prec(t_flags *flag, const char *src)
 
 	i = 0;
 	if (*src == '.')
-	{	
+	{
 		flag->zero = 0;
 		flag->punto = 1;
 		src++;
@@ -65,12 +66,12 @@ const char	*ft_prec(t_flags *flag, const char *src)
 			flag->prec = 0;
 	}
 	return (src + i);
-}	
+}
 
 void	ft_intflag(int d, t_flags *flag)
 {
 	if (!flag->zero && !flag->meno && flag->wdt > flag->prec)
-	{	
+	{
 		if ((flag->sign || flag->sp) && d > 0)
 			flag->wdt --;
 		ft_print_space(flag);
@@ -78,7 +79,7 @@ void	ft_intflag(int d, t_flags *flag)
 }
 
 void	ft_uint_flag(t_flags *flag)
-{	
+{
 	if (!flag->zero && !flag->meno && flag->wdt > flag->prec)
 		ft_print_space(flag);
 	if (flag->zero)

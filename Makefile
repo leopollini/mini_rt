@@ -34,7 +34,7 @@ MLX = .mlx/
 
 FLAG = -lXext -lX11 -lm -lz
 
-PARSER_DIR = parsing2
+PARSER_DIR = parsing_simo
 
 SRC = main.c \
 		rt/color_opers.c rt/input.c \
@@ -52,7 +52,6 @@ SRC = main.c \
 		$(PARSER_DIR)/check_prepars.c \
 		$(PARSER_DIR)/convert.c \
 		$(PARSER_DIR)/cylinder.c \
-		$(PARSER_DIR)/extra.c \
 		$(PARSER_DIR)/light.c \
 		$(PARSER_DIR)/parsing_utils.c \
 		$(PARSER_DIR)/parsing.c \

@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_print_tab.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iragusa <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 13:39:49 by iragusa           #+#    #+#             */
-/*   Updated: 2022/11/06 13:40:04 by iragusa          ###   ########.fr       */
+/*   Updated: 2024/03/15 12:36:56 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
 void	ft_print_sign(int d, t_flags *flag)
@@ -24,7 +25,7 @@ void	ft_print_sign(int d, t_flags *flag)
 			flag->ret += 1;
 			flag->wdt -= 1;
 		}
-	}		
+	}
 }
 
 void	ft_printprec(t_flags *flag)
@@ -50,7 +51,7 @@ void	ft_print_zero(t_flags *flag)
 
 	tab = flag->wdt - flag->len;
 	if (!flag->meno && flag->zero)
-	{	
+	{
 		while (tab-- > 0)
 		{
 			ft_putchar_fd('0', 1);
@@ -73,7 +74,7 @@ void	ft_print_space2(t_flags *flag)
 		ft_putchar_fd(' ', 1);
 		flag->ret++;
 	}
-}	
+}
 
 void	ft_print_space(t_flags *flag)
 {

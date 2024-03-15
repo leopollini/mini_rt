@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: iragusa <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/06 21:38:37 by iragusa           #+#    #+#             */
-/*   Updated: 2022/10/17 18:45:26 by iragusa          ###   ########.fr       */
+/*   Updated: 2024/03/15 12:37:34 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #ifndef LIBFT_H
 # define LIBFT_H
 # ifndef BUFFER_SIZE
@@ -45,10 +46,10 @@ typedef struct s_flags
 /*list_struct*/
 
 typedef struct s_list
-{	
+{
 	void			*content;
 	struct s_list	*next;
-}t_list;
+}	t_list;
 
 /*libft*/
 
