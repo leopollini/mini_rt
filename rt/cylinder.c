@@ -6,7 +6,7 @@
 /*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/03 20:49:05 by lpollini          #+#    #+#             */
-/*   Updated: 2024/03/03 22:37:21 by lpollini         ###   ########.fr       */
+/*   Updated: 2024/03/15 17:07:40 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ char	cyl_collisions_1(t_gameobject *c, t_ray *r)
 char	cyl_collisions(t_gameobject *c, t_ray *r, t_vec3_d t)
 {
 	char	res;
-
 
 	res = cyl_collisions_1(c, r);
 	if (res >= 0)
