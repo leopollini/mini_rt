@@ -6,7 +6,7 @@
 /*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 14:11:48 by sdel-gra          #+#    #+#             */
-/*   Updated: 2024/03/15 13:56:32 by sdel-gra         ###   ########.fr       */
+/*   Updated: 2024/03/15 14:18:52 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 typedef struct s_window	t_window;
 
 /*	read_rt.c	*/
-int	ft_open_rt(t_window *w, char **av);
+void		ft_open_rt(t_window *w, char **av);
 
 /* basic_utils.c */
 int			ft_isspace(char c);

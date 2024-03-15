@@ -6,13 +6,12 @@
 /*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 15:16:26 by sdel-gra          #+#    #+#             */
-/*   Updated: 2024/03/14 22:51:09 by sdel-gra         ###   ########.fr       */
+/*   Updated: 2024/03/15 14:26:27 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/mini_rt.h"
 
-// to add free in object
 void	ft_parse_sp(t_window *w, char *l)
 {
 	t_sphere	*sp;

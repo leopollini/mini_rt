@@ -6,7 +6,7 @@
 /*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 16:02:00 by sdel-gra          #+#    #+#             */
-/*   Updated: 2024/03/15 13:46:46 by sdel-gra         ###   ########.fr       */
+/*   Updated: 2024/03/15 14:21:14 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ double	ft_skip_double_error(char **l, t_window *w, void *obj, char *err)
 	return (out);
 }
 
-// da ridurre
 void	ft_parse_cy(t_window *w, char *l)
 {
 	t_cylinder	*cy;

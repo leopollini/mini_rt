@@ -6,7 +6,7 @@
 /*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 16:25:20 by sdel-gra          #+#    #+#             */
-/*   Updated: 2024/03/15 10:53:21 by sdel-gra         ###   ########.fr       */
+/*   Updated: 2024/03/15 14:30:17 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,20 +69,19 @@ t_vec3_d	ft_ato3d(char **l, t_window *w, void *data)
 	return (pos);
 }
 
-// to add free in object
 t_vec3_d	ft_rgb_convert(char **l, t_window *w, void *data)
 {
-	t_vec3_d	pos;
+	t_vec3_d	rgb;
 
-	pos = ft_ato3d(l, w, data);
-	if (pos.x < 0 || pos.x > 255
-		|| pos.y < 0 || pos.y > 255
-		|| pos.z < 0 || pos.z > 255)
+	rgb = ft_ato3d(l, w, data);
+	if (rgb.x < 0 || rgb.x > 255
+		|| rgb.y < 0 || rgb.y > 255
+		|| rgb.z < 0 || rgb.z > 255)
 		ft_print_error(ERR_COLOR, w, data);
-	pos.x = (int)pos.x;
-	pos.y = (int)pos.y;
-	pos.z = (int)pos.z;
-	return (pos);
+	rgb.x = (int)rgb.x;
+	rgb.y = (int)rgb.y;
+	rgb.z = (int)rgb.z;
+	return (rgb);
 }
 
 double	ft_metalness_convert(char **l, t_window *w, void *data)

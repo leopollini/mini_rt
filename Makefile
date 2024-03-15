@@ -48,7 +48,6 @@ SRC = main.c \
 		$(PARSER_DIR)/ambient.c \
 		$(PARSER_DIR)/basic_utils.c \
 		$(PARSER_DIR)/camera.c \
-		$(PARSER_DIR)/check_functions.c \
 		$(PARSER_DIR)/check_prepars.c \
 		$(PARSER_DIR)/convert.c \
 		$(PARSER_DIR)/cylinder.c \
