@@ -6,13 +6,13 @@
 /*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 10:45:33 by sdel-gra          #+#    #+#             */
-/*   Updated: 2024/03/15 14:19:56 by sdel-gra         ###   ########.fr       */
+/*   Updated: 2024/03/15 16:15:14 by sdel-gra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/mini_rt.h"
 
-void	ft_init_scene(t_window *w)
+void	ft_init_w(t_window *w)
 {
 	w->obj_num = 0;
 	w->num_line = 0;
@@ -54,7 +54,7 @@ void	ft_open_rt(t_window *w, char **av)
 		ft_print_error(NOFILE, w, NULL);
 	if (ft_find_substr(av[1], ".rt") == 0)
 		ft_print_error(NO_RT, w, NULL);
-	ft_init_scene(w);
+	ft_init_w(w);
 	ft_read_filert(w, av[1]);
 	ft_check_parse_data(w);
 }
