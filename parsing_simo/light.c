@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   light.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdel-gra <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: lpollini <lpollini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 16:08:45 by sdel-gra          #+#    #+#             */
-/*   Updated: 2024/03/15 14:32:25 by sdel-gra         ###   ########.fr       */
+/*   Updated: 2024/03/17 22:50:50 by lpollini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	ft_parse_light(t_window *w, char *l)
 		ft_print_error(ERR_LIGHT, w, light);
 	bypass_space(&l, w, light);
 	light->color = ft_rgb_convert(&l, w, light);
+	v3d_add(&light->pos, (t_vec3_d){E_N2, E_N2, E_N2});
 	ft_lstadd_front(&w->lights, ft_lstnew_dup(light, sizeof(t_lantern)));
 	ft_free((void **)&light);
 	if (l[0] != 0)
